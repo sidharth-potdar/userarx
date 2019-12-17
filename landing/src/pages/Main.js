@@ -1,50 +1,56 @@
-import React from 'react';
-import { ThemeProvider } from 'styled-components';
+import React, { Fragment } from 'react';
+import Head from 'next/head';
 import Sticky from 'react-stickynode';
-import { hostingTheme } from '../assets/theme/index';
-import {
-  GlobalStyle,
-  ContentWrapper,
-} from '../containers/Hosting/hosting.style';
+import { ThemeProvider } from 'styled-components';
+import { agencyTheme } from '../assets/theme/agency';
 import { ResetCSS } from '../assets/css/style';
+import { GlobalStyle, AgencyWrapper } from '../containers/Agency/agency.style';
 import Navbar from '../containers/Hosting/Navbar';
-import FeatureSection from '../containers/Hosting/Features';
-import InfoSection from '../containers/Hosting/Info';
-import BannerSection from '../containers/Hosting/Banner';
-import ContactSection from '../containers/Hosting/Contact';
-import Footer from '../containers/Hosting/Footer';
+import BannerSection from '../containers/Agency/BannerSection';
+// import FeatureSection from '../containers/Agency/FeatureSection';
+// import AboutUsSection from '../containers/Agency/AboutUsSection';
+// import WorkHistory from '../containers/Agency/WorkHistory';
+// import BlogSection from '../containers/Agency/BlogSection';
+// import TestimonialSection from '../containers/Agency/TestimonialSection';
+// import TeamSection from '../containers/Agency/TeamSection';
+// import VideoSection from '../containers/Agency/VideoSection';
+// import NewsletterSection from '../containers/Agency/NewsletterSection';
+// import QualitySection from '../containers/Agency/QualitySection';
+import Footer from '../containers/Agency/Footer';
 import { DrawerProvider } from '../contexts/DrawerContext';
-import { ParallaxProvider } from 'react-scroll-parallax';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+// import FaqSection from '../containers/Agency/FaqSection';
 
 export default () => {
   return (
-    <Router>
-      <ThemeProvider theme={hostingTheme}>
-        <ParallaxProvider>
-        
-          <ResetCSS />
-          <GlobalStyle />
+    <ThemeProvider theme={agencyTheme}>
+      <Fragment>
+        {/* Start agency head section */}
+        <Head>
+          <title>Agency | A react next landing page</title>
+          <meta name="Description" content="React next landing page" />
+          <meta name="theme-color" content="#10ac84" />
 
-          <ContentWrapper>
-            <Sticky top={0} innerZ={9999} activeClass="sticky-nav-active">
-              <DrawerProvider>
-                <Navbar />
-              </DrawerProvider>
-            </Sticky>
-
-            <BannerSection />
-            <FeatureSection />
-            <InfoSection />
-            <Footer />
-          </ContentWrapper>
-        </ParallaxProvider>
-      </ThemeProvider>
-    </Router>
+          {/* Load google fonts */}
+          <link
+            href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
+            rel="stylesheet"
+          />
+        </Head>
+        <ResetCSS />
+        <GlobalStyle />
+        {/* End of agency head section */}
+        {/* Start agency wrapper section */}
+        <AgencyWrapper>
+          <Sticky top={0} innerZ={9999} activeClass="sticky-nav-active">
+            <DrawerProvider>
+              <Navbar />
+            </DrawerProvider>
+          </Sticky>
+          <BannerSection />
+          <Footer />
+        </AgencyWrapper>
+        {/* End of agency wrapper section */}
+      </Fragment>
+    </ThemeProvider>
   );
 };
