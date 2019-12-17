@@ -5,7 +5,7 @@ import { ThemeProvider } from 'styled-components';
 import { agencyTheme } from '../assets/theme/agency';
 import { ResetCSS } from '../assets/css/style';
 import { GlobalStyle, AgencyWrapper } from '../containers/Agency/agency.style';
-import Navbar from '../containers/Hosting/Navbar';
+import Navbar from '../containers/Agency/Navbar';
 import BannerSection from '../containers/Agency/BannerSection';
 // import FeatureSection from '../containers/Agency/FeatureSection';
 // import AboutUsSection from '../containers/Agency/AboutUsSection';
@@ -26,8 +26,8 @@ export default () => {
       <Fragment>
         {/* Start agency head section */}
         <Head>
-          <title>Agency | A react next landing page</title>
-          <meta name="Description" content="React next landing page" />
+          <title>userarx</title>
+          <meta name="Description" content="userarx" />
           <meta name="theme-color" content="#10ac84" />
 
           {/* Load google fonts */}
