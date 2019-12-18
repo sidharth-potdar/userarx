@@ -37,7 +37,7 @@ const ContactSection = ({
                 placeholder="Email address"
                 iconPosition="right"
                 isMaterial={false}
-                className="email_input"
+                className="floating_input enter_email"
                 aria-label="email"
               />
               <Button {...button} title="GET IN TOUCH" />
