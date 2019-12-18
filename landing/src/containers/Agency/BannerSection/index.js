@@ -8,6 +8,7 @@ import FeatureBlock from '../../../components/FeatureBlock';
 import Container from '../../../components/UI/Container';
 import Particles from '../../Agency/Particle';
 import BannerWrapper, { DiscountLabel } from './bannerSection.style';
+import ReactTypingEffect from 'react-typing-effect';
 
 const BannerSection = ({
   row,
@@ -21,13 +22,15 @@ const BannerSection = ({
 }) => {
   const ButtonGroup = () => (
     <Fragment>
-      <Button title="LEARN MORE" {...btnStyle} />
-      <Button
-        title="WATCH WORKS"
-        variant="textButton"
-        icon={<i className="flaticon-next" />}
-        {...outlineBtnStyle}
-      />
+      <p style={{ textAlign: 'left '}}>
+        <Button title="LEARN MORE" {...btnStyle} />
+        <Button
+          title="WATCH WORKS"
+          variant="textButton"
+          icon={<i className="flaticon-next" />}
+          {...outlineBtnStyle}
+        />
+      </p>
     </Fragment>
   );
   return (
@@ -36,20 +39,32 @@ const BannerSection = ({
       <Container>
         <Box className="row" {...row}>
           <Box className="col" {...col}>
+            <p style={{ textAlign: 'left' }}>
             <DiscountLabel>
-              <Text content="25% Discount" {...discountAmount} />
-              <Text content="on every first project budget" {...discountText} />
+              <Text content="an effortless platform for" {...discountText} />
+              <Text content=" better user research" {...discountAmount} />
             </DiscountLabel>
+            </p>
             <FeatureBlock
               title={
-                <Heading
-                  content="With Knowledge, Passion, Heart & Soul Agencies"
-                  {...title}
-                />
+                <>
+                  <Heading
+                    content="Streamline your user research process for"
+                    {...title}
+                  />
+                  <div style={{height: "160px"}}>
+                  <ReactTypingEffect
+                    className="strong"
+                    speed='175'
+                    eraseDelay='2000'
+                    text={["data-driven development.","better customer experiences.", "improved insights.","user-centric design."]}
+                  />
+                  </div>
+                </>
               }
               description={
                 <Text
-                  content="Agencies around the world are moving to the digital agencies. So, It is high time to introduce your agency digitaly ."
+                  content="Userarx helps you understand what your customers really want from your product. Deliver satisfying, intuitive customer experiences."
                   {...description}
                 />
               }
@@ -92,17 +107,20 @@ BannerSection.defaultProps = {
     letterSpacing: '-0.025em',
     mb: ['20px', '25px'],
     lineHeight: '1.31',
+    textAlign: 'left'
   },
   description: {
     fontSize: '16px',
     color: '#343d48cc',
     lineHeight: '2.1',
     mb: '0',
+    textAlign: 'left'
   },
   btnStyle: {
     minWidth: ['120px', '156px'],
     fontSize: '14px',
     fontWeight: '500',
+    borderRadius: '4px'
   },
   outlineBtnStyle: {
     minWidth: ['130px', '156px'],
@@ -110,10 +128,11 @@ BannerSection.defaultProps = {
     fontWeight: '500',
     color: '#0f2137',
     p: '5px 10px',
+    borderRadius: '4px'
   },
   discountAmount: {
     fontSize: '14px',
-    color: '#10AC84',
+    color: '#54a0c6',
     mb: 0,
     as: 'span',
     mr: '0.4em',

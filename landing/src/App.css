@@ -20,3 +20,16 @@
 .App-link {
   color: #09d3ac;
 }
+
+.strong {
+  font-size: 55px;
+  font-weight: 300;
+  margin-top: -20px;
+  margin-bottom: 20px;
+  color: #e8699a;
+  letter-spacing: -0.025em;
+  mb: 25px];
+  line-height: 1.31;
+  text-align: left;
+
+}
