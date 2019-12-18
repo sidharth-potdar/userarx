@@ -25,7 +25,7 @@ const BannerSection = ({
       <p style={{ textAlign: 'left '}}>
         <Button title="LEARN MORE" {...btnStyle} />
         <Button
-          title="WATCH WORKS"
+          title="HOW IT WORKS"
           variant="textButton"
           icon={<i className="flaticon-next" />}
           {...outlineBtnStyle}
@@ -34,7 +34,7 @@ const BannerSection = ({
     </Fragment>
   );
   return (
-    <BannerWrapper>
+    <BannerWrapper style={{ marginTop: '-90px'}}>
       <Particles />
       <Container>
         <Box className="row" {...row}>
@@ -55,7 +55,7 @@ const BannerSection = ({
                   <div style={{height: "160px"}}>
                   <ReactTypingEffect
                     className="strong"
-                    speed='175'
+                    speed='150'
                     eraseDelay='2000'
                     text={["data-driven development.","better customer experiences.", "improved insights.","user-centric design."]}
                   />

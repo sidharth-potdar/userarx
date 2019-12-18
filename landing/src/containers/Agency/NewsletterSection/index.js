@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Box from 'reusecore/src/elements/Box';
-import Heading from 'reusecore/src/elements/Heading';
-import Input from 'reusecore/src/elements/Input';
-import Button from 'reusecore/src/elements/Button';
-import Container from 'common/src/components/UI/Container';
+import Box from '../../../components/Box';
+import Heading from '../../../components/Heading';
+import Input from '../../../components/Input';
+import Button from '../../../components/Button';
+import Container from '../../../components/UI/Container';
 import NewsletterSectionWrapper, {
   NewsletterForm,
 } from './newsletterSection.style';
@@ -14,17 +14,29 @@ const NewsletterSection = ({ sectionHeader, sectionTitle, btnStyle }) => {
     <NewsletterSectionWrapper id="newsletterSection">
       <Container>
         <Box {...sectionHeader}>
-          <Heading content="Subscribe Newsletter" {...sectionTitle} />
+          <Heading content="Get in touch" {...sectionTitle} />
         </Box>
         <Box>
           <NewsletterForm>
+            <Input
+              inputType="text"
+              isMaterial={false}
+              placeholder="Name"
+              aria-label="name"
+            />
+            <Input
+              inputType="text"
+              isMaterial={false}
+              placeholder="Company"
+              aria-label="company"
+            />
             <Input
               inputType="email"
               isMaterial={false}
               placeholder="Email Address"
               aria-label="email"
             />
-            <Button type="button" title="SEND MESSAGE" {...btnStyle} />
+            <Button type="button" title="LEARN MORE" {...btnStyle} />
           </NewsletterForm>
         </Box>
       </Container>

@@ -23,16 +23,16 @@ const ContactSection = ({
     <Box {...sectionWrapper}>
       <Container>
         <Box {...secTitleWrapper}>
-          <Text {...secText} content="CONTACT US" />
+          <Text {...secText} content="LEARN MORE" />
           <Heading
             {...secHeading}
-            content="Are you Interested to meet with us?"
+            content="Interested in learning how Userarx can help your business?"
           />
         </Box>
         <Box {...row}>
           <Box {...contactForm}>
             <ContactFromWrapper>
-              <Input
+              <input
                 inputType="email"
                 placeholder="Email address"
                 iconPosition="right"
@@ -40,11 +40,11 @@ const ContactSection = ({
                 className="email_input"
                 aria-label="email"
               />
-              <Button {...button} title="SEND MESSAGE" />
+              <Button {...button} title="GET IN TOUCH" />
             </ContactFromWrapper>
             <Text
               {...note}
-              content="Note: Please call us at 12pm to 8am. otherwise our customer supporter will not  available to reach your call, but you can drop mail anytime."
+              content="A member of our team will reach out to you shortly."
             />
           </Box>
         </Box>
@@ -70,7 +70,6 @@ ContactSection.defaultProps = {
     as: 'section',
     pt: ['0px', '10px', '20px', '80px'],
     pb: ['0px', '0px', '0px', '0px', '80px'],
-    bg: '#f9fbfd',
   },
   secTitleWrapper: {
     mb: ['45px', '50px', '60px'],
@@ -87,11 +86,11 @@ ContactSection.defaultProps = {
   },
   secHeading: {
     textAlign: 'center',
-    fontSize: [`${6}`, `${8}`],
+    fontSize: ['20px', '24px'],
     fontWeight: '400',
-    color: 'headingColor',
+    color: '#0f2137',
     letterSpacing: '-0.025em',
-    mb: `${0}`,
+    mb: '0',
   },
   row: {
     flexBox: true,
