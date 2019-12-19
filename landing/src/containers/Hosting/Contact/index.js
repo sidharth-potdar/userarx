@@ -19,6 +19,8 @@ function sendEmail(contact) {
   console.log(contact)
 }
 
+
+
 // const name = document.getElementById('name');
 
 const ContactSection = ({
@@ -57,7 +59,8 @@ const ContactSection = ({
                 id="organization"
                 onChange={(evt) => { contact.organization = evt.target.value }}
                 inputType="text"
-                placeholder="Organization"                isMaterial={false}
+                placeholder="Organization"
+                isMaterial={false}
                 className="floating_input enter_email"
                 aria-label="organization"
               />
@@ -73,8 +76,9 @@ const ContactSection = ({
 
               <Button
                 {...button}
-                title="GET IN TOUCH"
+                title="GET STARTED"
                 onClick={e => sendEmail(contact)}
+
               />
             </ContactFromWrapper>
             <Text
@@ -139,6 +143,7 @@ ContactSection.defaultProps = {
     fontSize: `${2}`,
     fontWeight: '500',
     borderRadius: '4px',
+    marginTop: '50px',
     pl: '22px',
     pr: '22px',
     colors: 'primarywithbg',

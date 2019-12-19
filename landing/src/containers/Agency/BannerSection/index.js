@@ -23,7 +23,11 @@ const BannerSection = ({
   const ButtonGroup = () => (
     <Fragment>
       <p style={{ textAlign: 'left '}}>
-        <Button title="LEARN MORE" {...btnStyle} />
+        <Button
+          href="#features"
+          title="LEARN MORE"
+          {...btnStyle}
+        />
         <Button
           title="HOW IT WORKS"
           variant="textButton"

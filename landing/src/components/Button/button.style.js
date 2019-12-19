@@ -12,7 +12,7 @@ const ButtonStyle = styled.button`
   color: ${themeGet('colors.white', '#ffffff')};
   background-color: ${themeGet('colors.primary', '#028489')};
   min-height: ${themeGet('heights.3', '48')}px;
-  min-width: ${themeGet('widths.3', '48')}px;
+  min-width: ${themeGet('widths.3', '160')}px;
   border-radius: ${themeGet('radius.0', '3')}px;
   font-family: inherit;
   font-size: ${themeGet('fontSizes.4', '16')}px;
