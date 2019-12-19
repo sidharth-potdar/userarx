@@ -15,11 +15,15 @@ var contact = {
 };
 
 function sendEmail(contact) {
-  console.log("sendEmail() function called")
-  console.log(contact)
+  // console.log("sendEmail() function called")
+  // console.log(contact)
+  fetch('https://api.userarx.com/signups', {
+    method: 'post',
+    body: JSON.stringify(contact)
+  }).then(function(response) {
+    console.log("");
+  })
 }
-
-
 
 // const name = document.getElementById('name');
 
