@@ -6,8 +6,20 @@ import Heading from '../../../components/Heading';
 import Button from '../../../components/Button';
 import Input from '../../../components/Input';
 import Container from '../../../components/UI/Container';
-
 import ContactFromWrapper from './contact.style';
+
+var contact = {
+  "name": "",
+  "organization": "",
+  "email": ""
+};
+
+function sendEmail(contact) {
+  console.log("sendEmail() function called")
+  console.log(contact)
+}
+
+// const name = document.getElementById('name');
 
 const ContactSection = ({
   sectionWrapper,
@@ -33,14 +45,43 @@ const ContactSection = ({
           <Box {...contactForm}>
             <ContactFromWrapper>
               <input
+                id="name"
+                onChange={(evt) => { contact.name = evt.target.value }}
+                inputType="text"
+                placeholder="Name"
+                iconPosition="right"
+                isMaterial={false}
+                className="floating_input enter_email"
+                aria-label="name"
+              />
+
+              <input
+                id="organization"
+                onChange={(evt) => { contact.organization = evt.target.value }}
+                inputType="text"
+                placeholder="Organization"
+                iconPosition="right"
+                isMaterial={false}
+                className="floating_input enter_email"
+                aria-label="organization"
+              />
+
+              <input
+                id="email"
+                onChange={(evt) => { contact.email = evt.target.value }}
                 inputType="email"
-                placeholder="Email address"
+                placeholder="Email"
                 iconPosition="right"
                 isMaterial={false}
                 className="floating_input enter_email"
                 aria-label="email"
               />
-              <Button {...button} title="GET IN TOUCH" />
+
+              <Button
+                {...button}
+                title="GET IN TOUCH"
+                onClick={e => sendEmail(contact)}
+              />
             </ContactFromWrapper>
             <Text
               {...note}
@@ -102,7 +143,7 @@ ContactSection.defaultProps = {
   button: {
     type: 'button',
     fontSize: `${2}`,
-    fontWeight: '600',
+    fontWeight: '500',
     borderRadius: '4px',
     pl: '22px',
     pr: '22px',
