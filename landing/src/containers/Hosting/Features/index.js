@@ -26,7 +26,7 @@ const FeatureSection = ({
   featureItemDes,
 }) => {
   return (
-    <Box {...sectionWrapper} id="featureSection">
+    <Box {...sectionWrapper}>
       <Container>
         <Box {...secTitleWrapper}>
           <Fade bottom cascade>
@@ -169,10 +169,10 @@ FeatureSection.propTypes = {
 
 FeatureSection.defaultProps = {
   sectionWrapper: {
+    id: 'features',
     as: 'section',
     pt: ['60px', '80px', '80px', '80px'],
     pb: ['60px', '80px', '80px', '80px'],
-    id: 'feature_section',
   },
   secTitleWrapper: {
     mb: ['45px', '50px', '60px'],

@@ -49,7 +49,6 @@ const ContactSection = ({
                 onChange={(evt) => { contact.name = evt.target.value }}
                 inputType="text"
                 placeholder="Name"
-                iconPosition="right"
                 isMaterial={false}
                 className="floating_input enter_email"
                 aria-label="name"
@@ -59,9 +58,7 @@ const ContactSection = ({
                 id="organization"
                 onChange={(evt) => { contact.organization = evt.target.value }}
                 inputType="text"
-                placeholder="Organization"
-                iconPosition="right"
-                isMaterial={false}
+                placeholder="Organization"                isMaterial={false}
                 className="floating_input enter_email"
                 aria-label="organization"
               />
@@ -71,7 +68,6 @@ const ContactSection = ({
                 onChange={(evt) => { contact.email = evt.target.value }}
                 inputType="email"
                 placeholder="Email"
-                iconPosition="right"
                 isMaterial={false}
                 className="floating_input enter_email"
                 aria-label="email"
@@ -107,7 +103,7 @@ ContactSection.propTypes = {
 
 ContactSection.defaultProps = {
   sectionWrapper: {
-    id: 'contact_section',
+    id: 'contact_us',
     as: 'section',
     pt: ['0px', '10px', '20px', '80px'],
     pb: ['0px', '0px', '0px', '0px', '80px'],

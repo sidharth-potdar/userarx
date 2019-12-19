@@ -11,12 +11,12 @@ const data = {
   menuItems: [
     {
       label: 'Features',
-      path: '#feature_section',
+      path: '#features',
       offset: '80',
     },
     {
       label: 'Get Started',
-      path: '#contact_section',
+      path: '#contact_us',
       offset: '100',
     },
   ],
