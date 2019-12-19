@@ -289,94 +289,64 @@ const data = {
   menuWidget: [
     {
       id: 1,
-      title: 'About Us',
+      title: 'Product',
       menuItems: [
         {
           id: 1,
           url: '#1',
-          text: 'Support Center',
+          text: 'Get Started',
         },
         {
           id: 2,
           url: '#2',
-          text: 'Customer Support',
+          text: 'Book a Demo',
         },
         {
           id: 3,
           url: '#3',
-          text: 'About Us',
-        },
-        {
-          id: 4,
-          url: '#4',
-          text: 'Copyright',
-        },
-        {
-          id: 5,
-          url: '#5',
-          text: 'Popular Campaign',
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: 'Our Information',
-      menuItems: [
-        {
-          id: 1,
-          url: '#1',
-          text: 'Return Policy',
-        },
-        {
-          id: 2,
-          url: '#2',
-          text: 'Privacy Policy',
-        },
-        {
-          id: 3,
-          url: '#2',
-          text: 'Terms & Conditions',
-        },
-        {
-          id: 4,
-          url: '#4',
-          text: 'Site Map',
-        },
-        {
-          id: 5,
-          url: '#5',
-          text: 'Store Hours',
+          text: 'Integrations',
         },
       ],
     },
     {
       id: 3,
-      title: 'My Account',
+      title: 'Account',
       menuItems: [
         {
           id: 1,
           url: '#1',
-          text: 'Press inquiries',
+          text: 'Sign up',
         },
         {
           id: 2,
           url: '#2',
-          text: 'Social media directories',
+          text: 'Log in',
         },
         {
           id: 3,
           url: '#3',
-          text: 'Images & B-roll',
+          text: 'Help',
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Contact Us',
+      menuItems: [
+        {
+          id: 1,
+          url: '#1',
+          text: 'LinkedIn',
         },
         {
-          id: 4,
-          url: '#4',
-          text: 'Permissions',
+          id: 2,
+          url: '#2',
+          text: 'Twitter',
         },
         {
-          id: 5,
-          url: '#5',
-          text: 'Speaker requests',
+          id: 3,
+          url: '#2',
+          text: 'Facebook',
         },
       ],
     },
@@ -387,22 +357,17 @@ const data = {
         {
           id: 1,
           url: '#1',
-          text: 'Application security',
+          text: 'Security',
         },
         {
           id: 2,
           url: '#2',
-          text: 'Software principles',
+          text: 'Privacy',
         },
         {
           id: 3,
           url: '#3',
-          text: 'Unwanted software policy',
-        },
-        {
-          id: 4,
-          url: '#4',
-          text: 'Responsible supply chain',
+          text: 'GDPR Compliance',
         },
       ],
     },

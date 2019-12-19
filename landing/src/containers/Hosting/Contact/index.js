@@ -53,7 +53,6 @@ const ContactSection = ({
                 className="floating_input enter_email"
                 aria-label="name"
               />
-
               <input
                 id="organization"
                 onChange={(evt) => { contact.organization = evt.target.value }}
@@ -62,7 +61,6 @@ const ContactSection = ({
                 className="floating_input enter_email"
                 aria-label="organization"
               />
-
               <input
                 id="email"
                 onChange={(evt) => { contact.email = evt.target.value }}
@@ -143,7 +141,7 @@ ContactSection.defaultProps = {
     borderRadius: '4px',
     pl: '22px',
     pr: '22px',
-    colors: 'primaryWithBg',
+    colors: 'primarywithbg',
     height: `${4}`,
   },
   note: {
