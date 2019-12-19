@@ -30,10 +30,10 @@ const FeatureSection = ({
       <Container>
         <Box {...secTitleWrapper}>
           <Fade bottom cascade>
-            <Text {...secText} content="OUR SERVICES" />
+            <Text {...secText} content="FEATURES" />
             <Heading
               {...secHeading}
-              content="Our Featured Service that We Provide"
+              content="Userarx is dedicated to user-centered, data-driven growth."
             />
           </Fade>
         </Box>
@@ -210,12 +210,13 @@ FeatureSection.defaultProps = {
   },
   featureItemHeading: {
     fontSize: ['18px', '18px', '16px', '20px'],
+    textAlign: 'center',
     fontWeight: '400',
     color: '#0f2137',
     lineHeight: '1.5',
     mb: ['10px', '10px', '10px', '10px'],
     letterSpacing: '-0.020em',
-    maxWidth: ['auto', 'auto', 'auto', '180px'],
+    maxWidth: ['auto', 'auto', 'auto', 'auto'],
   },
   featureItemDes: {
     fontSize: ['14px', '14px', '14px', '15px'],

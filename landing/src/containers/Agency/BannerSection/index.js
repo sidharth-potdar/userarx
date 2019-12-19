@@ -55,8 +55,8 @@ const BannerSection = ({
                   <div style={{height: "160px"}}>
                   <ReactTypingEffect
                     className="strong"
-                    speed='150'
-                    eraseDelay='2000'
+                    speed='100'
+                    eraseDelay='1250'
                     text={["data-driven development.","better customer experiences.", "improved insights.","user-centric design."]}
                   />
                   </div>

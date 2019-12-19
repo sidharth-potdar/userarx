@@ -13,23 +13,23 @@ import {
 // Feature Section Content
 export const FEATURES_DATA = [
   {
-    title: 'Domain Registration & Web Hosting',
+    title: 'Manage User Data in One Place',
     description:
-      'We have support team for 24/7 operation. They provide help and ongoing assistance at any time.',
-    icon: 'flaticon-trophy violate',
+      'Easily maintain all of your user research data in one place with Userarx. Take notes directly on our platform or import notes from previous sessions.',
+    icon: 'flaticon-conversation violate',
     animation: true,
   },
   {
-    title: 'Website Design & Development',
+    title: 'Data Analysis to Find Trends',
     description:
-      'Transferring from another host? Our expert support team is standing by to transfer your site.',
-    icon: 'flaticon-startup yellow',
+      'Streamline your analysis and synthesis processes with our powerful tagging and search tools. We help you efficiently sort through user data to find crucial patterns.',
+    icon: 'flaticon-atom yellow',
     animation: true,
   },
   {
-    title: 'Dedicated Server & Cloud Hosting',
+    title: 'Valuable and Actionable Insights',
     description:
-      'LiteSpeed Web Server is a high-performance HTTP server and known for its high performance.',
+      'Learn what your users really want with insights curated just for you. Ground your team’s efforts in real data backed up by interviews and usability tests.',
     icon: 'flaticon-creative green',
     animation: true,
   },
