@@ -25,8 +25,8 @@ import {
   ModalBody,
   ModalFooter
 } from "reactstrap";
-
-import Editor from "views/docs/Editor.jsx"
+import Editor from "views/docs/Editor.jsx";
+import Interview from "./Interview.jsx";
 
 class UserDocCard extends React.Component {
   constructor(props) {
@@ -166,6 +166,8 @@ class UserDocCard extends React.Component {
                 </FormGroup>
               </Col>
             </Row>
+            <br />
+            <Interview />
             <br />
             <FormGroup>
               <Input
