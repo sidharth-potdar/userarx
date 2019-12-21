@@ -14,14 +14,19 @@ var contact = {
   "email": ""
 };
 
+var hasBeenSubmitted = false;
+
 function sendEmail(contact) {
+  hasBeenSubmitted = true;
   // console.log("sendEmail() function called")
   // console.log(contact)
   fetch('https://api.userarx.com/signups', {
     method: 'post',
     body: JSON.stringify(contact)
   }).then(function(response) {
-    console.log("");
+    contact.name = "";
+    contact.organization = "";
+    contact.email = "";
   })
 }
 
@@ -37,63 +42,78 @@ const ContactSection = ({
   button,
   note,
 }) => {
-  return (
-    <Box {...sectionWrapper}>
-      <Container>
-        <Box {...secTitleWrapper}>
-          <Text {...secText} content="LEARN MORE" />
-          <Heading
-            {...secHeading}
-            content="Interested in learning how Userarx can help your business?"
-          />
-        </Box>
-        <Box {...row}>
-          <Box {...contactForm}>
-            <ContactFromWrapper>
-              <input
-                id="name"
-                onChange={(evt) => { contact.name = evt.target.value }}
-                inputType="text"
-                placeholder="Name"
-                isMaterial={false}
-                className="floating_input enter_email"
-                aria-label="name"
-              />
-              <input
-                id="organization"
-                onChange={(evt) => { contact.organization = evt.target.value }}
-                inputType="text"
-                placeholder="Organization"
-                isMaterial={false}
-                className="floating_input enter_email"
-                aria-label="organization"
-              />
-              <input
-                id="email"
-                onChange={(evt) => { contact.email = evt.target.value }}
-                inputType="email"
-                placeholder="Email"
-                isMaterial={false}
-                className="floating_input enter_email"
-                aria-label="email"
-              />
+  if (!hasBeenSubmitted) {
+    return (
+      <Box {...sectionWrapper}>
+        <Container>
+          <Box {...secTitleWrapper}>
+            <Text {...secText} content="LEARN MORE" />
+            <Heading
+              {...secHeading}
+              content="Interested in learning how Userarx can help your business?"
+            />
+          </Box>
+          <Box {...row}>
+            <Box {...contactForm}>
+              <ContactFromWrapper>
+                <input
+                  id="name"
+                  onChange={(evt) => { contact.name = evt.target.value }}
+                  inputType="text"
+                  placeholder="Name"
+                  isMaterial={false}
+                  className="floating_input enter_email"
+                  aria-label="name"
+                />
+                <input
+                  id="organization"
+                  onChange={(evt) => { contact.organization = evt.target.value }}
+                  inputType="text"
+                  placeholder="Organization"
+                  isMaterial={false}
+                  className="floating_input enter_email"
+                  aria-label="organization"
+                />
+                <input
+                  id="email"
+                  onChange={(evt) => { contact.email = evt.target.value }}
+                  inputType="email"
+                  placeholder="Email"
+                  isMaterial={false}
+                  className="floating_input enter_email"
+                  aria-label="email"
+                />
 
-              <Button
-                {...button}
-                title="GET STARTED"
-                onClick={e => sendEmail(contact)}
+                <Button
+                  {...button}
+                  title="GET STARTED"
+                  onClick={e => sendEmail(contact)}
 
+                />
+              </ContactFromWrapper>
+              <Text
+                {...note}
+                content="A member of our team will reach out to you shortly."
               />
-            </ContactFromWrapper>
+            </Box>
+          </Box>
+        </Container>
+      </Box>
+    );
+  } else {
+    return (
+      <Box {...sectionWrapper}>
+        <Container>
+          <Box {...row}>
             <Text
               {...note}
               content="A member of our team will reach out to you shortly."
             />
           </Box>
-        </Box>
-      </Container>
-    </Box>
-  );
+        </Container>
+      </Box>
+    )
+  }
 };
 
 ContactSection.propTypes = {

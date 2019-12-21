@@ -33,11 +33,15 @@
     "@types/googlemaps": "3.30.16",
     "@types/markerclustererplus": "2.1.33",
     "@types/react": "16.7.1",
+    "@webpack-cli/init": "^0.3.0",
     "ajv": "6.5.5",
     "bootstrap": "^4.3.1",
     "chart.js": "2.7.3",
     "classnames": "2.2.6",
     "draft-js": "^0.11.3",
+    "draft-js-inline-toolbar-plugin": "^3.0.1",
+    "draft-js-plugins-editor": "^3.0.0",
+    "draft-wysiwyg": "^0.2.4",
     "history": "4.7.2",
     "immutable": "^4.0.0-rc.12",
     "jquery": "^3.4.1",
@@ -73,5 +77,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "css-loader": "^3.4.0",
+    "style-loader": "^1.1.1"
+  }
 }

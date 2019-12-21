@@ -1,5 +1,14 @@
 import React from 'react';
-import { Editor, EditorState } from 'draft-js';
+// DRAFT JS
+import { EditorState } from 'draft-js';
+// DRAFT JS INLINE TOOLBAR
+import Editor from 'draft-js-plugins-editor';
+import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
+import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
+
+
+// create an instance of inline toolbar
+const inlineToolbarPlugin = createInlineToolbarPlugin();
 
 class Interview extends React.Component {
   constructor(props) {
@@ -27,6 +36,7 @@ class Interview extends React.Component {
           ref={this.setEditor}
           editorState={this.state.editorState}
           onChange={this.onChange}
+          plugins={[inlineToolbarPlugin]}
         />
       </div>
     );
