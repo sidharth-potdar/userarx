@@ -39,7 +39,7 @@
     "chart.js": "2.7.3",
     "classnames": "2.2.6",
     "draft-js": "^0.11.3",
-    "draft-js-inline-toolbar-plugin": "^3.0.1",
+    "draft-js-inline-toolbar-plugin": "git+https://github.com/meghna-dash/draft-js-inline-toolbar-plugin.git",
     "draft-js-plugins-editor": "^3.0.0",
     "draft-wysiwyg": "^0.2.4",
     "history": "4.7.2",

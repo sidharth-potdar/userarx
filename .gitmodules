@@ -1,0 +1,3 @@
+[submodule "draft-js-inline-toolbar-plugin"]
+	path = draft-js-inline-toolbar-plugin
+	url = https://github.com/meghna-dash/draft-js-inline-toolbar-plugin.git
