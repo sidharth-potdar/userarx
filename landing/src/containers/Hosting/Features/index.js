@@ -86,13 +86,6 @@ const FeatureSection = ({
                         />
                       </>
                     }
-                    button={
-                      <Link href="#">
-                        <a aria-label={`link-${index}`}>
-                          <i className="flaticon-next" />
-                        </a>
-                      </Link>
-                    }
                   />
                 </Fade>
               ) : (
