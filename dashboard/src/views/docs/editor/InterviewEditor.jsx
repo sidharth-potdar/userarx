@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // DRAFT JS
-import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
-import { EditorState } from 'draft-js';
+import { createEditorStateWithText } from 'draft-js-plugins-editor';
+import { Editor, EditorState, CompositeDecorator } from 'draft-js';
 // DRAFT JS INLINE TOOLBAR
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
 import editorStyles from './editorStyles.css';
@@ -17,7 +17,7 @@ const inlineToolbarPlugin = createInlineToolbarPlugin({
 });
 const { InlineToolbar } = inlineToolbarPlugin;
 const plugins = [inlineToolbarPlugin];
-const text = "Book 2 tickets from Seattle to Cairo";
+const text = "Book 2 tickets from Seattle to Cairo #hashtag @handle";
 
 const entities = [
   {
@@ -70,13 +70,13 @@ const labeledEntities = [
   }
 ]
 
-
 class InterviewEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
       text: text,
       editorState: createEditorStateWithText(text),
+      // editorState : EditorState.createEmpty(compositeDecorator),
       entities: [...entities],
       labeledEntities: [...labeledEntities],
       isNewEntityVisible: false,
@@ -85,6 +85,54 @@ class InterviewEditor extends Component {
     // this.handleTextChange = this.handleTextChange.bind(this);
     this.onChange = this.onChange.bind(this);
     // this.focus = this.focus.bind(this);
+
+    const compositeDecorator = new CompositeDecorator([
+      {
+        strategy: handleStrategy,
+        component: HandleSpan,
+      },
+      {
+        strategy: hashtagStrategy,
+        component: HashtagSpan,
+      },
+    ]);
+
+    const HANDLE_REGEX = /\@[\w]+/g
+    const HASHTAG_REGEX = /^#\w+$/
+
+    function handleStrategy(text, callback, contentState) {
+      findWithRegex(HANDLE_REGEX, text, callback);
+      console.log('handleStrategy called');
+    }
+
+    function hashtagStrategy(text, callback, contentState) {
+      findWithRegex(HASHTAG_REGEX, text, callback);
+      console.log('hashtagStrategy called');
+    }
+
+    function findWithRegex(regex, text, callback) {
+      let matchArr, start;
+      while ((matchArr = regex.prototype.exec(text)) !== null) {
+        start = matchArr.index;
+        callback(start, start + matchArr[0].length);
+      }
+    }
+
+    const HandleSpan = props => {
+      return (
+        <span {...props} style={styles.handle}>
+          {props.children}
+        </span>
+      );
+    };
+
+    const HashtagSpan = props => {
+      return (
+        <span {...props} style={styles.hashtag}>
+          {props.children}
+        </span>
+      );
+    };
   }
 
   onChange = (editorState) => {
@@ -151,7 +199,6 @@ class InterviewEditor extends Component {
   // }
 
 
-
   render() {
     return (
       <div>
@@ -164,6 +211,7 @@ class InterviewEditor extends Component {
               placeholder="Interview text"
               editorState={this.state.editorState}
               onChange={this.onChange}
+              plugins={[this.compositeDecorator]}
               ref={(element) => { this.editor = element; }}
             />
           </Col>
