@@ -1,22 +1,8 @@
 import React, { Component } from 'react';
-// DRAFT JS
-import { createEditorStateWithText } from 'draft-js-plugins-editor';
 import { Editor, EditorState, CompositeDecorator } from 'draft-js';
-// DRAFT JS INLINE TOOLBAR
-import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
-import editorStyles from './editorStyles.css';
-import buttonStyles from './buttonStyles.css';
-import toolbarStyles from './toolbarStyles.css';
-import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
-// import '../../../../node_modules/draft-js-inline-toolbar-plugin/lib/plugin.css';
-// DRAFT JS INLINE HIGHLIGHT
+// import { createEditorStateWithText } from 'draft-js-plugins-editor';
 import { Badge, Col, Input, Row } from 'reactstrap';
 
-const inlineToolbarPlugin = createInlineToolbarPlugin({
-  theme: { buttonStyles, toolbarStyles }
-});
-const { InlineToolbar } = inlineToolbarPlugin;
-const plugins = [inlineToolbarPlugin];
 const text = "Book 2 tickets from Seattle to Cairo #hashtag @handle";
 
 const entities = [
@@ -71,20 +57,8 @@ const labeledEntities = [
 ]
 
 class InterviewEditor extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      text: text,
-      editorState: createEditorStateWithText(text),
-      // editorState : EditorState.createEmpty(compositeDecorator),
-      entities: [...entities],
-      labeledEntities: [...labeledEntities],
-      isNewEntityVisible: false,
-      newEntityName: ''
-    };
-    // this.handleTextChange = this.handleTextChange.bind(this);
-    this.onChange = this.onChange.bind(this);
-    // this.focus = this.focus.bind(this);
+  constructor() {
+    super();
 
     const compositeDecorator = new CompositeDecorator([
       {
@@ -97,42 +71,18 @@ class InterviewEditor extends Component {
       },
     ]);
 
-    const HANDLE_REGEX = /\@[\w]+/g
-    const HASHTAG_REGEX = /^#\w+$/
-
-    function handleStrategy(text, callback, contentState) {
-      findWithRegex(HANDLE_REGEX, text, callback);
-      console.log('handleStrategy called');
-    }
-
-    function hashtagStrategy(text, callback, contentState) {
-      findWithRegex(HASHTAG_REGEX, text, callback);
-      console.log('hashtagStrategy called');
-    }
-
-    function findWithRegex(regex, text, callback) {
-      let matchArr, start;
-      while ((matchArr = regex.prototype.exec(text)) !== null) {
-        start = matchArr.index;
-        callback(start, start + matchArr[0].length);
-      }
-    }
-
-    const HandleSpan = props => {
-      return (
-        <span {...props} style={styles.handle}>
-          {props.children}
-        </span>
-      );
+    this.state = {
+      text: text,
+      editorState: EditorState.createEmpty(compositeDecorator),
+      entities: [...entities],
+      labeledEntities: [...labeledEntities],
+      isNewEntityVisible: false,
+      newEntityName: ''
     };
 
-    const HashtagSpan = props => {
-      return (
-        <span {...props} style={styles.hashtag}>
-          {props.children}
-        </span>
-      );
-    };
+    this.focus = () => this.refs.editor.focus();
+    this.onChange = (editorState) => this.setState({editorState});
+    this.logState = () => console.log(this.state.editorState.toJS());
   }
 
   onChange = (editorState) => {
@@ -142,9 +92,9 @@ class InterviewEditor extends Component {
     console.log('editorState:', this.state.editorState);
   };
 
-  // focus = () => {
-  //   this.editor.focus();
-  // };
+  focus = () => {
+    this.editor.focus();
+  };
 
   // handleTextChange(event) {
   //   this.setState({
@@ -194,11 +144,6 @@ class InterviewEditor extends Component {
     })
   }
 
-  // componentDidMount() {
-  //   this.focus();
-  // }
-
-
   render() {
     return (
       <div>
@@ -208,11 +153,11 @@ class InterviewEditor extends Component {
               name="text"
               id="text"
               value={this.state.text}
-              placeholder="Interview text"
               editorState={this.state.editorState}
               onChange={this.onChange}
-              plugins={[this.compositeDecorator]}
-              ref={(element) => { this.editor = element; }}
+              placeholder="Interview text"
+              ref="editor"
+              // ref={(element) => { this.editor = element; }}
             />
           </Col>
           <Col>
@@ -228,11 +173,60 @@ class InterviewEditor extends Component {
   }
 }
 
+const HANDLE_REGEX = /\@[\w]+/g;
+const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
+
+function handleStrategy(contentBlock, callback, contentState) {
+  findWithRegex(HANDLE_REGEX, contentBlock, callback);
+  console.log('handleStrategy called');
+}
+
+function hashtagStrategy(contentBlock, callback, contentState) {
+  findWithRegex(HASHTAG_REGEX, contentBlock, callback);
+  console.log('hashtagStrategy called');
+}
+
+function findWithRegex(regex, contentBlock, callback) {
+  const text = contentBlock.getText();
+  let matchArr, start;
+  while ((matchArr = regex.exec(text)) !== null) {
+    start = matchArr.index;
+    callback(start, start + matchArr[0].length);
+  }
+}
+
+const HandleSpan = (props) => {
+  return (
+    <span
+      style={styles.handle}
+    >
+      {props.children}
+    </span>
+  );
+};
+
+const HashtagSpan = (props) => {
+  return (
+    <span
+      style={styles.hashtag}
+    >
+      {props.children}
+    </span>
+  );
+};
+
 const styles = {
   editor: {
-    border: '1px solid gray',
-    minHeight: '6em'
-  }
+    cursor: 'text',
+  },
+  handle: {
+    color: 'rgba(98, 177, 254, 1.0)',
+    direction: 'ltr',
+    unicodeBidi: 'bidi-override',
+  },
+  hashtag: {
+    color: 'rgba(95, 184, 138, 1.0)',
+  },
 };
 
 export default InterviewEditor;
