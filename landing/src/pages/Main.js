@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import Head from 'next/head';
 import Sticky from 'react-stickynode';
 import { ThemeProvider } from 'styled-components';
@@ -22,10 +22,11 @@ import Footer from '../containers/Agency/Footer';
 import { DrawerProvider } from '../contexts/DrawerContext';
 // import FaqSection from '../containers/Agency/FaqSection';
 
-export default () => {
-  return (
-    <ThemeProvider theme={agencyTheme}>
-      <Fragment>
+
+class Main extends Component {
+  render() {
+    return(
+      <ThemeProvider theme={agencyTheme}>
         {/* Start agency head section */}
         <Head>
           <title>userarx</title>
@@ -54,7 +55,9 @@ export default () => {
           <Footer />
         </AgencyWrapper>
         {/* End of agency wrapper section */}
-      </Fragment>
-    </ThemeProvider>
-  );
-};
+      </ThemeProvider>
+    )
+  }
+}
+
+export default Main;
