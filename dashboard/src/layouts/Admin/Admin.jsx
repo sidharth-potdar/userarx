@@ -92,14 +92,6 @@ class Admin extends React.Component {
             <Footer fluid />
           )}
         </div>
-        <FixedPlugin
-          bgColor={this.state.backgroundColor}
-          activeColor={this.state.activeColor}
-          sidebarMini={this.state.sidebarMini}
-          handleActiveClick={this.handleActiveClick}
-          handleBgClick={this.handleBgClick}
-          handleMiniClick={this.handleMiniClick}
-        />
       </div>
     );
   }
