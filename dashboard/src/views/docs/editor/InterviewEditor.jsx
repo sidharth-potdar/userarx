@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // DRAFT JS
 import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
+import { EditorState } from 'draft-js';
 // DRAFT JS INLINE TOOLBAR
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
 import editorStyles from './editorStyles.css';
@@ -8,6 +9,8 @@ import buttonStyles from './buttonStyles.css';
 import toolbarStyles from './toolbarStyles.css';
 import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
 // import '../../../../node_modules/draft-js-inline-toolbar-plugin/lib/plugin.css';
+// DRAFT JS INLINE HIGHLIGHT
+import { Badge, Col, Input, Row } from 'reactstrap';
 
 const inlineToolbarPlugin = createInlineToolbarPlugin({
   theme: { buttonStyles, toolbarStyles }
@@ -15,25 +18,26 @@ const inlineToolbarPlugin = createInlineToolbarPlugin({
 const { InlineToolbar } = inlineToolbarPlugin;
 const plugins = [inlineToolbarPlugin];
 const text = "Book 2 tickets from Seattle to Cairo";
-const entities: IEntity[] = [
+
+const entities = [
   {
     id: '1',
-    name: 'number',
-    type: 'number'
+    name: 'positive',
+    color: 'primary'
   },
   {
     id: '2',
-    name: 'sourceCity',
-    type: 'string'
+    name: 'pain points',
+    color: 'danger'
   },
   {
     id: '3',
-    name: 'destinationCity',
-    type: 'string'
+    name: 'login',
+    color: 'default'
   }
 ]
 
-const labeledEntities: models.ILabel<models.IEntityData<IEntity>>[] = [
+const labeledEntities = [
   {
     startIndex: 5,
     endIndex: 6,
@@ -71,25 +75,35 @@ class InterviewEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      text: text,
       editorState: createEditorStateWithText(text),
       entities: [...entities],
       labeledEntities: [...labeledEntities],
       isNewEntityVisible: false,
       newEntityName: ''
     };
+    // this.handleTextChange = this.handleTextChange.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.focus = this.focus.bind(this);
+    // this.focus = this.focus.bind(this);
   }
 
   onChange = (editorState) => {
     this.setState({
       editorState,
     });
+    console.log('editorState:', this.state.editorState);
   };
 
-  focus = () => {
-    this.editor.focus();
-  };
+  // focus = () => {
+  //   this.editor.focus();
+  // };
+
+  // handleTextChange(event) {
+  //   this.setState({
+  //     text: event.target.value
+  //   });
+  //   console.log('text:', this.state.text);
+  // }
 
   onChangeLabeledEntities = (labeledEntities: models.ILabel<any>[]) => {
     this.setState({
@@ -113,7 +127,7 @@ class InterviewEditor extends Component {
   }
 
   onClickSubmitNewEntity = () => {
-    const newEntity: IEntity = {
+    const newEntity = {
       id: new Date().toJSON(),
       name: this.state.newEntityName,
       type: 'string'
@@ -132,20 +146,35 @@ class InterviewEditor extends Component {
     })
   }
 
-  componentDidMount() {
-    this.focus();
-  }
+  // componentDidMount() {
+  //   this.focus();
+  // }
+
+
 
   render() {
     return (
-      <div className={editorStyles.editor} onClick={this.focus}>
-        <Editor
-          editorState={this.state.editorState}
-          onChange={this.onChange}
-          plugins={plugins}
-          ref={(element) => { this.editor = element; }}
-        />
-        <InlineToolbar />
+      <div>
+        <Row>
+          <Col>
+            <Editor
+              name="text"
+              id="text"
+              value={this.state.text}
+              placeholder="Interview text"
+              editorState={this.state.editorState}
+              onChange={this.onChange}
+              ref={(element) => { this.editor = element; }}
+            />
+          </Col>
+          <Col>
+            {this.state.entities.map((entity, key) => (
+              <Badge color={entity.color} pill>
+                {entity.name}
+              </Badge>
+            ))}
+          </Col>
+        </Row>
       </div>
     );
   }
