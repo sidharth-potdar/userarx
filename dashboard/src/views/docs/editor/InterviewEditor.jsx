@@ -5,53 +5,59 @@ import { Badge, Col, Input, Row } from 'reactstrap';
 
 const text = "Book 2 tickets from Seattle to Cairo #hashtag @handle";
 
-const entities = [
+const tags = [
   {
     id: '1',
     name: 'positive',
-    color: 'primary'
+    color: 'primary',
+    taggedText: 'loved'
   },
   {
     id: '2',
     name: 'pain points',
-    color: 'danger'
+    color: 'danger',
+    taggedText: 'hated'
   },
   {
     id: '3',
     name: 'login',
-    color: 'default'
+    color: 'default',
+    taggedText: 'login'
   }
 ]
 
-const labeledEntities = [
+const taggedText = [
   {
     startIndex: 5,
     endIndex: 6,
+    text: "2",
     data: {
-      option: { ...entities[0] },
+      option: { ...tags[0] },
       text: "2",
-      displayName: entities[0].name,
-      original: entities[0]
+      displayName: tags[0].name,
+      original: tags[0]
     }
   },
   {
     startIndex: 20,
     endIndex: 27,
+    text: "Seattle",
     data: {
-      option: { ...entities[1] },
+      option: { ...tags[1] },
       text: "Seattle",
-      displayName: entities[1].name,
-      original: entities[1]
+      displayName: tags[1].name,
+      original: tags[1]
     }
   },
   {
     startIndex: 31,
     endIndex: 36,
+    text: "Cairo",
     data: {
-      option: { ...entities[2] },
+      option: { ...tags[2] },
       text: "Cairo",
-      displayName: entities[2].name,
-      original: entities[2]
+      displayName: tags[2].name,
+      original: tags[2]
     }
   }
 ]
@@ -74,8 +80,8 @@ class InterviewEditor extends Component {
     this.state = {
       text: text,
       editorState: EditorState.createEmpty(compositeDecorator),
-      entities: [...entities],
-      labeledEntities: [...labeledEntities],
+      tags: [...tags],
+      taggedText: [...taggedText],
       isNewEntityVisible: false,
       newEntityName: ''
     };
@@ -103,16 +109,16 @@ class InterviewEditor extends Component {
   //   console.log('text:', this.state.text);
   // }
 
-  onChangeLabeledEntities = (labeledEntities: models.ILabel<any>[]) => {
+  onChangetaggedText= (taggedText: models.ILabel<any>[]) => {
     this.setState({
-      labeledEntities
+      taggedText
     })
   }
 
   onClickReset = () => {
     this.setState({
-      entities,
-      labeledEntities,
+      tags,
+      taggedText,
       readOnly: false
     })
   }
@@ -132,7 +138,7 @@ class InterviewEditor extends Component {
     }
 
     this.setState(prevState => ({
-      entities: [...prevState.entities, newEntity],
+      tags: [...prevState.tags, newEntity],
       newEntityName: '',
       isNewEntityVisible: false
     }))
@@ -142,6 +148,10 @@ class InterviewEditor extends Component {
     this.setState({
       newEntityName: event.target.value
     })
+  }
+
+  componentDidMount() {
+    generateRegexs();
   }
 
   render() {
@@ -161,7 +171,7 @@ class InterviewEditor extends Component {
             />
           </Col>
           <Col>
-            {this.state.entities.map((entity, key) => (
+            {this.state.tags.map((entity, key) => (
               <Badge color={entity.color} pill>
                 {entity.name}
               </Badge>
@@ -173,7 +183,26 @@ class InterviewEditor extends Component {
   }
 }
 
-const HANDLE_REGEX = /\@[\w]+/g;
+function generateRegexs() {
+  tags.forEach(tag => {
+    console.log(tag)
+
+    var taggedTextArray = [];
+    // const taggedText = text.taggedText;
+    //
+    // taggedText.forEach(text => {
+    //   console.log(text)
+    //   taggedTextArray.concat(text);
+    // })
+    // console.log(taggedTextArray)
+  });
+}
+
+// var entitiesToHighlight = Array.from(tags.values().text);
+var arr = ["one", "two", "three"]
+const HANDLE_REGEX = new RegExp("(?:[\\s]|^)(" + arr.join("|") + ")(?=[\\s]|$)", 'gi')
+
+// const HANDLE_REGEX = /\@[\w]+/g;
 const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
 
 function handleStrategy(contentBlock, callback, contentState) {
