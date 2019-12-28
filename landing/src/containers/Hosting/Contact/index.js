@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Box from '../../../components/Box';
 import Text from '../../../components/Text';
@@ -8,113 +8,166 @@ import Input from '../../../components/Input';
 import Container from '../../../components/UI/Container';
 import ContactFromWrapper from './contact.style';
 
-var contact = {
-  "name": "",
-  "organization": "",
-  "email": ""
-};
+class ContactSection extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      contact: {
+        name: "",
+        organization: "",
+        email: "",
+      },
+      hasBeenSubmitted: false,
+    }
+    // this.handleChange = this.handleChange.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleOrganizationChange = this.handleOrganizationChange.bind(this);
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.sendEmail = this.sendEmail.bind(this);
+  }
+  //
+  // handleChange = (event) => {
+  //   let copy = this.state.contact;
+  //   this.setState(prevState => ({
+  //     contact: {
+  //       name: copy.name,
+  //       organization: copy.organization,
+  //       email: copy.email,
+  //       [event.target.name]: event.target.value,
+  //     }
+  //   }))
+  //   console.log(this.state)
+  // }
+  //
+  handleNameChange = (event) => {
+    const contact = {
+      name: event.target.value,
+      organization: this.state.contact.organization,
+      email: this.state.contact.email
+    };
+    this.setState({
+      contact: contact
+    });
+  }
 
-var hasBeenSubmitted = false;
+  handleOrganizationChange = (event) => {
+    const contact = {
+      name: this.state.contact.name,
+      organization: event.target.value,
+      email: this.state.contact.email
+    };
+    this.setState({
+      contact: contact
+    });
+  }
 
-function sendEmail(contact) {
-  hasBeenSubmitted = true;
-  // console.log("sendEmail() function called")
-  // console.log(contact)
-  fetch('https://api.userarx.com/signups', {
-    method: 'post',
-    body: JSON.stringify(contact)
-  }).then(function(response) {
-    contact.name = "";
-    contact.organization = "";
-    contact.email = "";
-  })
-}
+  handleEmailChange = (event) => {
+    const contact = {
+      name: this.state.contact.name,
+      organization: this.state.contact.organization,
+      email: event.target.value
+    };
+    this.setState({
+      contact: contact
+    });
+  }
 
-// const name = document.getElementById('name');
+  sendEmail = () => {
+    this.setState({
+      hasBeenSubmitted: true,
+    })
+    console.log("sendEmail() function called")
+    console.log(this.state.contact.name)
+    console.log(this.state.contact.organization)
+    console.log(this.state.contact.email)
 
-const ContactSection = ({
-  sectionWrapper,
-  row,
-  contactForm,
-  secTitleWrapper,
-  secHeading,
-  secText,
-  button,
-  note,
-}) => {
-  if (!hasBeenSubmitted) {
-    return (
-      <Box {...sectionWrapper}>
-        <Container>
-          <Box {...secTitleWrapper}>
-            <Text {...secText} content="LEARN MORE" />
-            <Heading
-              {...secHeading}
-              content="Interested in learning how Userarx can help your business?"
-            />
-          </Box>
-          <Box {...row}>
-            <Box {...contactForm}>
-              <ContactFromWrapper>
-                <input
-                  id="name"
-                  onChange={(evt) => { contact.name = evt.target.value }}
-                  inputType="text"
-                  placeholder="Name"
-                  isMaterial={false}
-                  className="floating_input enter_email"
-                  aria-label="name"
-                />
-                <input
-                  id="organization"
-                  onChange={(evt) => { contact.organization = evt.target.value }}
-                  inputType="text"
-                  placeholder="Organization"
-                  isMaterial={false}
-                  className="floating_input enter_email"
-                  aria-label="organization"
-                />
-                <input
-                  id="email"
-                  onChange={(evt) => { contact.email = evt.target.value }}
-                  inputType="email"
-                  placeholder="Email"
-                  isMaterial={false}
-                  className="floating_input enter_email"
-                  aria-label="email"
-                />
+    // fetch('https://api.userarx.com/signups', {
+    //   method: 'post',
+    //   body: JSON.stringify(this.state.contact)
+    // }).then(function(response) {
+    //   this.setState({
+    //     name: "",
+    //     organization: "",
+    //     email: "",
+    //   })
+    // })
+  }
 
-                <Button
-                  {...button}
-                  title="GET STARTED"
-                  onClick={e => sendEmail(contact)}
-
-                />
-              </ContactFromWrapper>
+  render() {
+    if (this.state.hasBeenSubmitted) {
+      return (
+        <Box>
+          <Container>
+            <Box>
               <Text
-                {...note}
                 content="A member of our team will reach out to you shortly."
               />
             </Box>
-          </Box>
-        </Container>
-      </Box>
-    );
-  } else {
-    return (
-      <Box {...sectionWrapper}>
-        <Container>
-          <Box {...row}>
-            <Text
-              {...note}
-              content="A member of our team will reach out to you shortly."
-            />
-          </Box>
-        </Container>
-      </Box>
-    )
+          </Container>
+        </Box>
+      )
+    }
+    else {
+      return (
+        <Box className="sectionWrapper" id='contact_us'>
+          <Container>
+            <Box>
+              <Text className="secText" content="LEARN MORE" />
+              <Heading
+                content="Interested in learning how Userarx can help your business?"
+              />
+            </Box>
+            <Box style={{ marginTop: '50px', marginBottom: '80px'}}>
+              <Box>
+                <ContactFromWrapper>
+                  <input
+                    id="name"
+                    name="name"
+                    onChange={this.handleNameChange}
+                    inputType="text"
+                    placeholder="Name"
+                    isMaterial={false}
+                    className="floating_input enter_email"
+                    aria-label="name"
+                  />
+                  <input
+                    id="organization"
+                    name="organization"
+                    onChange={this.handleOrganizationChange}
+                    inputType="text"
+                    placeholder="Organization"
+                    isMaterial={false}
+                    className="floating_input enter_email"
+                    aria-label="organization"
+                  />
+                  <input
+                    id="email"
+                    name="email"
+                    onChange={this.handleEmailChange}
+                    inputType="email"
+                    placeholder="Email"
+                    isMaterial={false}
+                    className="floating_input enter_email"
+                    aria-label="email"
+                  />
+
+                  <Button
+                    title="GET STARTED"
+                    onClick={this.sendEmail}
+                    style={{ borderRadius: '4px', marginTop: '20px' }}
+                  />
+                </ContactFromWrapper>
+              </Box>
+            </Box>
+          </Container>
+        </Box>
+      );
+    }
   }
-};
+}
+
+export default ContactSection;
+
 
 ContactSection.propTypes = {
   sectionWrapper: PropTypes.object,
@@ -180,5 +233,3 @@ ContactSection.defaultProps = {
     textAlign: 'center',
   },
 };
-
-export default ContactSection;

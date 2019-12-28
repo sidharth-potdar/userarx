@@ -23,16 +23,16 @@ const BannerSection = ({
   const ButtonGroup = () => (
     <Fragment>
       <p style={{ textAlign: 'left '}}>
-        <a href="#features">
+        <a href="#contact_us">
           <Button
-            href="#features"
-            title="LEARN MORE"
+            href="#contact_us"
+            title="GET STARTED"
             {...btnStyle}
           />
         </a>
-        <a href="#contact_us">
+        <a href="#features">
           <Button
-            title="GET STARTED"
+            title="LEARN MORE"
             variant="textButton"
             icon={<i className="flaticon-next" />}
             {...outlineBtnStyle}
@@ -46,7 +46,7 @@ const BannerSection = ({
       <Particles />
       <Container>
         <Box className="row" {...row}>
-          <Box className="col" {...col}>
+          <Box className="col placement" {...col}>
             <p style={{ textAlign: 'left' }}>
             <DiscountLabel>
               <Text content="an effortless platform for" {...discountText} />
@@ -109,7 +109,7 @@ BannerSection.defaultProps = {
     width: ['100%', '70%', '60%', '50%'],
   },
   title: {
-    fontSize: ['26px', '34px', '42px', '55px'],
+    fontSize: ['32px', '34px', '42px', '55px'],
     fontWeight: '300',
     color: '#0f2137',
     letterSpacing: '-0.025em',
