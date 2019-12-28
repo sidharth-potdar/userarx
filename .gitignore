@@ -1,5 +1,6 @@
 node_modules/
 dashboard/node_modules/
-
+landing/build/
+dashboard/build/
 
 .DS_Store
