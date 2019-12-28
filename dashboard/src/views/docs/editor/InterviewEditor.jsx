@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
-import { Editor, EditorState, CompositeDecorator } from 'draft-js';
+import {
+  convertToRaw,
+  CompositeDecorator,
+  ContentState,
+  Editor,
+  EditorState,
+  RichUtils,
+} from 'draft-js';
 // import { createEditorStateWithText } from 'draft-js-plugins-editor';
-import { Badge, Col, Input, Row } from 'reactstrap';
+import { Badge, Button, Col, Input, Row } from 'reactstrap';
 
 const text = "Book 2 tickets from Seattle to Cairo #hashtag @handle";
 
@@ -10,23 +17,23 @@ const tags = [
     id: '1',
     name: 'positive',
     color: 'primary',
-    snippets: [1],
+    snips: [1],
   },
   {
     id: '2',
     name: 'pain points',
     color: 'danger',
-    snippets: [2],
+    snips: [2],
   },
   {
     id: '3',
     name: 'login',
     color: 'default',
-    snippets: [3],
+    snips: [3],
   }
 ]
 
-const snippets = [
+const snips = [
   {
     id: '1',
     startIndex: 0,
@@ -51,8 +58,8 @@ const snippets = [
 ]
 
 class InterviewEditor extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     const compositeDecorator = new CompositeDecorator([
       {
@@ -63,20 +70,32 @@ class InterviewEditor extends Component {
         strategy: hashtagStrategy,
         component: HashtagSpan,
       },
+      {
+        strategy: findTagEntities,
+        component: TagSpan,
+      },
     ]);
 
     this.state = {
       text: text,
       editorState: EditorState.createEmpty(compositeDecorator),
       tags: [...tags],
-      snippets: [...snippets],
+      snips: [...snips],
       isNewEntityVisible: false,
-      newEntityName: ''
+      newEntityName: '',
+      showNewTagInput: false,
+      tagName: '',
     };
 
     this.focus = () => this.refs.editor.focus();
     this.onChange = (editorState) => this.setState({editorState});
     this.logState = () => console.log(this.state.editorState.toJS());
+
+    this.promptForTag = this._promptForTag.bind(this);
+    this.onTagChange = (e) => this.setState({tagName: e.target.value});
+    this.confirmTag = this._confirmTag.bind(this);
+    this.onTagInputKeyDown = this._onTagInputKeyDown.bind(this);
+    this.removeTag = this._removeTag.bind(this);
   }
 
   onChange = (editorState) => {
@@ -90,6 +109,74 @@ class InterviewEditor extends Component {
     this.editor.focus();
   };
 
+  _promptForTag(e) {
+    e.preventDefault();
+    const {editorState} = this.state;
+    const selection = editorState.getSelection();
+    if (!selection.isCollapsed()) {
+      const contentState = editorState.getCurrentContent();
+      const startKey = editorState.getSelection().getStartKey();
+      const startOffset = editorState.getSelection().getStartOffset();
+      const blockWithTagAtBeginning = contentState.getBlockForKey(startKey);
+      const tagKey = blockWithTagAtBeginning.getEntityAt(startOffset);
+
+      let tag = '';
+      if (tagKey) {
+        const tagInstance = contentState.getEntity(tagKey);
+        tag = tagInstance.getData().tag;
+      }
+
+      this.setState({
+        showNewTagInput: true,
+        tagName: tag,
+      }, () => {
+        setTimeout(() => this.refs.tag.focus(), 0);
+      });
+    }
+  }
+
+  _confirmTag(e) {
+    e.preventDefault();
+    const {editorState, tagName} = this.state;
+    const contentState = editorState.getCurrentContent();
+    const contentStateWithEntity = contentState.createEntity(
+      'TAG',
+      'MUTABLE',
+      {tag: tagName}
+    );
+    const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+    const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity });
+    this.setState({
+      editorState: RichUtils.toggleLink(
+        newEditorState,
+        newEditorState.getSelection(),
+        entityKey
+      ),
+      showNewTagInput: false,
+      tagName: '',
+    }, () => {
+      setTimeout(() => this.refs.editor.focus(), 0);
+    });
+  }
+
+  _onTagInputKeyDown(e) {
+    if (e.which === 13) {
+      this._confirmTag(e);
+    }
+  }
+
+  _removeTag(e) {
+    e.preventDefault();
+    const {editorState} = this.state;
+    const selection = editorState.getSelection();
+    if (!selection.isCollapsed()) {
+      this.setState({
+        editorState: RichUtils.toggleLink(editorState, selection, null),
+      });
+    }
+  }
+
+
   // handleTextChange(event) {
   //   this.setState({
   //     text: event.target.value
@@ -97,16 +184,16 @@ class InterviewEditor extends Component {
   //   console.log('text:', this.state.text);
   // }
 
-  onChangeSnippets= (snippets: models.ILabel<any>[]) => {
+  onChangeSnips= (snips: models.ILabel<any>[]) => {
     this.setState({
-      snippets
+      snips
     })
   }
 
   onClickReset = () => {
     this.setState({
       tags,
-      snippets,
+      snips,
       readOnly: false
     })
   }
@@ -143,10 +230,40 @@ class InterviewEditor extends Component {
   }
 
   render() {
+    let tagInput;
+    if (this.state.showNewTagInput) {
+      tagInput =
+        <div style={styles.tagInputContainer}>
+          <input
+            onChange={this.onTagChange}
+            ref="tag"
+            style={styles.tagInput}
+            type="text"
+            value={this.state.tagName}
+            onKeyDown={this.onTagInputKeyDown}
+            />
+          <Button
+            onMouseDown={this.confirmTag}
+          >
+            Confirm
+          </Button>
+        </div>;
+    }
     return (
       <div>
         <Row>
           <Col>
+            <div>
+              <Button
+                onMouseDown={this.promptForTag}
+                style={{marginRight: 10}}>
+                Add Tag
+              </Button>
+              <Button onMouseDown={this.removeTag}>
+                Remove Tag
+              </Button>
+            </div>
+            {tagInput}
             <Editor
               name="text"
               id="text"
@@ -175,14 +292,14 @@ function generateRegexs() {
   tags.forEach(tag => {
     console.log(tag)
 
-    var snippetsArray = [];
-    // const snippets = text.snippets;
+    var snipsArray = [];
+    // const snips = text.snips;
     //
-    // snippets.forEach(text => {
+    // snips.forEach(text => {
     //   console.log(text)
-    //   snippets.concat(text);
+    //   snips.concat(text);
     // })
-    // console.log(snippetsArray)
+    // console.log(snipsArray)
   });
 }
 
@@ -195,12 +312,25 @@ const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
 
 function handleStrategy(contentBlock, callback, contentState) {
   findWithRegex(HANDLE_REGEX, contentBlock, callback);
-  console.log('handleStrategy called');
+  // console.log('handleStrategy called');
 }
 
 function hashtagStrategy(contentBlock, callback, contentState) {
   findWithRegex(HASHTAG_REGEX, contentBlock, callback);
-  console.log('hashtagStrategy called');
+  // console.log('hashtagStrategy called');
+}
+
+function findTagEntities(contentBlock, callback, contentState) {
+  contentBlock.findEntityRanges(
+    (character) => {
+      const entityKey = character.getEntity();
+      return (
+        entityKey !== null &&
+        contentState.getEntity(entityKey).getType() === 'TAG'
+      );
+    },
+    callback
+  );
 }
 
 function findWithRegex(regex, contentBlock, callback) {
@@ -232,6 +362,15 @@ const HashtagSpan = (props) => {
   );
 };
 
+const TagSpan = (props) => {
+  const {tag} = props.contentState.getEntity(props.entityKey).getData();
+  return (
+    <a href={tag} style={styles.tag}>
+      {props.children}
+    </a>
+  );
+};
+
 const styles = {
   editor: {
     cursor: 'text',
@@ -243,6 +382,18 @@ const styles = {
   },
   hashtag: {
     color: 'rgba(95, 184, 138, 1.0)',
+  },
+  tagInputContainer: {
+    marginBottom: 10,
+  },
+  tagInput: {
+    fontFamily: '\'Georgia\', serif',
+    marginRight: 10,
+    padding: 3,
+  },
+  tag: {
+    color: '#3b5998',
+    textDecoration: 'underline',
   },
 };
 
