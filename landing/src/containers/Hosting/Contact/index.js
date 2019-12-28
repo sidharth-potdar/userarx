@@ -81,16 +81,16 @@ class ContactSection extends Component {
     console.log(this.state.contact.organization)
     console.log(this.state.contact.email)
 
-    // fetch('https://api.userarx.com/signups', {
-    //   method: 'post',
-    //   body: JSON.stringify(this.state.contact)
-    // }).then(function(response) {
-    //   this.setState({
-    //     name: "",
-    //     organization: "",
-    //     email: "",
-    //   })
-    // })
+    fetch('https://api.userarx.com/signups', {
+      method: 'post',
+      body: JSON.stringify(this.state.contact)
+    }).then(function(response) {
+      this.setState({
+        name: "",
+        organization: "",
+        email: "",
+      })
+    })
   }
 
   render() {
