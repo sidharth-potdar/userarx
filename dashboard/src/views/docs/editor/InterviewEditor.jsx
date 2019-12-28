@@ -10,55 +10,43 @@ const tags = [
     id: '1',
     name: 'positive',
     color: 'primary',
-    taggedText: 'loved'
+    snippets: [1],
   },
   {
     id: '2',
     name: 'pain points',
     color: 'danger',
-    taggedText: 'hated'
+    snippets: [2],
   },
   {
     id: '3',
     name: 'login',
     color: 'default',
-    taggedText: 'login'
+    snippets: [3],
   }
 ]
 
-const taggedText = [
+const snippets = [
   {
-    startIndex: 5,
-    endIndex: 6,
-    text: "2",
-    data: {
-      option: { ...tags[0] },
-      text: "2",
-      displayName: tags[0].name,
-      original: tags[0]
-    }
+    id: '1',
+    startIndex: 0,
+    endIndex: 4,
+    text: "loved",
+    tag: "positive"
   },
   {
-    startIndex: 20,
-    endIndex: 27,
-    text: "Seattle",
-    data: {
-      option: { ...tags[1] },
-      text: "Seattle",
-      displayName: tags[1].name,
-      original: tags[1]
-    }
+    id: '2',
+    startIndex: 6,
+    endIndex: 11,
+    text: "hated",
+    tag: "pain points"
   },
   {
-    startIndex: 31,
-    endIndex: 36,
-    text: "Cairo",
-    data: {
-      option: { ...tags[2] },
-      text: "Cairo",
-      displayName: tags[2].name,
-      original: tags[2]
-    }
+    id: '3',
+    startIndex: 13,
+    endIndex: 18,
+    text: "login",
+    tag: "login"
   }
 ]
 
@@ -81,7 +69,7 @@ class InterviewEditor extends Component {
       text: text,
       editorState: EditorState.createEmpty(compositeDecorator),
       tags: [...tags],
-      taggedText: [...taggedText],
+      snippets: [...snippets],
       isNewEntityVisible: false,
       newEntityName: ''
     };
@@ -109,16 +97,16 @@ class InterviewEditor extends Component {
   //   console.log('text:', this.state.text);
   // }
 
-  onChangetaggedText= (taggedText: models.ILabel<any>[]) => {
+  onChangeSnippets= (snippets: models.ILabel<any>[]) => {
     this.setState({
-      taggedText
+      snippets
     })
   }
 
   onClickReset = () => {
     this.setState({
       tags,
-      taggedText,
+      snippets,
       readOnly: false
     })
   }
@@ -187,14 +175,14 @@ function generateRegexs() {
   tags.forEach(tag => {
     console.log(tag)
 
-    var taggedTextArray = [];
-    // const taggedText = text.taggedText;
+    var snippetsArray = [];
+    // const snippets = text.snippets;
     //
-    // taggedText.forEach(text => {
+    // snippets.forEach(text => {
     //   console.log(text)
-    //   taggedTextArray.concat(text);
+    //   snippets.concat(text);
     // })
-    // console.log(taggedTextArray)
+    // console.log(snippetsArray)
   });
 }
 
