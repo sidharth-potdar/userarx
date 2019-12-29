@@ -265,9 +265,9 @@ class InterviewEditor extends Component {
     })
   }
 
-  componentDidMount() {
-    generateRegexs();
-  }
+  // componentDidMount() {
+  //   generateRegexs();
+  // }
 
   render() {
     let tagInput;
@@ -304,7 +304,7 @@ class InterviewEditor extends Component {
                 </span>
                 New Tag
               </Button>
-            {tagInput}
+              {tagInput}
             </div>
             <Editor
               name="text"
@@ -319,7 +319,7 @@ class InterviewEditor extends Component {
           </Col>
           <Col>
             <strong> Tags </strong>
-
+            <h2/>
             <div style={{ paddingTop: '11px' }}>
             {this.state.tags.map((tag, key) => (
               <Badge color={tag.color} pill>
@@ -335,25 +335,18 @@ class InterviewEditor extends Component {
 }
 
 function generateRegexs() {
-  tags.forEach(tag => {
-    console.log(tag)
+  var snipsArray = [];
 
-    var snipsArray = [];
-    // const snips = text.snips;
-    //
-    // snips.forEach(text => {
-    //   console.log(text)
-    //   snips.concat(text);
-    // })
-    // console.log(snipsArray)
+  snips.forEach(snip => {
+    console.log(snip)
+    snipsArray.push(snip.text);
+    console.log(snipsArray)
   });
+
+  return snipsArray
 }
 
-// var entitiesToHighlight = Array.from(tags.values().text);
-var arr = ["one", "two", "three"]
-const HANDLE_REGEX = new RegExp("(?:[\\s]|^)(" + arr.join("|") + ")(?=[\\s]|$)", 'gi')
-
-// const HANDLE_REGEX = /\@[\w]+/g;
+const HANDLE_REGEX = new RegExp("(?:[\\s]|^)(" + generateRegexs().join("|") + ")(?=[\\s]|$)", 'gi')
 const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
 
 function handleStrategy(contentBlock, callback, contentState) {
@@ -422,6 +415,9 @@ const styles = {
     color: 'rgba(98, 177, 254, 1.0)',
     direction: 'ltr',
     unicodeBidi: 'bidi-override',
+  },
+  handle: {
+    color: 'rgba(95, 184, 138, 1.0)',
   },
   hashtag: {
     color: 'rgba(95, 184, 138, 1.0)',
