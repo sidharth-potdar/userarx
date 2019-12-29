@@ -12,6 +12,7 @@ import { Badge, Button, Col, Input, Row } from 'reactstrap';
 import { uuid } from 'uuidv4';
 import { randomColor } from 'randomcolor';
 import './editor.css';
+import TagsInput from "react-tagsinput";
 
 const text = "Book 2 tickets from Seattle to Cairo #hashtag @handle";
 
@@ -295,9 +296,13 @@ class InterviewEditor extends Component {
             <strong> Interview Transcript </strong>
             <div>
               <Button
+                class="btn btn-wd btn-warning btn-fill btn-magnify"
                 onMouseDown={this.promptForTag}
                 style={{marginRight: 10}}>
-                Add Tag
+                <span className="btn-label" style={{marginRight: 5}}>
+                  <i className="nc-icon nc-simple-add" />
+                </span>
+                New Tag
               </Button>
             {tagInput}
             </div>
@@ -314,6 +319,7 @@ class InterviewEditor extends Component {
           </Col>
           <Col>
             <strong> Tags </strong>
+
             <div style={{ paddingTop: '11px' }}>
             {this.state.tags.map((tag, key) => (
               <Badge color={tag.color} pill>
