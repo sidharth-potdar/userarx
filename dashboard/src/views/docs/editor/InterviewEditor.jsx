@@ -10,6 +10,8 @@ import {
 // import { createEditorStateWithText } from 'draft-js-plugins-editor';
 import { Badge, Button, Col, Input, Row } from 'reactstrap';
 import { uuid } from 'uuidv4';
+import { randomColor } from 'randomcolor';
+import './editor.css';
 
 const text = "Book 2 tickets from Seattle to Cairo #hashtag @handle";
 
@@ -282,7 +284,7 @@ class InterviewEditor extends Component {
           <Button
             onMouseDown={this.confirmTag}
           >
-            Confirm
+            Add
           </Button>
         </div>;
     }
@@ -290,37 +292,35 @@ class InterviewEditor extends Component {
       <div>
         <Row>
           <Col>
+            <strong> Interview Transcript </strong>
             <div>
               <Button
                 onMouseDown={this.promptForTag}
                 style={{marginRight: 10}}>
                 Add Tag
               </Button>
-              <Button onClick={this.logState}>
-                Log State
-              </Button>
-              <Button onClick={this.logEditorState}>
-                Log Editor State
-              </Button>
-            </div>
             {tagInput}
+            </div>
             <Editor
               name="text"
               id="text"
               value={this.state.text}
               editorState={this.state.editorState}
               onChange={this.onChange}
-              placeholder="Interview text"
+              placeholder="Write your notes about the user's feedback here"
               ref="editor"
               // ref={(element) => { this.editor = element; }}
             />
           </Col>
           <Col>
+            <strong> Tags </strong>
+            <div style={{ paddingTop: '11px' }}>
             {this.state.tags.map((tag, key) => (
               <Badge color={tag.color} pill>
                 {tag.name}
               </Badge>
             ))}
+            </div>
           </Col>
         </Row>
       </div>
@@ -384,9 +384,7 @@ function findWithRegex(regex, contentBlock, callback) {
 
 const HandleSpan = (props) => {
   return (
-    <span
-      style={styles.handle}
-    >
+    <span style={styles.handle}>
       {props.children}
     </span>
   );
@@ -394,28 +392,27 @@ const HandleSpan = (props) => {
 
 const HashtagSpan = (props) => {
   return (
-    <span
-      style={styles.hashtag}
-    >
+    <span style={styles.hashtag}>
       {props.children}
     </span>
   );
 };
 
 const TagSpan = (props) => {
-  const {tag} = props.contentState.getEntity(props.entityKey).getData();
   return (
-    <a href={tag} style={styles.tag}>
+    <span style={styles.tag}>
       {props.children}
-    </a>
+    </span>
   );
 };
 
 const styles = {
   editor: {
     cursor: 'text',
+    borderWidth: '1px',
+
   },
-  handle: {
+  tag: {
     color: 'rgba(98, 177, 254, 1.0)',
     direction: 'ltr',
     unicodeBidi: 'bidi-override',
@@ -430,10 +427,6 @@ const styles = {
     fontFamily: '\'Georgia\', serif',
     marginRight: 10,
     padding: 3,
-  },
-  tag: {
-    color: '#3b5998',
-    textDecoration: 'underline',
   },
 };
 
