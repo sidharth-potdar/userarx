@@ -70,7 +70,8 @@
     "reactstrap": "8.1.1",
     "slate": "^0.57.0",
     "slate-plain-serializer": "^0.7.11",
-    "slate-react": "^0.57.0"
+    "slate-react": "^0.57.0",
+    "uuidv4": "^6.0.0"
   },
   "browserslist": [
     ">0.2%",

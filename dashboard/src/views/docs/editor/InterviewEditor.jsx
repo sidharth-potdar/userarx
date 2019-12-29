@@ -9,6 +9,7 @@ import {
 } from 'draft-js';
 // import { createEditorStateWithText } from 'draft-js-plugins-editor';
 import { Badge, Button, Col, Input, Row } from 'reactstrap';
+import { uuid } from 'uuidv4';
 
 const text = "Book 2 tickets from Seattle to Cairo #hashtag @handle";
 
@@ -89,13 +90,13 @@ class InterviewEditor extends Component {
 
     this.focus = () => this.refs.editor.focus();
     this.onChange = (editorState) => this.setState({editorState});
-    this.logState = () => console.log(this.state.editorState.toJS());
+    this.logEditorState = () => console.log(this.state.editorState.toJS());
 
-    this.promptForTag = this._promptForTag.bind(this);
+    this.promptForTag = this.promptForTag.bind(this);
     this.onTagChange = (e) => this.setState({tagName: e.target.value});
-    this.confirmTag = this._confirmTag.bind(this);
-    this.onTagInputKeyDown = this._onTagInputKeyDown.bind(this);
-    this.removeTag = this._removeTag.bind(this);
+    this.confirmTag = this.confirmTag.bind(this);
+    this.onTagInputKeyDown = this.onTagInputKeyDown.bind(this);
+    this.logState = this.logState.bind(this);
   }
 
   onChange = (editorState) => {
@@ -109,7 +110,7 @@ class InterviewEditor extends Component {
     this.editor.focus();
   };
 
-  _promptForTag(e) {
+  promptForTag(e) {
     e.preventDefault();
     const {editorState} = this.state;
     const selection = editorState.getSelection();
@@ -129,13 +130,12 @@ class InterviewEditor extends Component {
       this.setState({
         showNewTagInput: true,
         tagName: tag,
-      }, () => {
-        setTimeout(() => this.refs.tag.focus(), 0);
+
       });
     }
   }
 
-  _confirmTag(e) {
+  confirmTag(e) {
     e.preventDefault();
     const {editorState, tagName} = this.state;
     const contentState = editorState.getCurrentContent();
@@ -146,6 +146,40 @@ class InterviewEditor extends Component {
     );
     const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
     const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity });
+
+    this.setState(prevState => {
+      var selectionState = editorState.getSelection();
+      var anchorKey = selectionState.getAnchorKey();
+      var currentContent = editorState.getCurrentContent();
+      var currentContentBlock = currentContent.getBlockForKey(anchorKey);
+      var start = selectionState.getStartOffset();
+      var end = selectionState.getEndOffset();
+      var selectedText = currentContentBlock.getText().slice(start, end);
+
+      const newTag = {
+        id: uuid(),
+        name: prevState.tagName,
+        color: 'primary',
+        snip: [selectedText],
+      }
+      const tags = [...prevState.tags, newTag];
+
+      const newSnip = {
+        id: uuid(),
+        startIndex: start,
+        endIndex: end,
+        text: selectedText,
+        tag: prevState.tagName,
+      }
+      const snips = [...prevState.snips, newSnip];
+
+      return {
+        tags,
+        snips,
+        tagName: '',
+      }
+    });
+
     this.setState({
       editorState: RichUtils.toggleLink(
         newEditorState,
@@ -157,23 +191,26 @@ class InterviewEditor extends Component {
     }, () => {
       setTimeout(() => this.refs.editor.focus(), 0);
     });
+
+
   }
 
-  _onTagInputKeyDown(e) {
+  onTagInputKeyDown(e) {
     if (e.which === 13) {
       this._confirmTag(e);
     }
   }
 
-  _removeTag(e) {
-    e.preventDefault();
-    const {editorState} = this.state;
-    const selection = editorState.getSelection();
-    if (!selection.isCollapsed()) {
-      this.setState({
-        editorState: RichUtils.toggleLink(editorState, selection, null),
-      });
-    }
+  logState(e) {
+    console.log(this.state);
+    // e.preventDefault();
+    // const {editorState} = this.state;
+    // const selection = editorState.getSelection();
+    // if (!selection.isCollapsed()) {
+    //   this.setState({
+    //     editorState: RichUtils.toggleLink(editorState, selection, null),
+    //   });
+    // }
   }
 
 
@@ -259,8 +296,11 @@ class InterviewEditor extends Component {
                 style={{marginRight: 10}}>
                 Add Tag
               </Button>
-              <Button onMouseDown={this.removeTag}>
-                Remove Tag
+              <Button onClick={this.logState}>
+                Log State
+              </Button>
+              <Button onClick={this.logEditorState}>
+                Log Editor State
               </Button>
             </div>
             {tagInput}
@@ -276,9 +316,9 @@ class InterviewEditor extends Component {
             />
           </Col>
           <Col>
-            {this.state.tags.map((entity, key) => (
-              <Badge color={entity.color} pill>
-                {entity.name}
+            {this.state.tags.map((tag, key) => (
+              <Badge color={tag.color} pill>
+                {tag.name}
               </Badge>
             ))}
           </Col>
