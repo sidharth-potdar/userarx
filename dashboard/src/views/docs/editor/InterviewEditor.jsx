@@ -13,8 +13,9 @@ import { uuid } from 'uuidv4';
 import { randomColor } from 'randomcolor';
 import './editor.css';
 import TagsInput from "react-tagsinput";
+import { BlockPicker } from 'react-color';
 
-const text = "Book 2 tickets from Seattle to Cairo #hashtag @handle";
+const text = "Book 2 tickets from Seattle to Cairo";
 
 const tags = [
   {
@@ -67,15 +68,11 @@ class InterviewEditor extends Component {
 
     const compositeDecorator = new CompositeDecorator([
       {
-        strategy: handleStrategy,
-        component: HandleSpan,
-      },
-      {
-        strategy: hashtagStrategy,
-        component: HashtagSpan,
-      },
-      {
         strategy: findTagEntities,
+        component: TagSpan,
+      },
+      {
+        strategy: tagStrategy,
         component: TagSpan,
       },
     ]);
@@ -89,6 +86,7 @@ class InterviewEditor extends Component {
       newEntityName: '',
       showNewTagInput: false,
       tagName: '',
+      tagColor: '',
     };
 
     this.focus = () => this.refs.editor.focus();
@@ -99,7 +97,6 @@ class InterviewEditor extends Component {
     this.onTagChange = (e) => this.setState({tagName: e.target.value});
     this.confirmTag = this.confirmTag.bind(this);
     this.onTagInputKeyDown = this.onTagInputKeyDown.bind(this);
-    this.logState = this.logState.bind(this);
   }
 
   onChange = (editorState) => {
@@ -114,7 +111,7 @@ class InterviewEditor extends Component {
   };
 
   promptForTag(e) {
-    e.preventDefault();
+    // e.preventDefault();
     const {editorState} = this.state;
     const selection = editorState.getSelection();
     if (!selection.isCollapsed()) {
@@ -133,13 +130,12 @@ class InterviewEditor extends Component {
       this.setState({
         showNewTagInput: true,
         tagName: tag,
-
       });
     }
   }
 
-  confirmTag(e) {
-    e.preventDefault();
+  confirmTag() {
+    // e.preventDefault();
     const {editorState, tagName} = this.state;
     const contentState = editorState.getCurrentContent();
     const contentStateWithEntity = contentState.createEntity(
@@ -176,10 +172,14 @@ class InterviewEditor extends Component {
       }
       const snips = [...prevState.snips, newSnip];
 
+      sessionStorage.setItem("tags", JSON.stringify(tags));
+      sessionStorage.setItem("snips", snips);
+
       return {
-        tags,
-        snips,
+        tags: tags,
+        snips: snips,
         tagName: '',
+        tagColor: '',
       }
     });
 
@@ -192,37 +192,16 @@ class InterviewEditor extends Component {
       showNewTagInput: false,
       tagName: '',
     }, () => {
+      console.log("state.tags", this.state.tags)
       setTimeout(() => this.refs.editor.focus(), 0);
     });
-
-
   }
 
   onTagInputKeyDown(e) {
     if (e.which === 13) {
-      this._confirmTag(e);
+      this.confirmTag(e);
     }
   }
-
-  logState(e) {
-    console.log(this.state);
-    // e.preventDefault();
-    // const {editorState} = this.state;
-    // const selection = editorState.getSelection();
-    // if (!selection.isCollapsed()) {
-    //   this.setState({
-    //     editorState: RichUtils.toggleLink(editorState, selection, null),
-    //   });
-    // }
-  }
-
-
-  // handleTextChange(event) {
-  //   this.setState({
-  //     text: event.target.value
-  //   });
-  //   console.log('text:', this.state.text);
-  // }
 
   onChangeSnips= (snips: models.ILabel<any>[]) => {
     this.setState({
@@ -265,9 +244,20 @@ class InterviewEditor extends Component {
     })
   }
 
-  // componentDidMount() {
-  //   generateRegexs();
-  // }
+  componentDidMount() {
+    sessionStorage.setItem("tags", tags);
+    sessionStorage.setItem("snips", snips);
+  }
+
+  handleColorInput = (color, event) => {
+    this.setState({
+      tagColor: color.hex
+    // }, () => {
+    //   console.log(color)
+    //   console.log(color.hex)
+    //   console.log(this.state.tagColor)
+    })
+  };
 
   render() {
     let tagInput;
@@ -281,10 +271,14 @@ class InterviewEditor extends Component {
             type="text"
             value={this.state.tagName}
             onKeyDown={this.onTagInputKeyDown}
-            />
-          <Button
-            onMouseDown={this.confirmTag}
-          >
+          />
+          <BlockPicker
+            style={{ marginTop: '10px' }}
+            triangle="hide"
+            onChange={this.handleColorInput}
+            value={this.state.tagColor}
+          />
+          <Button onClick={this.confirmTag}>
             Add
           </Button>
         </div>;
@@ -346,17 +340,11 @@ function generateRegexs() {
   return snipsArray
 }
 
-const HANDLE_REGEX = new RegExp("(?:[\\s]|^)(" + generateRegexs().join("|") + ")(?=[\\s]|$)", 'gi')
-const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
+const TAG_REGEX = new RegExp("(?:[\\s]|^)(" + generateRegexs().join("|") + ")(?=[\\s]|$)", 'gi')
 
-function handleStrategy(contentBlock, callback, contentState) {
-  findWithRegex(HANDLE_REGEX, contentBlock, callback);
-  // console.log('handleStrategy called');
-}
-
-function hashtagStrategy(contentBlock, callback, contentState) {
-  findWithRegex(HASHTAG_REGEX, contentBlock, callback);
-  // console.log('hashtagStrategy called');
+function tagStrategy(contentBlock, callback, contentState) {
+  console.log(callback)
+  findWithRegex(TAG_REGEX, contentBlock, callback);
 }
 
 function findTagEntities(contentBlock, callback, contentState) {
@@ -381,23 +369,9 @@ function findWithRegex(regex, contentBlock, callback) {
   }
 }
 
-const HandleSpan = (props) => {
-  return (
-    <span style={styles.handle}>
-      {props.children}
-    </span>
-  );
-};
-
-const HashtagSpan = (props) => {
-  return (
-    <span style={styles.hashtag}>
-      {props.children}
-    </span>
-  );
-};
-
 const TagSpan = (props) => {
+  console.log("BITCH", JSON.parse(sessionStorage.getItem("tags"))[0].color)
+  console.log(props.children)
   return (
     <span style={styles.tag}>
       {props.children}
@@ -409,18 +383,11 @@ const styles = {
   editor: {
     cursor: 'text',
     borderWidth: '1px',
-
   },
   tag: {
-    color: 'rgba(98, 177, 254, 1.0)',
+    color: "" + JSON.parse(sessionStorage.getItem("tags"))[0].color,
     direction: 'ltr',
     unicodeBidi: 'bidi-override',
-  },
-  handle: {
-    color: 'rgba(95, 184, 138, 1.0)',
-  },
-  hashtag: {
-    color: 'rgba(95, 184, 138, 1.0)',
   },
   tagInputContainer: {
     marginBottom: 10,
