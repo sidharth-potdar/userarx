@@ -44,21 +44,21 @@ const snips = [
     startIndex: 0,
     endIndex: 4,
     text: "loved",
-    tag: "positive"
+    tag: "1"
   },
   {
     id: '2',
     startIndex: 6,
     endIndex: 11,
     text: "hated",
-    tag: "pain points"
+    tag: "2"
   },
   {
     id: '3',
     startIndex: 13,
     endIndex: 18,
     text: "login",
-    tag: "login"
+    tag: "3"
   }
 ]
 
@@ -90,7 +90,10 @@ class InterviewEditor extends Component {
     };
 
     this.focus = () => this.refs.editor.focus();
-    this.onChange = (editorState) => this.setState({editorState});
+    this.onChange = (editorState) => {
+      this.setState({editorState});
+      generateRegexs();
+    }
     this.logEditorState = () => console.log(this.state.editorState.toJS());
 
     this.promptForTag = this.promptForTag.bind(this);
@@ -158,7 +161,7 @@ class InterviewEditor extends Component {
       const newTag = {
         id: uuid(),
         name: prevState.tagName,
-        color: 'primary',
+        color: prevState.tagColor,
         snip: [selectedText],
       }
       const tags = [...prevState.tags, newTag];
@@ -203,12 +206,6 @@ class InterviewEditor extends Component {
     }
   }
 
-  onChangeSnips= (snips: models.ILabel<any>[]) => {
-    this.setState({
-      snips
-    })
-  }
-
   onClickReset = () => {
     this.setState({
       tags,
@@ -217,36 +214,10 @@ class InterviewEditor extends Component {
     })
   }
 
-  onClickNewEntity = () => {
-    console.log(`onClickNewEntity`)
-    this.setState({
-      isNewEntityVisible: true
-    })
-  }
-
-  onClickSubmitNewEntity = () => {
-    const newEntity = {
-      id: new Date().toJSON(),
-      name: this.state.newEntityName,
-      type: 'string'
-    }
-
-    this.setState(prevState => ({
-      tags: [...prevState.tags, newEntity],
-      newEntityName: '',
-      isNewEntityVisible: false
-    }))
-  }
-
-  onChangeEntityName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      newEntityName: event.target.value
-    })
-  }
-
   componentDidMount() {
-    sessionStorage.setItem("tags", tags);
-    sessionStorage.setItem("snips", snips);
+    sessionStorage.setItem("tags", this.state.tags);
+    sessionStorage.setItem("snips", this.state.snips);
+    generateRegexs();
   }
 
   handleColorInput = (color, event) => {
@@ -290,10 +261,10 @@ class InterviewEditor extends Component {
             <strong> Interview Transcript </strong>
             <div>
               <Button
-                class="btn btn-wd btn-warning btn-fill btn-magnify"
+                className="btn btn-wd btn-fill btn-magnify"
                 onMouseDown={this.promptForTag}
-                style={{marginRight: 10}}>
-                <span className="btn-label" style={{marginRight: 5}}>
+              >
+                <span className="btn-label">
                   <i className="nc-icon nc-simple-add" />
                 </span>
                 New Tag
@@ -335,6 +306,14 @@ function generateRegexs() {
     console.log(snip)
     snipsArray.push(snip.text);
     console.log(snipsArray)
+    var snipsTag = snip.tag;
+    console.log("tags", tags);
+    console.log("tags findIndex", tags[tags.findIndex(x => x.id === snip.tag)])
+    console.log("tag COLOR", tags[tags.findIndex(x => x.id === snip.tag)].color)
+
+    sessionStorage.setItem("color", tags[tags.findIndex(x => x.id === snip.tag)].color);
+    console.log("tag COLOR loc", sessionStorage.getItem("color"))
+
   });
 
   return snipsArray
@@ -343,21 +322,10 @@ function generateRegexs() {
 const TAG_REGEX = new RegExp("(?:[\\s]|^)(" + generateRegexs().join("|") + ")(?=[\\s]|$)", 'gi')
 
 function tagStrategy(contentBlock, callback, contentState) {
-  console.log(callback)
+  console.log("function tagStrategy contentBlock", contentBlock);
+  // console.log("function tagStrategy callback", callback);
+  // console.log("function tagStrategy contentState", contentState);
   findWithRegex(TAG_REGEX, contentBlock, callback);
-}
-
-function findTagEntities(contentBlock, callback, contentState) {
-  contentBlock.findEntityRanges(
-    (character) => {
-      const entityKey = character.getEntity();
-      return (
-        entityKey !== null &&
-        contentState.getEntity(entityKey).getType() === 'TAG'
-      );
-    },
-    callback
-  );
 }
 
 function findWithRegex(regex, contentBlock, callback) {
@@ -369,8 +337,26 @@ function findWithRegex(regex, contentBlock, callback) {
   }
 }
 
+function findTagEntities(contentBlock, callback, contentState) {
+  // console.log("function findTagEntities contentBlock", contentBlock);
+  // console.log("function findTagEntities callback", callback);
+  // console.log("function findTagEntities contentState", contentState);
+  contentBlock.findEntityRanges(
+    (character) => {
+      console.log("function findTagEntities findEntityRanges character", character);
+
+      const entityKey = character.getEntity();
+      // console.log("function findTagEntities findEntityRanges entityKey", entityKey);
+      return (
+        entityKey !== null &&
+        contentState.getEntity(entityKey).getType() === 'TAG'
+      );
+    },
+    callback
+  );
+}
+
 const TagSpan = (props) => {
-  console.log("BITCH", JSON.parse(sessionStorage.getItem("tags"))[0].color)
   console.log(props.children)
   return (
     <span style={styles.tag}>
@@ -385,7 +371,8 @@ const styles = {
     borderWidth: '1px',
   },
   tag: {
-    color: "" + JSON.parse(sessionStorage.getItem("tags"))[0].color,
+    color: sessionStorage.getItem("color"),
+    // color: '#a1db13',
     direction: 'ltr',
     unicodeBidi: 'bidi-override',
   },
