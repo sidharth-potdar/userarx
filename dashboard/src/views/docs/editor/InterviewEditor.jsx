@@ -21,19 +21,19 @@ const tags = [
   {
     id: '1',
     name: 'positive',
-    color: 'primary',
+    color: '#a1db13',
     snips: [1],
   },
   {
     id: '2',
     name: 'pain points',
-    color: 'danger',
+    color: '#ff0000',
     snips: [2],
   },
   {
     id: '3',
     name: 'login',
-    color: 'default',
+    color: '#d5d5d5',
     snips: [3],
   }
 ]
@@ -106,7 +106,7 @@ class InterviewEditor extends Component {
     this.setState({
       editorState,
     });
-    console.log('editorState:', this.state.editorState);
+    // console.log('editorState:', this.state.editorState);
   };
 
   focus = () => {
@@ -195,7 +195,7 @@ class InterviewEditor extends Component {
       showNewTagInput: false,
       tagName: '',
     }, () => {
-      console.log("state.tags", this.state.tags)
+      // console.log("state.tags", this.state.tags)
       setTimeout(() => this.refs.editor.focus(), 0);
     });
   }
@@ -303,16 +303,16 @@ function generateRegexs() {
   var snipsArray = [];
 
   snips.forEach(snip => {
-    console.log(snip)
+    // console.log(snip)
     snipsArray.push(snip.text);
-    console.log(snipsArray)
+    // console.log(snipsArray)
     var snipsTag = snip.tag;
-    console.log("tags", tags);
-    console.log("tags findIndex", tags[tags.findIndex(x => x.id === snip.tag)])
-    console.log("tag COLOR", tags[tags.findIndex(x => x.id === snip.tag)].color)
-
-    sessionStorage.setItem("color", tags[tags.findIndex(x => x.id === snip.tag)].color);
-    console.log("tag COLOR loc", sessionStorage.getItem("color"))
+    // console.log("tags", tags);
+    // console.log("tags findIndex", tags[tags.findIndex(x => x.id === snip.tag)])
+    // console.log("tag COLOR", tags[tags.findIndex(x => x.id === snip.tag)].color)
+    //
+    // sessionStorage.setItem("color", tags[tags.findIndex(x => x.id === snip.tag)].color);
+    // console.log("tag COLOR loc", sessionStorage.getItem("color"))
 
   });
 
@@ -322,7 +322,7 @@ function generateRegexs() {
 const TAG_REGEX = new RegExp("(?:[\\s]|^)(" + generateRegexs().join("|") + ")(?=[\\s]|$)", 'gi')
 
 function tagStrategy(contentBlock, callback, contentState) {
-  console.log("function tagStrategy contentBlock", contentBlock);
+  // console.log("function tagStrategy contentBlock", contentBlock);
   // console.log("function tagStrategy callback", callback);
   // console.log("function tagStrategy contentState", contentState);
   findWithRegex(TAG_REGEX, contentBlock, callback);
@@ -343,7 +343,7 @@ function findTagEntities(contentBlock, callback, contentState) {
   // console.log("function findTagEntities contentState", contentState);
   contentBlock.findEntityRanges(
     (character) => {
-      console.log("function findTagEntities findEntityRanges character", character);
+      // console.log("function findTagEntities findEntityRanges character", character);
 
       const entityKey = character.getEntity();
       // console.log("function findTagEntities findEntityRanges entityKey", entityKey);
@@ -357,13 +357,39 @@ function findTagEntities(contentBlock, callback, contentState) {
 }
 
 const TagSpan = (props) => {
-  console.log(props.children)
+  console.log("Color:", GetColor(props.decoratedText))
   return (
-    <span style={styles.tag}>
+    <span
+      id={uuid()}
+      style={styles.tag}
+      style={{ color: GetColor(props.decoratedText) }}
+    >
       {props.children}
     </span>
   );
 };
+
+function GetColor(snip) {
+  if (snip != undefined && snip != null) {
+    var matchedSnip = snips[snips.findIndex(x => x.text === snip.trim())]
+    if (matchedSnip != undefined && matchedSnip != null) {
+      var tagID = matchedSnip.tag
+
+      if (tagID != undefined && tagID != null) {
+        var color = tags[tags.findIndex(x => x.id === tagID)].color
+      }
+      else {
+        var color = "green"
+      }
+    } else {
+      var color = "yellow"
+    }
+  } else {
+    var color = "red"
+  }
+
+  return color;
+}
 
 const styles = {
   editor: {
@@ -371,7 +397,8 @@ const styles = {
     borderWidth: '1px',
   },
   tag: {
-    color: sessionStorage.getItem("color"),
+    // color: GetColor(),
+    // color: '\'' + GetColor() + '\'',
     // color: '#a1db13',
     direction: 'ltr',
     unicodeBidi: 'bidi-override',
