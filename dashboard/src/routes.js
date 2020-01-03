@@ -25,7 +25,9 @@ import VectorMap from "views/maps/VectorMap.jsx";
 import Widgets from "views/Widgets.jsx";
 import Wizard from "views/forms/Wizard.jsx";
 
-import Docs from "views/docs/Docs.jsx"
+import Docs from "views/docs/Docs.jsx";
+import Board from "views/board/Board.jsx";
+import Insights from "views/insights/Insights.jsx";
 
 const routes = [
   {
@@ -249,12 +251,26 @@ const routes = [
     icon: "nc-icon nc-calendar-60",
     component: Calendar,
     layout: "/admin"
-},
+  },
   {
     path: "/docs",
     name: "Docs",
-    icon: "nc-icon nc-box",
+    icon: "nc-icon nc-bullet-list-67",
     component: Docs,
+    layout: "/admin"
+  },
+  {
+    path: "/board",
+    name: "Board",
+    icon: "nc-icon nc-layout-11",
+    component: Board,
+    layout: "/admin"
+  },
+  {
+    path: "/insights",
+    name: "Insights",
+    icon: "nc-icon nc-bulb-63",
+    component: Insights,
     layout: "/admin"
   }
 ];
