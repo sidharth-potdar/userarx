@@ -106,7 +106,6 @@ class InterviewEditor extends Component {
     this.setState({
       editorState,
     });
-    // console.log('editorState:', this.state.editorState);
   };
 
   focus = () => {
@@ -195,7 +194,6 @@ class InterviewEditor extends Component {
       showNewTagInput: false,
       tagName: '',
     }, () => {
-      // console.log("state.tags", this.state.tags)
       setTimeout(() => this.refs.editor.focus(), 0);
     });
   }
@@ -223,10 +221,6 @@ class InterviewEditor extends Component {
   handleColorInput = (color, event) => {
     this.setState({
       tagColor: color.hex
-    // }, () => {
-    //   console.log(color)
-    //   console.log(color.hex)
-    //   console.log(this.state.tagColor)
     })
   };
 
@@ -303,17 +297,8 @@ function generateRegexs() {
   var snipsArray = [];
 
   snips.forEach(snip => {
-    // console.log(snip)
     snipsArray.push(snip.text);
-    // console.log(snipsArray)
     var snipsTag = snip.tag;
-    // console.log("tags", tags);
-    // console.log("tags findIndex", tags[tags.findIndex(x => x.id === snip.tag)])
-    // console.log("tag COLOR", tags[tags.findIndex(x => x.id === snip.tag)].color)
-    //
-    // sessionStorage.setItem("color", tags[tags.findIndex(x => x.id === snip.tag)].color);
-    // console.log("tag COLOR loc", sessionStorage.getItem("color"))
-
   });
 
   return snipsArray
@@ -322,9 +307,6 @@ function generateRegexs() {
 const TAG_REGEX = new RegExp("(?:[\\s]|^)(" + generateRegexs().join("|") + ")(?=[\\s]|$)", 'gi')
 
 function tagStrategy(contentBlock, callback, contentState) {
-  // console.log("function tagStrategy contentBlock", contentBlock);
-  // console.log("function tagStrategy callback", callback);
-  // console.log("function tagStrategy contentState", contentState);
   findWithRegex(TAG_REGEX, contentBlock, callback);
 }
 
@@ -338,15 +320,9 @@ function findWithRegex(regex, contentBlock, callback) {
 }
 
 function findTagEntities(contentBlock, callback, contentState) {
-  // console.log("function findTagEntities contentBlock", contentBlock);
-  // console.log("function findTagEntities callback", callback);
-  // console.log("function findTagEntities contentState", contentState);
   contentBlock.findEntityRanges(
     (character) => {
-      // console.log("function findTagEntities findEntityRanges character", character);
-
       const entityKey = character.getEntity();
-      // console.log("function findTagEntities findEntityRanges entityKey", entityKey);
       return (
         entityKey !== null &&
         contentState.getEntity(entityKey).getType() === 'TAG'
@@ -357,7 +333,6 @@ function findTagEntities(contentBlock, callback, contentState) {
 }
 
 const TagSpan = (props) => {
-  console.log("Color:", GetColor(props.decoratedText))
   return (
     <span
       id={uuid()}
