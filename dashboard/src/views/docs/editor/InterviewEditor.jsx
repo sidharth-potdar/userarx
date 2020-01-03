@@ -281,7 +281,7 @@ class InterviewEditor extends Component {
             <h2/>
             <div style={{ paddingTop: '11px' }}>
             {this.state.tags.map((tag, key) => (
-              <Badge color={tag.color} pill>
+              <Badge key={key} style={{ backgroundColor: `${tag.color}` }} pill>
                 {tag.name}
               </Badge>
             ))}
@@ -372,9 +372,6 @@ const styles = {
     borderWidth: '1px',
   },
   tag: {
-    // color: GetColor(),
-    // color: '\'' + GetColor() + '\'',
-    // color: '#a1db13',
     direction: 'ltr',
     unicodeBidi: 'bidi-override',
   },
