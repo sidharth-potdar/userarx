@@ -219,7 +219,9 @@ class InterviewEditor extends Component {
   }
 
   handleColorInput = (color, event) => {
+    console.log(color);
     this.setState({
+      background: color.hex,
       tagColor: color.hex
     })
   };
@@ -241,7 +243,6 @@ class InterviewEditor extends Component {
             style={{ marginTop: '10px' }}
             triangle="hide"
             onChange={this.handleColorInput}
-            value={this.state.tagColor}
           />
           <Button onClick={this.confirmTag}>
             Add
