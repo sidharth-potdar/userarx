@@ -240,6 +240,7 @@ class InterviewEditor extends Component {
             onKeyDown={this.onTagInputKeyDown}
           />
           <BlockPicker
+            color={ this.state.tagColor }
             style={{ marginTop: '10px' }}
             triangle="hide"
             onChange={this.handleColorInput}
