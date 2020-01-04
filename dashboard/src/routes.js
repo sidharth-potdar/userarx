@@ -8,21 +8,21 @@ const routes = [
     name: "Docs",
     icon: "nc-icon nc-bullet-list-67",
     component: Docs,
-    layout: "/admin"
+    layout: "/project"
   },
   {
     path: "/board",
     name: "Board",
     icon: "nc-icon nc-layout-11",
     component: Board,
-    layout: "/admin"
+    layout: "/project"
   },
   {
     path: "/insights",
     name: "Insights",
     icon: "nc-icon nc-bulb-63",
     component: Insights,
-    layout: "/admin"
+    layout: "/project"
   }
 ];
 

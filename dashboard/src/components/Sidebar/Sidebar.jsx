@@ -182,7 +182,7 @@ class Sidebar extends React.Component {
                 <ul className="nav">
                   {this.state.projects.map((project, key) => (
                     <li>
-                      <NavLink to="/admin/docs" activeClassName="">
+                      <NavLink to="/project/docs" activeClassName="">
                         <span className="sidebar-mini-icon">MP</span>
                         <span className="sidebar-normal">
                           {project.name}

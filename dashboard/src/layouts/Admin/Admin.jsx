@@ -47,7 +47,7 @@ class Admin extends React.Component {
       if (prop.collapse) {
         return this.getRoutes(prop.views);
       }
-      if (prop.layout === "/admin") {
+      if (prop.layout === "/project") {
         return (
           <Route
             path={prop.layout + prop.path}
