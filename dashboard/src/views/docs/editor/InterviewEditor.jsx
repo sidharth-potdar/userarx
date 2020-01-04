@@ -22,41 +22,32 @@ const tags = [
     id: '1',
     name: 'positive',
     color: '#a1db13',
-    snips: [1],
   },
   {
     id: '2',
     name: 'pain points',
     color: '#ff0000',
-    snips: [2],
   },
   {
     id: '3',
     name: 'login',
     color: '#d5d5d5',
-    snips: [3],
   }
 ]
 
 const snips = [
   {
     id: '1',
-    startIndex: 0,
-    endIndex: 4,
     text: "loved",
     tag: "1"
   },
   {
     id: '2',
-    startIndex: 6,
-    endIndex: 11,
     text: "hated",
     tag: "2"
   },
   {
     id: '3',
-    startIndex: 13,
-    endIndex: 18,
     text: "login",
     tag: "3"
   }
