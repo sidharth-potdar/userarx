@@ -181,9 +181,14 @@ class Sidebar extends React.Component {
               <Collapse isOpen={this.state.openAvatar}>
                 <ul className="nav">
                   {this.state.projects.map((project, key) => (
-                    <li>
-                      <NavLink to="/project/docs" activeClassName="">
-                        <span className="sidebar-mini-icon">MP</span>
+                    <li id={key} onClick={() => sessionStorage.setItem('projectID', project.id)}>
+                      <NavLink
+
+                        to="/project/docs"
+                        activeClassName=""
+
+                      >
+                        <span className="sidebar-mini-icon">{key + 1}</span>
                         <span className="sidebar-normal">
                           {project.name}
                         </span>
