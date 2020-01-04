@@ -107,7 +107,7 @@ class AdminNavbar extends React.Component {
               </div>
               <NavbarBrand href="#pablo" onClick={e => e.preventDefault()}>
                 <span className="d-none d-md-block">
-                  Userarx Dashboard
+                  {sessionStorage.getItem('projectName')}
                 </span>
                 <span className="d-block d-md-none">PD PRO React</span>
               </NavbarBrand>

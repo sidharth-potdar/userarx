@@ -181,7 +181,12 @@ class Sidebar extends React.Component {
               <Collapse isOpen={this.state.openAvatar}>
                 <ul className="nav">
                   {this.state.projects.map((project, key) => (
-                    <li id={key} onClick={() => sessionStorage.setItem('projectID', project.id)}>
+                    <li
+                      id={key}
+                      onClick={() =>
+                        sessionStorage.setItem('projectID', project.id), () =>
+                        sessionStorage.setItem('projectName', project.name)
+                      }>
                       <NavLink
 
                         to="/project/docs"
