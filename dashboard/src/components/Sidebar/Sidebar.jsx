@@ -14,6 +14,22 @@ class Sidebar extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.getCollapseStates(props.routes);
+    this.state = {
+      projects: [
+        {
+          id: '1',
+          name: 'Project Squishy',
+        },
+        {
+          id: '2',
+          name: 'Project Squid',
+        },
+        {
+          id: '3',
+          name: 'Project Smash',
+        }
+      ]
+    }
   }
   // this creates the intial state of this component based on the collapse routes
   // that it gets through this.props.routes
@@ -158,30 +174,32 @@ class Sidebar extends React.Component {
                 }
               >
                 <span>
-                  Test User
+                  Project Squish
                   <b className="caret" />
                 </span>
               </a>
               <Collapse isOpen={this.state.openAvatar}>
                 <ul className="nav">
-                  <li>
-                    <NavLink to="/admin/user-profile" activeClassName="">
-                      <span className="sidebar-mini-icon">MP</span>
-                      <span className="sidebar-normal">My Profile</span>
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/admin/user-profile" activeClassName="">
-                      <span className="sidebar-mini-icon">EP</span>
-                      <span className="sidebar-normal">Edit Profile</span>
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/admin/user-profile" activeClassName="">
-                      <span className="sidebar-mini-icon">S</span>
-                      <span className="sidebar-normal">Settings</span>
-                    </NavLink>
-                  </li>
+                  {this.state.projects.map((project, key) => (
+                    <li
+                      id={key}
+                      onClick={() =>
+                        sessionStorage.setItem('projectID', project.id), () =>
+                        sessionStorage.setItem('projectName', project.name)
+                      }>
+                      <NavLink
+
+                        to="/project/docs"
+                        activeClassName=""
+
+                      >
+                        <span className="sidebar-mini-icon">{key + 1}</span>
+                        <span className="sidebar-normal">
+                          {project.name}
+                        </span>
+                      </NavLink>
+                    </li>
+                  ))}
                 </ul>
               </Collapse>
             </div>
