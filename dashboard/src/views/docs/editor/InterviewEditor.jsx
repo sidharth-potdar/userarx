@@ -204,6 +204,8 @@ class InterviewEditor extends Component {
   }
 
   componentDidMount() {
+
+    
     sessionStorage.setItem("tags", this.state.tags);
     sessionStorage.setItem("snips", this.state.snips);
     generateRegexs();
