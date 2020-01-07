@@ -85,6 +85,10 @@ export default class InsightSelectTable extends React.Component {
     };
   }
 
+  handleSelect = (e, snip) => {
+    console.log(snip);
+  }
+
   render() {
     return (
       <div className="content">
@@ -106,7 +110,7 @@ export default class InsightSelectTable extends React.Component {
                     <td className="text-center">
                       <FormGroup check>
                         <Label check>
-                          <Input type="checkbox" />
+                          <Input type="checkbox" onChange={(e) => this.handleSelect(e, snip)} />
                           <span className="form-check-sign" />
                         </Label>
                       </FormGroup>

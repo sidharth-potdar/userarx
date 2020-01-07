@@ -10,6 +10,7 @@ import {
   CardFooter,
   CardTitle,
   CardText,
+  Collapse,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
@@ -37,6 +38,7 @@ export default class InsightCard extends React.Component {
       date: "12/34/69",
       text: "They're dumb as hell.",
       showModal: false,
+      isOpen: false,
     };
 
     this.toggleModal = this.toggleModal.bind(this);
@@ -63,6 +65,12 @@ export default class InsightCard extends React.Component {
   handleTextChange(event) {
     this.setState({
       text: event.target.value
+    });
+  }
+
+  toggleTable = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
     });
   }
 
@@ -116,7 +124,12 @@ export default class InsightCard extends React.Component {
                 </FormGroup>
               </Col>
             </Row>
-            <InsightSelectTable />
+            <Button color="info" onClick={() => this.toggleTable()}>
+              Select evidence
+            </Button>
+            <Collapse isOpen={this.state.isOpen}>
+              <InsightSelectTable />
+            </Collapse>
           </ModalBody>
         </Modal>
       </Col>
