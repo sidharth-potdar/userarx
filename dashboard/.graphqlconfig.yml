@@ -1,5 +1,5 @@
 projects:
-  userarxapi-userarxenv:
+  userarx-dashboard-api:
     schemaPath: src/graphql/schema.json
     includes:
       - src/graphql/**/*.js
@@ -11,5 +11,5 @@ projects:
         generatedFileName: ''
         docsFilePath: src/graphql
         region: us-east-1
-        apiId: ckhp3dpntngmbigkxwdwlwweom
+        apiId: d22gd2hla5dghm4caddmrvoxdu
         maxDepth: 2
