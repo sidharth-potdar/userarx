@@ -10,3 +10,12 @@ export const putTags = `mutation PutTags($pk: String, $sk: String) {
   }
 }
 `;
+export const putSnips = `mutation PutSnips($pk: String, $sk: String) {
+  putSnips(pk: $pk, sk: $sk) {
+    pk
+    sk
+    text
+    tag_id
+  }
+}
+`;

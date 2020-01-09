@@ -1,6 +1,4 @@
-import React from "react";
-
-// reactstrap components
+import React, { Component } from 'react';
 import {
   Badge,
   Button,
@@ -31,7 +29,7 @@ import InterviewEditor from "./editor/InterviewEditor.jsx";
 import { API, graphqlOperation } from 'aws-amplify'
 import * as queries from '../../graphql/queries'
 
-class UserDocCard extends React.Component {
+class UserDocCard extends Component {
   constructor(props) {
     super(props);
 

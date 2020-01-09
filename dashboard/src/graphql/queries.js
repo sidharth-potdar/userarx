@@ -10,3 +10,12 @@ export const getTags = `query GetTags($pk: String, $sk: String) {
   }
 }
 `;
+export const getSnips = `query GetSnips($pk: String, $sk: String) {
+  getSnips(pk: $pk, sk: $sk) {
+    pk
+    sk
+    text
+    tag_id
+  }
+}
+`;

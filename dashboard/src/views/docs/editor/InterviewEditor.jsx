@@ -15,41 +15,8 @@ import './editor.css';
 import TagsInput from "react-tagsinput";
 import { BlockPicker } from 'react-color';
 
-const tags = [
-  {
-    id: '1',
-    name: 'positive',
-    color: '#a1db13',
-  },
-  {
-    id: '2',
-    name: 'pain points',
-    color: '#ff0000',
-  },
-  {
-    id: '3',
-    name: 'login',
-    color: '#d5d5d5',
-  }
-]
-
-const snips = [
-  {
-    id: '1',
-    text: "loved",
-    tag: "tag-0bb63b35-47d0-4d92-a060-a8df60539716"
-  },
-  {
-    id: '2',
-    text: "hated",
-    tag: "tag-5643ffc4-8ace-4f80-89a9-0d4ecaf7ffb3"
-  },
-  {
-    id: '3',
-    text: "login",
-    tag: "tag-f8dcec13-871b-4d60-9443-2ecfd992ffa2"
-  }
-]
+import { API, graphqlOperation } from 'aws-amplify'
+import * as queries from '../../../graphql/queries'
 
 class InterviewEditor extends Component {
   constructor(props) {
@@ -69,7 +36,7 @@ class InterviewEditor extends Component {
     this.state = {
       editorState: EditorState.createEmpty(compositeDecorator),
       tags: this.props.tags,
-      snips: [...snips],
+      snips: [""],
       isNewEntityVisible: false,
       newEntityName: '',
       showNewTagInput: false,
@@ -192,14 +159,6 @@ class InterviewEditor extends Component {
     }
   }
 
-  onClickReset = () => {
-    this.setState({
-      tags,
-      snips,
-      readOnly: false
-    })
-  }
-
   handleColorInput = (color, event) => {
     console.log(color);
     this.setState({
@@ -208,8 +167,28 @@ class InterviewEditor extends Component {
     })
   };
 
+  async queryForSnips() {
+    try {
+      const response = await API.graphql(graphqlOperation(queries.getSnips,
+        {
+          pk: "d6a21110-08ad-4d60-b102-71d59e6c71e7",
+          sk: "snip"
+        }
+      ))
+      console.log(response.data.getSnips)
+      this.setState({
+        snips: response.data.getSnips,
+      })
+      sessionStorage.setItem("snips", JSON.stringify(this.state.snips));
+
+    }
+    catch (error) {
+      console.log('error', error)
+    }
+  }
+
   componentDidMount() {
-    sessionStorage.setItem("snips", this.state.snips);
+    this.queryForSnips();
     generateRegexs();
   }
 
@@ -284,11 +263,17 @@ class InterviewEditor extends Component {
 
 function generateRegexs() {
   var snipsArray = [];
+  const snips = JSON.parse(sessionStorage.getItem("snips"));
 
   snips.forEach(snip => {
     snipsArray.push(snip.text);
     var snipsTag = snip.tag;
   });
+  // if (snips != null && snips != undefined) {
+  //   Array.from(snips.children).forEach(snip => {
+  //     snipsArray.push(snip.text);
+  //   });
+  // }
 
   return snipsArray
 }
@@ -326,21 +311,23 @@ const TagSpan = (props) => {
     <span
       id={uuid()}
       style={styles.tag}
-      style={{ color: GetColor(JSON.parse(sessionStorage.getItem('tags')), props.decoratedText) }}
+      style={{ color: GetColor(JSON.parse(sessionStorage.getItem('tags')), props.decoratedText, JSON.parse(sessionStorage.getItem('snips'))) }}
     >
       {props.children}
     </span>
   );
 };
 
-function GetColor(tags, snip) {
+function GetColor(tags, snip, snips) {
   if (snip != undefined && snip != null) {
     var matchedSnip = snips[snips.findIndex(x => x.text === snip.trim())]
+    console.log(matchedSnip)
     if (matchedSnip != undefined && matchedSnip != null) {
-      var tagID = matchedSnip.tag
+      var tagID = matchedSnip.tag_id
 
       if (tagID != undefined && tagID != null) {
-        var color = tags[tags.findIndex(x => x.sk === tagID)].color
+        console.log(tagID)
+        var color = tags[tags.findIndex(x => x.sk === "tag-" + tagID)].color
       }
       else {
         var color = "green"
