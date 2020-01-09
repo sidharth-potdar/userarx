@@ -14,8 +14,6 @@ import { randomColor } from 'randomcolor';
 import './editor.css';
 import TagsInput from "react-tagsinput";
 import { BlockPicker } from 'react-color';
-import { API, graphqlOperation } from 'aws-amplify'
-import * as queries from '../../../graphql/queries'
 
 const text = "Book 2 tickets from Seattle to Cairo";
 
@@ -73,7 +71,7 @@ class InterviewEditor extends Component {
     this.state = {
       text: text,
       editorState: EditorState.createEmpty(compositeDecorator),
-      tags: [...tags],
+      tags: this.props.tags,
       snips: [...snips],
       isNewEntityVisible: false,
       newEntityName: '',
@@ -205,30 +203,10 @@ class InterviewEditor extends Component {
     })
   }
 
-  async queryForTags() {
-    try {
-      const response = await API.graphql(graphqlOperation(queries.getTags,
-        {
-          pk: "d6a21110-08ad-4d60-b102-71d59e6c71e7",
-          sk: "tag"
-        }
-      ))
-      console.log(response.data.getTags)
-      this.setState({
-        tags: response.data.getTags,
-      })
-    }
-    catch (error) {
-      console.log('error', error)
-    }
-  }
-
   componentDidMount() {
-    this.queryForTags();
     sessionStorage.setItem("tags", this.state.tags);
     sessionStorage.setItem("snips", this.state.snips);
     generateRegexs();
-    console.log(this.state.tags);
   }
 
   handleColorInput = (color, event) => {

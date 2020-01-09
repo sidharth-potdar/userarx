@@ -28,11 +28,12 @@ import {
 import Editor from "views/docs/Editor.jsx";
 import InterviewEditor from "./editor/InterviewEditor.jsx";
 
+import { API, graphqlOperation } from 'aws-amplify'
+import * as queries from '../../graphql/queries'
+
 class UserDocCard extends React.Component {
   constructor(props) {
     super(props);
-    // this.name = this.props.name;
-    // this.description = this.props.description;
 
     this.state = {
       name: this.props.name,
@@ -75,6 +76,29 @@ class UserDocCard extends React.Component {
     })
   }
 
+  async queryForTags() {
+    try {
+      const response = await API.graphql(graphqlOperation(queries.getTags,
+        {
+          pk: "d6a21110-08ad-4d60-b102-71d59e6c71e7",
+          sk: "tag"
+        }
+      ))
+      console.log(response.data.getTags)
+      this.setState({
+        tags: response.data.getTags,
+      })
+    }
+    catch (error) {
+      console.log('error', error)
+    }
+  }
+
+  componentDidMount() {
+    this.queryForTags();
+    console.log(this.state.tags);
+  }
+
   render() {
     return (
       <Col md="3">
@@ -85,9 +109,9 @@ class UserDocCard extends React.Component {
             <p style={{color: "gray"}}>{this.props.description}</p>
           </CardHeader>
           <CardBody>
-            {this.state.tags.map((tag, idx) => (
-              <Badge color="default" pill>
-                {tag}
+            {this.state.tags.map((tag, key) => (
+              <Badge key={key} style={{ backgroundColor: `${tag.color}` }} pill>
+                {tag.name}
               </Badge>
             ))}
             <div align="right">
@@ -167,7 +191,7 @@ class UserDocCard extends React.Component {
               </Col>
             </Row>
             <br />
-            <InterviewEditor />
+            <InterviewEditor tags={this.state.tags}/>
             <br />
             <FormGroup>
               <Input
