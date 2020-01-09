@@ -205,12 +205,30 @@ class InterviewEditor extends Component {
     })
   }
 
-  async componentDidMount() {
-    const data = await API.graphql(graphqlOperation(queries.getTags, {pk: "d6a21110-08ad-4d60-b102-71d59e6c71e7", sk: "tag"}))
-    console.log(data)
+  async queryForTags() {
+    try {
+      const response = await API.graphql(graphqlOperation(queries.getTags,
+        {
+          pk: "d6a21110-08ad-4d60-b102-71d59e6c71e7",
+          sk: "tag"
+        }
+      ))
+      console.log(response.data.getTags)
+      this.setState({
+        tags: response.data.getTags,
+      })
+    }
+    catch (error) {
+      console.log('error', error)
+    }
+  }
+
+  componentDidMount() {
+    this.queryForTags();
     sessionStorage.setItem("tags", this.state.tags);
     sessionStorage.setItem("snips", this.state.snips);
     generateRegexs();
+    console.log(this.state.tags);
   }
 
   handleColorInput = (color, event) => {

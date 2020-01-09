@@ -5,6 +5,8 @@ export const putTags = `mutation PutTags($pk: String, $sk: String) {
   putTags(pk: $pk, sk: $sk) {
     pk
     sk
+    name
+    color
   }
 }
 `;
