@@ -41,7 +41,7 @@ class UserDocCard extends React.Component {
       description: this.props.description,
       showModal: false,
       notesValue: "",
-      tags: ["login", "menu", "navigation"]
+      tags: [""]
     };
     this.toggleModal = this.toggleModal.bind(this);
   }
@@ -88,6 +88,8 @@ class UserDocCard extends React.Component {
       this.setState({
         tags: response.data.getTags,
       })
+      sessionStorage.setItem("tags", JSON.stringify(this.state.tags));
+
     }
     catch (error) {
       console.log('error', error)

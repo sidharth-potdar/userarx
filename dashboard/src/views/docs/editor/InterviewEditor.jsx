@@ -15,8 +15,6 @@ import './editor.css';
 import TagsInput from "react-tagsinput";
 import { BlockPicker } from 'react-color';
 
-const text = "Book 2 tickets from Seattle to Cairo";
-
 const tags = [
   {
     id: '1',
@@ -39,17 +37,17 @@ const snips = [
   {
     id: '1',
     text: "loved",
-    tag: "1"
+    tag: "tag-0bb63b35-47d0-4d92-a060-a8df60539716"
   },
   {
     id: '2',
     text: "hated",
-    tag: "2"
+    tag: "tag-5643ffc4-8ace-4f80-89a9-0d4ecaf7ffb3"
   },
   {
     id: '3',
     text: "login",
-    tag: "3"
+    tag: "tag-f8dcec13-871b-4d60-9443-2ecfd992ffa2"
   }
 ]
 
@@ -69,7 +67,6 @@ class InterviewEditor extends Component {
     ]);
 
     this.state = {
-      text: text,
       editorState: EditorState.createEmpty(compositeDecorator),
       tags: this.props.tags,
       snips: [...snips],
@@ -203,12 +200,6 @@ class InterviewEditor extends Component {
     })
   }
 
-  componentDidMount() {
-    sessionStorage.setItem("tags", this.state.tags);
-    sessionStorage.setItem("snips", this.state.snips);
-    generateRegexs();
-  }
-
   handleColorInput = (color, event) => {
     console.log(color);
     this.setState({
@@ -216,6 +207,11 @@ class InterviewEditor extends Component {
       tagColor: color.hex
     })
   };
+
+  componentDidMount() {
+    sessionStorage.setItem("snips", this.state.snips);
+    generateRegexs();
+  }
 
   render() {
     let tagInput;
@@ -330,21 +326,21 @@ const TagSpan = (props) => {
     <span
       id={uuid()}
       style={styles.tag}
-      style={{ color: GetColor(props.decoratedText) }}
+      style={{ color: GetColor(JSON.parse(sessionStorage.getItem('tags')), props.decoratedText) }}
     >
       {props.children}
     </span>
   );
 };
 
-function GetColor(snip) {
+function GetColor(tags, snip) {
   if (snip != undefined && snip != null) {
     var matchedSnip = snips[snips.findIndex(x => x.text === snip.trim())]
     if (matchedSnip != undefined && matchedSnip != null) {
       var tagID = matchedSnip.tag
 
       if (tagID != undefined && tagID != null) {
-        var color = tags[tags.findIndex(x => x.id === tagID)].color
+        var color = tags[tags.findIndex(x => x.sk === tagID)].color
       }
       else {
         var color = "green"
