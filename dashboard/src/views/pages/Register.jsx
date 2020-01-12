@@ -1,6 +1,4 @@
-import React from "react";
-
-// reactstrap components
+import React, { Component } from "react";
 import {
   Button,
   Card,
@@ -19,14 +17,76 @@ import {
   Row,
   Col
 } from "reactstrap";
+import { Auth } from "aws-amplify";
 
-class Register extends React.Component {
+class Register extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: "",
+      password: "",
+      message: "",
+      verificationCode: "",
+      shouldVerify: false,
+    };
+  }
+
+  handleEmailChange(event) {
+    this.setState({
+      email: event.target.value
+    })
+  }
+
+  handlePasswordChange(event) {
+    this.setState({
+      password: event.target.value
+    })
+  }
+
+  async handleSignUp(event) {
+    event.preventDefault();
+
+    try {
+      const newUser = await Auth.signUp({
+        username: this.state.email,
+        password: this.state.password,
+      })
+      this.setState({
+        shouldVerify: true,
+      })
+    } catch (error) {
+      this.setState({
+        message: error.message,
+      })
+      console.log(error.message);
+    }
+  }
+
+  handleVerificationCodeChange(event) {
+    this.setState({
+      verificationCode: event.target.value
+    })
+  }
+
+  async confirmNewUser(event) {
+    event.preventDefault();
+    try {
+      await Auth.confirmSignUp(this.state.email, this.state.verificationCode);
+      await Auth.signIn(this.state.email, this.state.password);
+      console.log("Logged in");
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
   componentDidMount() {
     document.body.classList.toggle("register-page");
   }
   componentWillUnmount() {
     document.body.classList.toggle("register-page");
   }
+
   render() {
     return (
       <div className="register-page">
@@ -73,19 +133,10 @@ class Register extends React.Component {
             <Col className="mr-auto" lg="4" md="6">
               <Card className="card-signup text-center">
                 <CardHeader>
-                  <CardTitle tag="h4">Register</CardTitle>
-                  <div className="social">
-                    <Button className="btn-icon btn-round" color="twitter">
-                      <i className="fa fa-twitter" />
-                    </Button>
-                    <Button className="btn-icon btn-round" color="dribbble">
-                      <i className="fa fa-dribbble" />
-                    </Button>
-                    <Button className="btn-icon btn-round" color="facebook">
-                      <i className="fa fa-facebook-f" />
-                    </Button>
-                    <p className="card-description">or be classical</p>
-                  </div>
+                  <CardTitle tag="h4">Sign Up</CardTitle>
+                  <p className="card-description">
+                    {this.state.message}
+                  </p>
                 </CardHeader>
                 <CardBody>
                   <Form action="" className="form" method="">
@@ -95,7 +146,11 @@ class Register extends React.Component {
                           <i className="nc-icon nc-single-02" />
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input placeholder="First Name..." type="text" />
+                      <Input
+                        placeholder="Email"
+                        type="text"
+                        onChange={(e) => {this.handleEmailChange(e)}}
+                      />
                     </InputGroup>
                     <InputGroup>
                       <InputGroupAddon addonType="prepend">
@@ -103,38 +158,48 @@ class Register extends React.Component {
                           <i className="nc-icon nc-circle-10" />
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input placeholder="Last Name..." type="text" />
+                      <Input
+                        placeholder="Password"
+                        type="password"
+                        autoComplete="off"
+                        onChange={(e) => {this.handlePasswordChange(e)}}
+                      />
                     </InputGroup>
-                    <InputGroup>
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="nc-icon nc-email-85" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input placeholder="Email..." type="email" />
-                    </InputGroup>
-                    <FormGroup check className="text-left">
-                      <Label check>
-                        <Input defaultChecked type="checkbox" />
-                        <span className="form-check-sign" />
-                        I agree to the{" "}
-                        <a href="#pablo" onClick={e => e.preventDefault()}>
-                          terms and conditions
-                        </a>
-                        .
-                      </Label>
-                    </FormGroup>
+                    {this.state.shouldVerify ?
+                      <InputGroup>
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="nc-icon nc-circle-10" />
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input
+                          placeholder="Verification Code"
+                          type="text"
+                          autoComplete="off"
+                          onChange={(e) => {this.handleVerificationCodeChange(e)}}
+                        />
+                      </InputGroup> :
+                    null }
+
                   </Form>
                 </CardBody>
                 <CardFooter>
-                  <Button
-                    className="btn-round"
-                    color="info"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                  >
-                    Get Started
-                  </Button>
+                  {this.state.shouldVerify ?
+                    <Button
+                      className="btn-round"
+                      color="info"
+                      onClick={e => {this.confirmNewUser(e)}}
+                    >
+                      Verify
+                    </Button> :
+                    <Button
+                      className="btn-round"
+                      color="info"
+                      onClick={e => {this.handleSignUp(e)}}
+                    >
+                      Get Started
+                    </Button>
+                  }
                 </CardFooter>
               </Card>
             </Col>
