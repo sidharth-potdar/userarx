@@ -166,7 +166,6 @@ class Sidebar extends React.Component {
             </div>
             <div className="info">
               <a
-                href="#pablo"
                 data-toggle="collapse"
                 aria-expanded={this.state.openAvatar}
                 onClick={() =>
@@ -174,7 +173,7 @@ class Sidebar extends React.Component {
                 }
               >
                 <span>
-                  Project Squish
+                  {sessionStorage.getItem('projectName')}
                   <b className="caret" />
                 </span>
               </a>

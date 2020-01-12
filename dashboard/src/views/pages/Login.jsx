@@ -17,6 +17,7 @@ import {
   Row
 } from "reactstrap";
 import { Auth } from "aws-amplify";
+import { withRouter } from "react-router-dom";
 
 class Login extends Component {
   constructor(props) {
@@ -45,7 +46,7 @@ class Login extends Component {
     event.preventDefault();
     try {
       await Auth.signIn(this.state.email, this.state.password);
-      console.log("Logged in");
+      this.props.history.push("/project/docs");
     } catch (error) {
       this.setState({
         message: error.message,
@@ -71,7 +72,7 @@ class Login extends Component {
                 <Card className="card-login">
                   <CardHeader>
                     <CardHeader>
-                      <h3 className="header text-center">Login</h3>
+                      <h3 className="header text-center">Welcome back.</h3>
                       <p className="card-description">
                         {this.state.message}
                       </p>
@@ -110,9 +111,10 @@ class Login extends Component {
                       block
                       className="btn-round mb-3"
                       color="warning"
+                      href="/project/docs"
                       onClick={e => {this.handleSignIn(e)}}
                     >
-                      Get Started
+                      Log In
                     </Button>
                   </CardFooter>
                 </Card>
@@ -131,4 +133,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);
