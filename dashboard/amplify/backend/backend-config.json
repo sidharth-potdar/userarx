@@ -1,10 +1,10 @@
 {
-	"auth": {
-		"userarxdashboard8adf3790": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": []
-		}
-	},
-	"api": {}
+    "auth": {
+        "userarxdashboard8adf3790": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": []
+        }
+    },
+    "api": {}
 }

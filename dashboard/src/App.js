@@ -5,7 +5,6 @@ import { Router, Route, Switch, Redirect } from "react-router-dom";
 import AuthLayout from "layouts/Auth/Auth.jsx";
 import AdminLayout from "layouts/Admin/Admin.jsx";
 import LoginPage from "views/pages/Login.jsx";
-import { Auth } from 'aws-amplify';
 
 const hist = createBrowserHistory();
 

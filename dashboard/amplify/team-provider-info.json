@@ -31,7 +31,9 @@
         },
         "categories": {
             "auth": {
-                "userarxdashboard8adf3790": {}
+                "userarxdashboard8adf3790": {
+                    "hostedUIProviderCreds": "[]"
+                }
             }
         }
     }

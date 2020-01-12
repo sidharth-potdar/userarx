@@ -265,10 +265,13 @@ function generateRegexs() {
   var snipsArray = [];
   const snips = JSON.parse(sessionStorage.getItem("snips"));
 
-  snips.forEach(snip => {
-    snipsArray.push(snip.text);
-    var snipsTag = snip.tag;
-  });
+  if (snips != null && snips != undefined) {
+    snips.forEach(snip => {
+      snipsArray.push(snip.text);
+      var snipsTag = snip.tag;
+    });
+  }
+
   // if (snips != null && snips != undefined) {
   //   Array.from(snips.children).forEach(snip => {
   //     snipsArray.push(snip.text);
