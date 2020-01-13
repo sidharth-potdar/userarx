@@ -52,7 +52,7 @@ const routes = [
   },
   {
     collapse: true,
-    name: "Pages",
+    name: "Account",
     icon: "nc-icon nc-book-bookmark",
     state: "pagesCollapse",
     views: [

@@ -167,8 +167,9 @@ class Sidebar extends React.Component {
                     <li
                       id={key}
                       onClick={() =>
-                        sessionStorage.setItem('projectID', project.id), () =>
-                        sessionStorage.setItem('projectName', project.name)
+                        sessionStorage.setItem('projectID', project.sk), () =>
+                        sessionStorage.setItem('projectName', project.name), () =>
+                        sessionStorage.setItem('projectID', project.sk.replace("project-", ""))
                       }>
                       <NavLink
                         to="/project/docs"

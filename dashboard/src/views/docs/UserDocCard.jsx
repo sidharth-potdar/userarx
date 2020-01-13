@@ -78,7 +78,7 @@ class UserDocCard extends Component {
     try {
       const response = await API.graphql(graphqlOperation(queries.getTags,
         {
-          pk: "d6a21110-08ad-4d60-b102-71d59e6c71e7",
+          pk: sessionStorage.getItem("projectID"),
           sk: "tag"
         }
       ))
