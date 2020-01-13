@@ -19,3 +19,12 @@ export const getSnips = `query GetSnips($pk: String, $sk: String) {
   }
 }
 `;
+export const getProjects = `query GetProjects($pk: String, $sk: String, $creator: String) {
+  getProjects(pk: $pk, sk: $sk, creator: $creator) {
+    pk
+    sk
+    name
+    creator
+  }
+}
+`;

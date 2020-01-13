@@ -24,6 +24,7 @@ class App extends Component {
           bypassCache: false
       })
       .then(console.log(this.state.isAuthenticated))
+      .then(user => console.log(user.username))
     } catch (error) {
       this.setState({
         isAuthenticated: false,
@@ -32,7 +33,14 @@ class App extends Component {
     }
   }
 
-  signOut() {
+  // async queryForProjects() {
+  //   Auth.currentAuthenticatedUser({
+  //     bypassCache: false
+  //   }).then(user => console.log(user))
+  //   .catch(err => console.log(err));
+  // }
+
+  signOut = () => {
     Auth.signOut()
     .then(data => console.log(data))
     .catch(err => console.log(err));
