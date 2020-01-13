@@ -14,22 +14,6 @@ class Sidebar extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.getCollapseStates(props.routes);
-    this.state = {
-      projects: [
-        {
-          id: '1',
-          name: 'Project Squishy',
-        },
-        {
-          id: '2',
-          name: 'Project Squid',
-        },
-        {
-          id: '3',
-          name: 'Project Smash',
-        }
-      ]
-    }
   }
   // this creates the intial state of this component based on the collapse routes
   // that it gets through this.props.routes
@@ -179,7 +163,7 @@ class Sidebar extends React.Component {
               </a>
               <Collapse isOpen={this.state.openAvatar}>
                 <ul className="nav">
-                  {this.state.projects.map((project, key) => (
+                  {this.props.projects.map((project, key) => (
                     <li
                       id={key}
                       onClick={() =>
@@ -187,10 +171,8 @@ class Sidebar extends React.Component {
                         sessionStorage.setItem('projectName', project.name)
                       }>
                       <NavLink
-
                         to="/project/docs"
                         activeClassName=""
-
                       >
                         <span className="sidebar-mini-icon">{key + 1}</span>
                         <span className="sidebar-normal">

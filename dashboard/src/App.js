@@ -7,6 +7,9 @@ import AdminLayout from "layouts/Admin/Admin.jsx";
 import LoginPage from "views/pages/Login.jsx";
 import { Auth } from 'aws-amplify';
 
+import { API, graphqlOperation } from 'aws-amplify'
+import * as queries from './graphql/queries'
+
 const hist = createBrowserHistory();
 
 class App extends Component {
@@ -23,8 +26,7 @@ class App extends Component {
       await Auth.currentAuthenticatedUser({
           bypassCache: false
       })
-      .then(console.log(this.state.isAuthenticated))
-      .then(user => console.log(user.username))
+      .then(user => sessionStorage.setItem("userID", user.username))
     } catch (error) {
       this.setState({
         isAuthenticated: false,
@@ -33,24 +35,10 @@ class App extends Component {
     }
   }
 
-  // async queryForProjects() {
-  //   Auth.currentAuthenticatedUser({
-  //     bypassCache: false
-  //   }).then(user => console.log(user))
-  //   .catch(err => console.log(err));
-  // }
-
-  signOut = () => {
-    Auth.signOut()
-    .then(data => console.log(data))
-    .catch(err => console.log(err));
-    this.setState({
-      isAuthenticated: false,
-    })
-  }
-
   componentDidMount() {
-    this.authenticate();
+    if (!this.state.isAuthenticated) {
+      this.authenticate();
+    }
   }
 
   render() {
