@@ -7,6 +7,7 @@ import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
+import { Auth } from 'aws-amplify';
 
 import { API, graphqlOperation } from 'aws-amplify'
 import * as queries from '../../graphql/queries'
@@ -32,7 +33,7 @@ class Admin extends React.Component {
       document.documentElement.classList.remove("perfect-scrollbar-off");
       ps = new PerfectScrollbar(this.refs.mainPanel);
     }
-    this.queryForProjects();
+    this.getCurrentUserID();
   }
 
   componentWillUnmount() {
@@ -48,6 +49,18 @@ class Admin extends React.Component {
       document.documentElement.scrollTop = 0;
       document.scrollingElement.scrollTop = 0;
       this.refs.mainPanel.scrollTop = 0;
+    }
+  }
+
+  async getCurrentUserID() {
+    try {
+      await Auth.currentAuthenticatedUser({
+        bypassCache: false
+      })
+      .then(user => sessionStorage.setItem("userID", user.username))
+      this.queryForProjects()
+    } catch (error) {
+      console.log(error.message);
     }
   }
 

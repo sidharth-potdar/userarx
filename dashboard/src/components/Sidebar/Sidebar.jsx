@@ -15,6 +15,11 @@ class Sidebar extends React.Component {
     super(props);
     this.state = this.getCollapseStates(props.routes);
   }
+
+  updateSessionStorageWithProject = (project) => {
+    sessionStorage.setItem('projectName', project.name)
+    sessionStorage.setItem('projectID', project.sk.replace("project-", ""))
+  }
   // this creates the intial state of this component based on the collapse routes
   // that it gets through this.props.routes
   getCollapseStates = routes => {
@@ -44,6 +49,7 @@ class Sidebar extends React.Component {
     }
     return false;
   }
+
   // this function creates the links and collapses that appear in the sidebar (left menu)
   createLinks = routes => {
     return routes.map((prop, key) => {
@@ -166,11 +172,8 @@ class Sidebar extends React.Component {
                   {this.props.projects.map((project, key) => (
                     <li
                       id={key}
-                      onClick={() =>
-                        sessionStorage.setItem('projectID', project.sk), () =>
-                        sessionStorage.setItem('projectName', project.name), () =>
-                        sessionStorage.setItem('projectID', project.sk.replace("project-", ""))
-                      }>
+                      onClick={this.updateSessionStorageWithProject(project)}
+                    >
                       <NavLink
                         to="/project/docs"
                         activeClassName=""

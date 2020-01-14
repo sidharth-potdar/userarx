@@ -24,9 +24,8 @@ class App extends Component {
   async authenticate() {
     try {
       await Auth.currentAuthenticatedUser({
-          bypassCache: false
+        bypassCache: false
       })
-      .then(user => sessionStorage.setItem("userID", user.username))
     } catch (error) {
       this.setState({
         isAuthenticated: false,
@@ -35,11 +34,18 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    if (!this.state.isAuthenticated) {
-      this.authenticate();
-    }
-  }
+  // componentDidMount() {
+  //   if (!this.state.isAuthenticated) {
+  //     if (sessionStorage.getItem("userID") != null && sessionStorage.getItem("userID") != undefined) {
+  //       this.setState({
+  //         isAuthenticated: true,
+  //       })
+  //     }
+  //   }
+  //   if (!this.state.isAuthenticated) {
+  //     this.authenticate();
+  //   }
+  // }
 
   render() {
     const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -55,7 +61,7 @@ class App extends Component {
         <Switch>
           <Route path="/auth" render={props => <AuthLayout {...props} />} />
           <PrivateRoute path="/project" component={props => <AdminLayout {...props} />} />
-          <Redirect from="/" to="/project" />
+          <Redirect from="/" to="/auth/login" />
         </Switch>
       </Router>
     )

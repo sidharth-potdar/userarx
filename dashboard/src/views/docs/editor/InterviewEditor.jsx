@@ -113,24 +113,32 @@ class InterviewEditor extends Component {
       var selectedText = currentContentBlock.getText().slice(start, end);
 
       const newTag = {
-        id: uuid(),
-        name: prevState.tagName,
         color: prevState.tagColor,
-        snip: [selectedText],
+        name: prevState.tagName,
+        pk: sessionStorage.getItem("projectID"),
+        sk: "tag-" + uuid(),
       }
       const tags = [...prevState.tags, newTag];
 
       const newSnip = {
-        id: uuid(),
-        startIndex: start,
-        endIndex: end,
-        text: selectedText,
-        tag: prevState.tagName,
+        color: prevState.tagColor,
+        date: "01/01/2020",
+        pk: sessionStorage.getItem("projectID"),
+        session_id: "",
+        session_name: "",
+        sk: "snip-" + uuid(),
+        tag_id: newTag.sk.replace("tag-", ""),
+        tag_text: newTag.name,
+        text: selectedText.trim(),
       }
+
+      console.log("newTag", newTag);
+      console.log("newSnip", newSnip);
+
       const snips = [...prevState.snips, newSnip];
 
       sessionStorage.setItem("tags", JSON.stringify(tags));
-      sessionStorage.setItem("snips", snips);
+      sessionStorage.setItem("snips", JSON.stringify(snips));
 
       return {
         tags: tags,
@@ -323,11 +331,12 @@ const TagSpan = (props) => {
 
 function GetColor(tags, snip, snips) {
   if (snip != undefined && snip != null) {
+    console.log("snip", snip)
     var matchedSnip = snips[snips.findIndex(x => x.text === snip.trim())]
-    console.log(matchedSnip)
+    console.log("matchedSnip", matchedSnip)
     if (matchedSnip != undefined && matchedSnip != null) {
       var tagID = matchedSnip.tag_id
-
+      console.log("tagID", tagID)
       if (tagID != undefined && tagID != null) {
         console.log(tagID)
         var color = tags[tags.findIndex(x => x.sk === "tag-" + tagID)].color
