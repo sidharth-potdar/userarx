@@ -2,7 +2,6 @@ import Docs from "views/docs/Docs.jsx";
 import Board from "views/board/Board.jsx";
 import Insights from "views/insights/Insights.jsx";
 import Buttons from "views/components/Buttons.jsx";
-import Calendar from "views/Calendar.jsx";
 import Charts from "views/Charts.jsx";
 import Dashboard from "views/Dashboard.jsx";
 import ExtendedForms from "views/forms/ExtendedForms.jsx";

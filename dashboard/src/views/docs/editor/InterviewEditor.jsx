@@ -14,8 +14,6 @@ import { randomColor } from 'randomcolor';
 import './editor.css';
 import TagsInput from "react-tagsinput";
 import { BlockPicker } from 'react-color';
-import Moment from 'react-moment';
-import 'moment-timezone';
 import { API, graphqlOperation } from 'aws-amplify'
 import * as queries from '../../../graphql/queries'
 
