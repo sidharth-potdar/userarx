@@ -14,7 +14,8 @@ import { randomColor } from 'randomcolor';
 import './editor.css';
 import TagsInput from "react-tagsinput";
 import { BlockPicker } from 'react-color';
-
+import Moment from 'react-moment';
+import 'moment-timezone';
 import { API, graphqlOperation } from 'aws-amplify'
 import * as queries from '../../../graphql/queries'
 
@@ -122,7 +123,7 @@ class InterviewEditor extends Component {
 
       const newSnip = {
         color: prevState.tagColor,
-        date: "01/01/2020",
+        date:  Date.now(),
         pk: sessionStorage.getItem("projectID"),
         session_id: "",
         session_name: "",
@@ -198,6 +199,10 @@ class InterviewEditor extends Component {
   componentDidMount() {
     this.queryForSnips();
     generateRegexs();
+  }
+
+  componentWillUnmount() {
+
   }
 
   render() {
