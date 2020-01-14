@@ -14,8 +14,9 @@ import { randomColor } from 'randomcolor';
 import './editor.css';
 import TagsInput from "react-tagsinput";
 import { BlockPicker } from 'react-color';
-import { API, graphqlOperation } from 'aws-amplify'
-import * as queries from '../../../graphql/queries'
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../../graphql/queries';
+import * as mutations from '../../../graphql/mutations';
 
 class InterviewEditor extends Component {
   constructor(props) {
@@ -116,6 +117,7 @@ class InterviewEditor extends Component {
         name: prevState.tagName,
         pk: sessionStorage.getItem("projectID"),
         sk: "tag-" + uuid(),
+        isNew: true,
       }
       const tags = [...prevState.tags, newTag];
 
@@ -194,13 +196,34 @@ class InterviewEditor extends Component {
     }
   }
 
+  putTagsInDynamo() {
+    this.state.tags.forEach(async function(tag) {
+      if(tag.isNew) {
+        try {
+          const response = await API.graphql(graphqlOperation(mutations.putTags,
+            {
+              pk: tag.pk,
+              sk: tag.sk,
+              name: tag.name,
+              color: tag.color,
+            }
+          ))
+          console.log(response.data.putTags)
+        }
+        catch (error) {
+          console.log('error', error)
+        }
+      }
+    })
+  }
+
   componentDidMount() {
     this.queryForSnips();
     generateRegexs();
   }
 
   componentWillUnmount() {
-
+    this.putTagsInDynamo();
   }
 
   render() {

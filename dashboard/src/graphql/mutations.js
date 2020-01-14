@@ -1,8 +1,8 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const putTags = `mutation PutTags($pk: String, $sk: String) {
-  putTags(pk: $pk, sk: $sk) {
+export const putTags = `mutation PutTags($pk: String, $sk: String, $name: String, $color: String) {
+  putTags(pk: $pk, sk: $sk, name: $name, color: $color) {
     pk
     sk
     name
