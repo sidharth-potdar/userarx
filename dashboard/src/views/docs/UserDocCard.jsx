@@ -95,7 +95,14 @@ class UserDocCard extends Component {
   }
 
   componentDidMount() {
-    this.queryForTags();
+    if(sessionStorage.getItem("projectID") != null && sessionStorage.getItem("projectID") != undefined) {
+      this.queryForTags();
+    }
+    else {
+      setTimeout(() => {
+        this.queryForTags();
+      }, 1000);
+    }
     console.log(this.state.tags);
   }
 
