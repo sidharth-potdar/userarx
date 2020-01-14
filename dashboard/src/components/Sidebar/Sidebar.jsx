@@ -163,7 +163,7 @@ class Sidebar extends React.Component {
                 }
               >
                 <span>
-                  {sessionStorage.getItem('projectName')}
+                  {sessionStorage.getItem('projectName') ? sessionStorage.getItem('projectName') : "All Projects"}
                   <b className="caret" />
                 </span>
               </a>

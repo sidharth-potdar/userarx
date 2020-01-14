@@ -113,7 +113,7 @@ class AdminNavbar extends React.Component {
               </div>
               <NavbarBrand onClick={e => e.preventDefault()}>
                 <span className="d-none d-md-block">
-                  {sessionStorage.getItem('projectName')}
+                  {sessionStorage.getItem('projectName') ? sessionStorage.getItem('projectName') : "All Projects"}
                 </span>
                 <span className="d-block d-md-none">PD PRO React</span>
               </NavbarBrand>
