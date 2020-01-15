@@ -14,8 +14,13 @@ export const getSnips = `query GetSnips($pk: String, $sk: String) {
   getSnips(pk: $pk, sk: $sk) {
     pk
     sk
-    text
+    color
+    date
+    session_id
+    session_name
     tag_id
+    tag_text
+    text
   }
 }
 `;

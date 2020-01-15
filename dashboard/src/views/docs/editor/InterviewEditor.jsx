@@ -122,15 +122,16 @@ class InterviewEditor extends Component {
       const tags = [...prevState.tags, newTag];
 
       const newSnip = {
+        pk: sessionStorage.getItem("projectID"),
+        sk: "snip-" + uuid(),
         color: prevState.tagColor,
         date:  Date.now(),
-        pk: sessionStorage.getItem("projectID"),
-        session_id: "",
-        session_name: "",
-        sk: "snip-" + uuid(),
+        session_id: "c015a3e6-d869-4b2c-8b8f-de885a88a377",
+        session_name: "Meghna Dash Session 2",
         tag_id: newTag.sk.replace("tag-", ""),
         tag_text: newTag.name,
         text: selectedText.trim(),
+        isNew: true,
       }
 
       console.log("newTag", newTag);
@@ -217,6 +218,32 @@ class InterviewEditor extends Component {
     })
   }
 
+  putSnipsInDynamo() {
+    this.state.snips.forEach(async function(snip) {
+      if(snip.isNew) {
+        try {
+          const response = await API.graphql(graphqlOperation(mutations.putSnips,
+            {
+              pk: snip.pk,
+              sk: snip.sk,
+              color: snip.color,
+              date: snip.date,
+              session_id: snip.session_id,
+              session_name: snip.session_name,
+              tag_id: snip.tag_id,
+              tag_text: snip.tag_text,
+              text: snip.text,
+            }
+          ))
+          console.log(response.data.putSnips)
+        }
+        catch (error) {
+          console.log('error', error)
+        }
+      }
+    })
+  }
+
   componentDidMount() {
     this.queryForSnips();
     generateRegexs();
@@ -224,6 +251,7 @@ class InterviewEditor extends Component {
 
   componentWillUnmount() {
     this.putTagsInDynamo();
+    this.putSnipsInDynamo();
   }
 
   render() {
