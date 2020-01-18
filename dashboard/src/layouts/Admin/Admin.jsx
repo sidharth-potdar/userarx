@@ -33,7 +33,7 @@ class Admin extends React.Component {
       document.documentElement.classList.remove("perfect-scrollbar-off");
       ps = new PerfectScrollbar(this.refs.mainPanel);
     }
-    this.getCurrentUserID();
+    this.queryForProjects();
   }
 
   componentWillUnmount() {
@@ -51,19 +51,7 @@ class Admin extends React.Component {
       this.refs.mainPanel.scrollTop = 0;
     }
   }
-
-  async getCurrentUserID() {
-    try {
-      await Auth.currentAuthenticatedUser({
-        bypassCache: false
-      })
-      .then(user => sessionStorage.setItem("userID", user.username))
-      this.queryForProjects()
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
-
+  
   async queryForProjects() {
     try {
       const response = await API.graphql(graphqlOperation(queries.getProjects,

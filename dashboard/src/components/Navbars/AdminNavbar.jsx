@@ -74,6 +74,7 @@ class AdminNavbar extends React.Component {
 
   signOut = () => {
     Auth.signOut();
+    // sessionStorage.clear();
   }
 
   render() {

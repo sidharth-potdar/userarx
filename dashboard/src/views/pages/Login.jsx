@@ -45,8 +45,10 @@ class Login extends Component {
   async handleSignIn(event) {
     event.preventDefault();
     try {
-      await Auth.signIn(this.state.email, this.state.password);
-      this.props.history.push("/project/docs");
+      await Auth.signIn(this.state.email, this.state.password)
+      .then(user => sessionStorage.setItem("userID", user.username))
+      .then(user => console.log("signed in"))
+      .then(user => this.props.history.push("/project/docs"))
     } catch (error) {
       this.setState({
         message: error.message,
