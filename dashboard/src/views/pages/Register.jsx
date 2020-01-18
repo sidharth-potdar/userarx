@@ -98,10 +98,11 @@ class Register extends Component {
                   <i className="nc-icon nc-tv-2" />
                 </div>
                 <div className="description">
-                  <h5 className="info-title">Marketing</h5>
+                  <h5 className="info-title">Manage User Data in One Place</h5>
                   <p className="description">
-                    We've created the marketing campaign of the website. It was
-                    a very interesting collaboration.
+                    Easily maintain all of your user research data in one place
+                    with Userarx. Take notes directly on our platform or import
+                    notes from previous sessions.
                   </p>
                 </div>
               </div>
@@ -110,10 +111,11 @@ class Register extends Component {
                   <i className="nc-icon nc-html5" />
                 </div>
                 <div className="description">
-                  <h5 className="info-title">Fully Coded in HTML5</h5>
+                  <h5 className="info-title">Data Analysis to Find Trends</h5>
                   <p className="description">
-                    We've developed the website with HTML5 and CSS3. The client
-                    has access to the code using GitHub.
+                    Streamline your analysis and synthesis processes with
+                    our powerful tagging and search tools. We help you efficiently
+                    sort through user data to find crucial patterns.
                   </p>
                 </div>
               </div>
@@ -122,10 +124,11 @@ class Register extends Component {
                   <i className="nc-icon nc-atom" />
                 </div>
                 <div className="description">
-                  <h5 className="info-title">Built Audience</h5>
+                  <h5 className="info-title">Valuable and Actionable Insights</h5>
                   <p className="description">
-                    There is also a Fully Customizable CMS Admin Dashboard for
-                    this product.
+                    Learn what your users really want with insights curated just
+                    for you. Ground your team’s efforts in real data backed up
+                    by interviews and usability tests.
                   </p>
                 </div>
               </div>
