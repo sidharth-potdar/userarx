@@ -26,6 +26,7 @@ class Register extends Component {
     this.state = {
       email: "",
       password: "",
+      organization: "",
       message: "",
       verificationCode: "",
       shouldVerify: false,
@@ -41,6 +42,12 @@ class Register extends Component {
   handlePasswordChange(event) {
     this.setState({
       password: event.target.value
+    })
+  }
+
+  handleOrganizationChange(event) {
+    this.setState({
+      organization: event.target.value
     })
   }
 
@@ -168,6 +175,20 @@ class Register extends Component {
                         onChange={(e) => {this.handlePasswordChange(e)}}
                       />
                     </InputGroup>
+                    <InputGroup>
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="nc-icon nc-bank" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        placeholder="Organization"
+                        type="text"
+                        autoComplete="off"
+                        onChange={(e) => {this.handleOrganizationChange(e)}}
+                      />
+                    </InputGroup>
+
                     {this.state.shouldVerify ?
                       <InputGroup>
                         <InputGroupAddon addonType="prepend">
