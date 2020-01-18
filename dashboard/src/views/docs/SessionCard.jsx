@@ -28,7 +28,7 @@ import {
 import Editor from "views/docs/Editor.jsx";
 import InterviewEditor from "./editor/InterviewEditor.jsx";
 
-class UserDocCard extends React.Component {
+class SessionCard extends React.Component {
   constructor(props) {
     super(props);
     // this.name = this.props.name;
@@ -75,10 +75,14 @@ class UserDocCard extends React.Component {
     })
   }
 
+  componentWillUnmount() {
+    console.log("unmounted")
+  }
+
   render() {
     return (
       <Col md="3">
-        <Card className="card-doc">
+        <Card className="card-doc" tag="a" onClick={this.toggleModal} style={{ cursor: "pointer" }}>
           <CardHeader>
             <CardTitle tag="h4">{this.props.name}</CardTitle>
             <h5 className="card-category">{this.props.date}</h5>
@@ -90,53 +94,22 @@ class UserDocCard extends React.Component {
                 {tag}
               </Badge>
             ))}
-            <div align="right">
-              <Button
-                className="btn-round btn-icon btn-icon-mini"
-                color="info"
-                id="tooltip42906017"
-                title=""
-                type="button"
-                onClick={this.toggleModal}
-              >
-                <i className="nc-icon nc-send" />
-              </Button>
-              <UncontrolledTooltip
-                delay={0}
-                target="tooltip42906017"
-              >
-                View Doc
-              </UncontrolledTooltip>
-
-              <Button
-                className="btn-round btn-icon btn-icon-mini"
-                color="danger"
-                id="tooltip570363224"
-                title=""
-                type="button"
-              >
-                <i className="nc-icon nc-simple-remove" />
-              </Button>
-              <UncontrolledTooltip
-                delay={0}
-                target="tooltip570363224"
-              >
-                Delete
-              </UncontrolledTooltip>
-            </div>
           </CardBody>
         </Card>
-        <Modal isOpen={this.state.showModal} toggle={this.toggleModal} size="lg">
-          <div className="modal-header justify-content-center">
+        <Modal style={{maxWidth: '1600px', width: '70%'}} isOpen={this.state.showModal} toggle={this.toggleModal} size="lg">
+          <div className="modal-header justify-content-right">
+            <Button close aria-label="Cancel">
+              <span aria-hidden>&ndash;</span>
+            </Button>
             <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.toggleModal}>
               <span aria-hidden="true">×</span>
             </button>
             <h5 className="modal-title">{this.state.name}</h5>
           </div>
           <ModalBody>
-            <Row>
-              <Col>
-                <FormGroup>
+            <FormGroup>
+              <Row>
+                <Col>
                   <Input
                     type="textarea"
                     name="name"
@@ -146,6 +119,8 @@ class UserDocCard extends React.Component {
                     onChange={(e) => {this.handleNameChange(e)}}
                   />
                   <br/>
+                </Col>
+                <Col>
                   <Input
                     type="textarea"
                     name="name"
@@ -155,6 +130,10 @@ class UserDocCard extends React.Component {
                     onChange={(e) => {this.handleDateChange(e)}}
                   />
                   <br/>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
                   <Input
                     type="textarea"
                     name="name"
@@ -163,9 +142,9 @@ class UserDocCard extends React.Component {
                     placeholder="Description"
                     onChange={(e) => {this.handleDescriptionChange(e)}}
                   />
-                </FormGroup>
-              </Col>
-            </Row>
+                </Col>
+              </Row>
+            </FormGroup>
             <br />
             <InterviewEditor />
             <br />
@@ -197,4 +176,4 @@ class UserDocCard extends React.Component {
   }
 }
 
-export default UserDocCard;
+export default SessionCard;

@@ -1,6 +1,6 @@
 import React from "react";
 import { DragDropContext } from "react-beautiful-dnd";
-import { Card, Row, Col, Button, UncontrolledTooltip, CardHeader, CardBody, CardTitle } from "reactstrap";
+import { Card, Row, Col, Button, UncontrolledTooltip, CardHeader, CardBody, CardTitle, Input } from "reactstrap";
 import styled from "styled-components";
 
 import Category from "./Category.jsx";
@@ -86,9 +86,13 @@ export default class Board extends React.Component {
   }
 
   createNewCategory() {
+    if (this.state.newCategoryName === "") {
+      return;
+    }
+
     const newCategory = {
       id: uuid4(),
-      title: "New Category",
+      title: this.state.newCategoryName,
       snipIds: [],
     };
 
@@ -99,6 +103,7 @@ export default class Board extends React.Component {
         [newCategory.id]: newCategory
       },
       categoryOrder: [...this.state.categoryOrder, newCategory.id],
+      newCategoryName: "",
     };
 
     console.log(newState);
@@ -106,53 +111,62 @@ export default class Board extends React.Component {
     this.setState(newState);
   }
 
+  handleNewCategoryChange = (event) => {
+    this.setState({
+      newCategoryName: event.target.value,
+    });
+  }
+
   render() {
     return (
-      <>
-        <div className="content">
-          <Row>
-            <DragDropContext
-              onDragEnd={this.onDragEnd}
-            >
-              <Container>
-                {this.state.categoryOrder.map(categoryId => {
-                  const category = this.state.categories[categoryId];
-                  const snips = category.snipIds.map(snipId => this.state.snips[snipId]);
+      <div className="content">
+        <Row>
+          <DragDropContext
+            onDragEnd={this.onDragEnd}
+          >
+            <Container>
+              {this.state.categoryOrder.map(categoryId => {
+                const category = this.state.categories[categoryId];
+                const snips = category.snipIds.map(snipId => this.state.snips[snipId]);
 
-                  return <Category key={category.id} category={category} snips={snips} />;
-                })}
-              </Container>
-            </DragDropContext>
-            <Col style={{ paddingLeft: "10px", paddingRight: "10px" }}>
-              <Card className="card-doc" style={{ width: "17.5em", borderWidth: "2px" }}>
-                <CardHeader>
-                  <CardTitle tag="h4" style={{color: "gray"}}>New Category</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <div align="center">
-                    <Button
-                      className="btn-round btn-icon"
-                      color="success"
-                      id="tooltip-new"
-                      title=""
-                      type="button"
-                      onClick={this.createNewCategory}
-                    >
-                      <i className="nc-icon nc-simple-add" />
-                    </Button>
-                    <UncontrolledTooltip
-                      delay={0}
-                      target="tooltip-new"
-                    >
-                      Create new category
-                    </UncontrolledTooltip>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </div>
-      </>
+                return <Category key={category.id} category={category} snips={snips} />;
+              })}
+            </Container>
+          </DragDropContext>
+          <Col style={{ paddingLeft: "10px", paddingRight: "10px" }}>
+            <Card className="card-doc" style={{ width: "20em", borderWidth: "2px" }}>
+              <CardHeader>
+                <CardTitle tag="h4" style={{color: "gray"}}>
+                  <Input
+                    type="text"
+                    name="newCategory"
+                    id="newCategory"
+                    value={this.state.newCategoryName}
+                    placeholder="New Category"
+                    onChange={(e) => {this.handleNewCategoryChange(e)}}
+                    style={{ border: "0px solid #dddddd", fontSize: "24px" }}
+                  >
+                  </Input>
+                </CardTitle>
+              </CardHeader>
+              <CardBody>
+                <div align="center">
+                  <Button
+                    className="btn-round btn-icon"
+                    color="success"
+                    id="tooltip-new"
+                    title=""
+                    type="button"
+                    onClick={this.createNewCategory}
+                  >
+                    <i className="nc-icon nc-simple-add" />
+                  </Button>
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </div>
     )
   }
 }

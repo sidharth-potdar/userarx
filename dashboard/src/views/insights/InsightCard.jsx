@@ -34,11 +34,31 @@ export default class InsightCard extends React.Component {
     super(props);
 
     this.state = {
-      description: "Users don't know how to login.",
-      date: "12/34/69",
-      text: "They're dumb as hell.",
-      showModal: false,
+      title: this.props.title,
+      date: this.props.date,
+      description: this.props.description,
+      showModal: this.props.showModal,
       isOpen: false,
+      selectedSnips: [
+        {
+          text: "Yeah, aight, bust down, Thotiana",
+          tag: "bust",
+          session: "Billy Bob Session 1",
+          date: "12/34/69"
+        },
+        {
+          text: "Bust down, Thotiana (bust down, Thotiana)",
+          tag: "down",
+          session: "Meghna Dash Session 2",
+          date: "1/1/13"
+        },
+        {
+          text: "Speed it up, then slow that shit down, on the gang (slow it down)",
+          tag: "thotiana",
+          session: "Squishy Circle Session 3",
+          date: "2/15/98"
+        },
+      ],
     };
 
     this.toggleModal = this.toggleModal.bind(this);
@@ -56,15 +76,15 @@ export default class InsightCard extends React.Component {
     });
   }
 
-  handleDescriptionChange(event) {
+  handleTitleChange(event) {
     this.setState({
-      description: event.target.value
+      title: event.target.value
     });
   }
 
-  handleTextChange(event) {
+  handleDescriptionChange(event) {
     this.setState({
-      text: event.target.value
+      description: event.target.value
     });
   }
 
@@ -79,7 +99,7 @@ export default class InsightCard extends React.Component {
       <Col md="3">
         <Card className="card-doc" tag="a" onClick={this.toggleModal} style={{ cursor: "pointer" }}>
           <CardHeader>
-            <CardTitle tag="h4">{this.props.description}</CardTitle>
+            <CardTitle tag="h4">{this.state.title}</CardTitle>
             <h5 className="card-category">{this.state.date}</h5>
           </CardHeader>
         </Card>
@@ -89,21 +109,23 @@ export default class InsightCard extends React.Component {
             <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.toggleModal}>
               <span aria-hidden="true">×</span>
             </button>
-            <h5 className="modal-title">{this.props.description}</h5>
+            <h5 className="modal-title">{this.state.title}</h5>
           </div>
           <ModalBody>
-            <Row>
-              <Col>
-                <FormGroup>
+            <FormGroup>
+              <Row>
+                <Col>
                   <Input
                     type="textarea"
                     name="description"
                     id="description"
-                    value={this.state.description}
-                    placeholder="Description"
-                    onChange={(e) => {this.handleDescriptionChange(e)}}
+                    value={this.state.title}
+                    placeholder="Title"
+                    onChange={(e) => {this.handleTitleChange(e)}}
                   />
                   <br/>
+                </Col>
+                <Col>
                   <Input
                     type="textarea"
                     name="date"
@@ -113,20 +135,34 @@ export default class InsightCard extends React.Component {
                     onChange={(e) => {this.handleDateChange(e)}}
                   />
                   <br/>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
                   <Input
                     type="textarea"
-                    name="Text"
-                    id="Text"
-                    value={this.state.text}
-                    placeholder="Text"
-                    onChange={(e) => {this.handleTextChange(e)}}
+                    name="text"
+                    id="text"
+                    value={this.state.description}
+                    placeholder="Description"
+                    onChange={(e) => {this.handleDescriptionChange(e)}}
                   />
-                </FormGroup>
-              </Col>
-            </Row>
-            <Button color="info" onClick={() => this.toggleTable()}>
-              Select evidence
-            </Button>
+                </Col>
+              </Row>
+            </FormGroup>
+            {this.state.selectedSnips.map((snip) => (
+              <Row>
+                <Card className="card-doc" style={{ width: "55em", borderColor: "#8a8988", borderWidth: "20px", padding: "15px" }}>
+                  <strong>{snip.session}</strong>
+                  <CardText>{snip.text}</CardText>
+                </Card>
+              </Row>
+            ))}
+            <div align="center">
+              <Button color="info" onClick={() => this.toggleTable()}>
+                Select evidence
+              </Button>
+            </div>
             <Collapse isOpen={this.state.isOpen}>
               <InsightSelectTable />
             </Collapse>

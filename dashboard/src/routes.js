@@ -1,13 +1,14 @@
-import Docs from "views/docs/Docs.jsx";
+import Sessions from "views/docs/Sessions.jsx";
 import Board from "views/board/Board.jsx";
 import Insights from "views/insights/Insights.jsx";
+import Prioritization from "views/prioritization/Prioritization.jsx";
 
 const routes = [
   {
     path: "/docs",
-    name: "Docs",
+    name: "Sessions",
     icon: "nc-icon nc-bullet-list-67",
-    component: Docs,
+    component: Sessions,
     layout: "/project"
   },
   {
@@ -23,7 +24,14 @@ const routes = [
     icon: "nc-icon nc-bulb-63",
     component: Insights,
     layout: "/project"
-  }
+  },
+  {
+    path: "/prioritization",
+    name: "Prioritization",
+    icon: "nc-icon nc-bulb-63",
+    component: Prioritization,
+    layout: "/project"
+  },
 ];
 
 export default routes;

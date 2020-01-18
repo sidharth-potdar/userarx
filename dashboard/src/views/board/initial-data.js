@@ -28,6 +28,7 @@ const initialData = {
     },
   },
   categoryOrder: ["category-1", "category-2", "category-3"],
+  newCategoryName: "",
 };
 
 export default initialData;

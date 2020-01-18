@@ -9,7 +9,7 @@ const Container = styled.div`
   margin: 8px;
   border: 1px solid lightgrey;
   border-radius: 2px;
-  width: 300px;
+  width: 200px;
   height:
   display: flex;
   flex-directional: column;
@@ -31,7 +31,7 @@ export default class Category extends React.Component {
   render() {
     return (
       <Col style={{ paddingLeft: "10px", paddingRight: "10px" }}>
-        <Card className="card-doc" style={{ width: "25em", borderWidth: "2px" }}>
+        <Card className="card-doc" style={{ width: "20em", borderWidth: "2px" }}>
           <CardHeader>
             <CardTitle tag="h4">{this.props.category.title}</CardTitle>
           </CardHeader>

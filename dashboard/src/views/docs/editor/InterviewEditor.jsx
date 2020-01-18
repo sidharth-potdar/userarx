@@ -205,7 +205,7 @@ class InterviewEditor extends Component {
 
   componentDidMount() {
 
-    
+
     sessionStorage.setItem("tags", this.state.tags);
     sessionStorage.setItem("snips", this.state.snips);
     generateRegexs();
@@ -246,8 +246,8 @@ class InterviewEditor extends Component {
     return (
       <div>
         <Row>
-          <Col>
-            <strong> Interview Transcript </strong>
+          <Col md="9">
+            <strong>Notes</strong>
             <div>
               <Button
                 className="btn btn-wd btn-fill btn-magnify"
@@ -266,12 +266,12 @@ class InterviewEditor extends Component {
               value={this.state.text}
               editorState={this.state.editorState}
               onChange={this.onChange}
-              placeholder="Write your notes about the user's feedback here"
+              placeholder="Write your notes here"
               ref="editor"
               // ref={(element) => { this.editor = element; }}
             />
           </Col>
-          <Col>
+          <Col md="3">
             <strong> Tags </strong>
             <h2/>
             <div style={{ paddingTop: '11px' }}>
