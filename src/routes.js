@@ -1,4 +1,4 @@
-import Sessions from "views/docs/Sessions.jsx";
+import Sessions from "views/sessions/Sessions.jsx";
 import Board from "views/board/Board.jsx";
 import Insights from "views/insights/Insights.jsx";
 import Prioritization from "views/prioritization/Prioritization.jsx";
@@ -8,7 +8,7 @@ import Register from "views/pages/Register.jsx";
 
 const routes = [
   {
-    path: "/docs",
+    path: "/sessions",
     name: "Sessions",
     icon: "nc-icon nc-bullet-list-67",
     component: Sessions,

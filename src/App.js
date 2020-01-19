@@ -13,7 +13,7 @@ class App extends Component {
   constructor(props) {
     super(props);
   }
-  
+
   render() {
     if(sessionStorage.getItem("userID") != null && sessionStorage.getItem("userID") != undefined) {
       return (
@@ -21,7 +21,7 @@ class App extends Component {
           <Switch>
             <Route path="/auth" render={props => <AuthLayout {...props} />} />
             <Route path="/project" component={props => <AdminLayout {...props} />} />
-            <Redirect from="/" to="/project/docs" />
+            <Redirect from="/" to="/project/sessions" />
           </Switch>
         </Router>
       )

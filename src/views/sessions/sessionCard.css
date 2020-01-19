@@ -1,0 +1,17 @@
+.name-input {
+  outline: 0;
+  border-width: 0 0 2px;
+  border-color: blue
+}
+.name-input:focus {
+  border-color: green
+}
+.card-title {
+  font-size: 1.25em
+}
+.mountain-background {
+   background-image: url("/mountains.png");
+}
+.text-area {
+  font-size: 16px !important
+}

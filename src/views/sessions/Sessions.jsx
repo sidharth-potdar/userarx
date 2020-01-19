@@ -25,7 +25,7 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 
-import SessionCard from "views/docs/SessionCard.jsx";
+import SessionCard from "views/sessions/SessionCard.jsx";
 
 class Sessions extends React.Component {
   constructor(props) {

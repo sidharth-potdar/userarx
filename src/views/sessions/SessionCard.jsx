@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-
-// reactstrap components
 import {
   Badge,
   Button,
@@ -28,7 +26,9 @@ import {
 } from "reactstrap";
 import InterviewEditor from "./editor/InterviewEditor.jsx";
 import ReactDatetime from "react-datetime";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import './sessionCard.css';
+import mountains from "assets/img/mountain.png";
 
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../../graphql/queries';
@@ -63,7 +63,7 @@ class SessionCard extends Component {
 
   handleDateChange(event) {
     this.setState({
-      date: event.target.value
+      date: event
     })
   }
 
@@ -109,7 +109,7 @@ class SessionCard extends Component {
   render() {
     return (
       <Col md="3">
-        <Card className="card-doc" tag="a" onClick={this.toggleModal} style={{ cursor: "pointer" }}>
+        <Card tag="a" onClick={this.toggleModal} style={{ cursor: "pointer" }}>
           <CardHeader>
             <CardTitle tag="h4">
               {this.props.name}
@@ -125,36 +125,38 @@ class SessionCard extends Component {
             ))}
           </CardBody>
         </Card>
-        <Modal style={{maxWidth: '1600px', width: '70%'}} isOpen={this.state.showModal} toggle={this.toggleModal} size="lg">
+        <Modal className="mountain-background" style={{maxWidth: '1600px', width: '70%'}} isOpen={this.state.showModal} toggle={this.toggleModal} size="lg">
           <div className="modal-header justify-content-right">
-            <Button close aria-label="Cancel">
-              <span aria-hidden>&ndash;</span>
-            </Button>
             <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.toggleModal}>
               <span aria-hidden="true">×</span>
             </button>
+            <Button close aria-label="Cancel">
+              <span aria-hidden>&ndash;</span>
+            </Button>
           </div>
-            <h5>
-              <Input
-                type="text"
-                name="name"
-                className="name-input"
-                id="name"
-                value={this.state.name}
-                placeholder="Name"
-                onChange={(e) => {this.handleNameChange(e)}}
-                style={{ border: 'none', textAlign: 'center', fontSize: '1.5em', marginTop: '-20px'}}
-              />
-            </h5>
-            <ModalHeader style={{ padding: '0px', height: '0px', margin: '0px'}}/>
+          <h5>
+            <Input
+              type="text"
+              name="name"
+              id="name"
+              className="name-input"
+              value={this.state.name}
+              placeholder="Name"
+              onChange={(e) => {this.handleNameChange(e)}}
+              style={{ border: 'none', textAlign: 'center', fontSize: '1.5em', marginTop: '-20px'}}
+            />
+          </h5>
+          <ModalHeader style={{ padding: '0px', height: '0px', margin: '0px'}}/>
           <ModalBody>
             <FormGroup>
               <Row>
                 <Col>
+                  <CardTitle className="card-title">Description</CardTitle>
                   <Input
                     type="textarea"
                     name="description"
                     id="description"
+                    className="text-area"
                     value={this.state.description}
                     placeholder="Description"
                     onChange={(e) => {this.handleDescriptionChange(e)}}

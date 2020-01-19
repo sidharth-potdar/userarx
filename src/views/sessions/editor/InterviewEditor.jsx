@@ -8,7 +8,7 @@ import {
   RichUtils,
 } from 'draft-js';
 // import { createEditorStateWithText } from 'draft-js-plugins-editor';
-import { Badge, Button, Col, Input, Row } from 'reactstrap';
+import { Badge, Button, Col, Input, Row, CardTitle } from 'reactstrap';
 import { uuid } from 'uuidv4';
 import { randomColor } from 'randomcolor';
 import './editor.css';
@@ -283,10 +283,11 @@ class InterviewEditor extends Component {
       <div>
         <Row>
           <Col ld="8" md="8">
-            <strong> Interview Transcript </strong>
+            <CardTitle>Interview Transcript</CardTitle>
             <Editor
               name="text"
               id="text"
+              style={{ fontSize: '25px'}}
               value={this.state.text}
               editorState={this.state.editorState}
               onChange={this.onChange}
@@ -404,7 +405,7 @@ function GetColor(tags, snip, snips) {
 const styles = {
   editor: {
     cursor: 'text',
-    borderWidth: '1px'
+    borderWidth: '1px',
   },
   tag: {
     direction: 'ltr',

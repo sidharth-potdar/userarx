@@ -175,7 +175,7 @@ class Sidebar extends React.Component {
                       onClick={this.updateSessionStorageWithProject(project)}
                     >
                       <NavLink
-                        to="/project/docs"
+                        to="/project/sessions"
                         activeClassName=""
                       >
                         <span className="sidebar-mini-icon">{key + 1}</span>

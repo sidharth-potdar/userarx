@@ -48,7 +48,7 @@ class Login extends Component {
       await Auth.signIn(this.state.email, this.state.password)
       .then(user => sessionStorage.setItem("userID", user.username))
       .then(user => console.log("signed in"))
-      .then(user => this.props.history.push("/project/docs"))
+      .then(user => this.props.history.push("/project/sessions"))
     } catch (error) {
       this.setState({
         message: error.message,
@@ -113,7 +113,7 @@ class Login extends Component {
                       block
                       className="btn-round mb-3"
                       color="warning"
-                      href="/project/docs"
+                      href="/project/sessions"
                       onClick={e => {this.handleSignIn(e)}}
                     >
                       Log In
