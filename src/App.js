@@ -13,7 +13,7 @@ class App extends Component {
   constructor(props) {
     super(props);
   }
-
+  
   render() {
     if(sessionStorage.getItem("userID") != null && sessionStorage.getItem("userID") != undefined) {
       return (
@@ -27,7 +27,6 @@ class App extends Component {
       )
     }
     else {
-      console.log("Get out")
       return (
         <Router history={hist}>
           <Switch>

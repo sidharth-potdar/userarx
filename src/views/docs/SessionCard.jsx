@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 
 // reactstrap components
 import {
@@ -22,15 +22,18 @@ import {
   Col,
   UncontrolledTooltip,
   Modal,
+  ModalHeader,
   ModalBody,
   ModalFooter
 } from "reactstrap";
 import InterviewEditor from "./editor/InterviewEditor.jsx";
+import ReactDatetime from "react-datetime";
+import './sessionCard.css';
 
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../../graphql/queries';
 
-class SessionCard extends React.Component {
+class SessionCard extends Component {
   constructor(props) {
     super(props);
     // this.name = this.props.name;
@@ -41,7 +44,6 @@ class SessionCard extends React.Component {
       date: this.props.date,
       description: this.props.description,
       showModal: false,
-      notesValue: "",
       tags: []
     };
     this.toggleModal = this.toggleModal.bind(this);
@@ -68,12 +70,6 @@ class SessionCard extends React.Component {
   handleDescriptionChange(event) {
     this.setState({
       description: event.target.value
-    })
-  }
-
-  handleNotesChange(event) {
-    this.setState({
-      notes: event.target.value
     })
   }
 
@@ -115,7 +111,9 @@ class SessionCard extends React.Component {
       <Col md="3">
         <Card className="card-doc" tag="a" onClick={this.toggleModal} style={{ cursor: "pointer" }}>
           <CardHeader>
-            <CardTitle tag="h4">{this.props.name}</CardTitle>
+            <CardTitle tag="h4">
+              {this.props.name}
+            </CardTitle>
             <h5 className="card-category">{this.props.date}</h5>
             <p style={{color: "gray"}}>{this.props.description}</p>
           </CardHeader>
@@ -135,43 +133,44 @@ class SessionCard extends React.Component {
             <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.toggleModal}>
               <span aria-hidden="true">×</span>
             </button>
-            <h5 className="modal-title">{this.state.name}</h5>
           </div>
+            <h5>
+              <Input
+                type="text"
+                name="name"
+                className="name-input"
+                id="name"
+                value={this.state.name}
+                placeholder="Name"
+                onChange={(e) => {this.handleNameChange(e)}}
+                style={{ border: 'none', textAlign: 'center', fontSize: '1.5em', marginTop: '-20px'}}
+              />
+            </h5>
+            <ModalHeader style={{ padding: '0px', height: '0px', margin: '0px'}}/>
           <ModalBody>
             <FormGroup>
               <Row>
                 <Col>
                   <Input
                     type="textarea"
-                    name="name"
-                    id="name"
-                    value={this.state.name}
-                    placeholder="Name"
-                    onChange={(e) => {this.handleNameChange(e)}}
-                  />
-                  <br/>
-                </Col>
-                <Col>
-                  <Input
-                    type="textarea"
-                    name="name"
-                    id="name"
-                    value={this.state.date}
-                    placeholder="Date"
-                    onChange={(e) => {this.handleDateChange(e)}}
-                  />
-                  <br/>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Input
-                    type="textarea"
-                    name="name"
-                    id="name"
+                    name="description"
+                    id="description"
                     value={this.state.description}
                     placeholder="Description"
                     onChange={(e) => {this.handleDescriptionChange(e)}}
+                  />
+                </Col>
+                <Col>
+                  <CardTitle>Date & Time of Interview</CardTitle>
+                  <ReactDatetime
+                    name="date"
+                    id="date"
+                    value={this.state.date}
+                    inputProps={{
+                      className: "form-control",
+                      placeholder: "Date & time of interview"
+                    }}
+                    onChange={(e) => {this.handleDateChange(e)}}
                   />
                 </Col>
               </Row>
@@ -179,19 +178,6 @@ class SessionCard extends React.Component {
             <br />
             <InterviewEditor tags={this.state.tags} />
             <br />
-            <FormGroup>
-              <Input
-                type="textarea"
-                name="notes"
-                id="notes"
-                style={{
-                  minHeight: "500px",
-                }}
-                value={this.state.notes}
-                placeholder="Notes"
-                onChange={(e) => {this.handleNotesChange(e)}}
-              />
-            </FormGroup>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModal}>

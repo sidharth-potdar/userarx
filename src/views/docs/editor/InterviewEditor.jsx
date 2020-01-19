@@ -269,6 +269,7 @@ class InterviewEditor extends Component {
           />
           <BlockPicker
             color={ this.state.tagColor }
+            colors={['#9DE1E2', '#B3DBF5', '#D2D1FB', '#EECAF0', '#FDC5E2', '#FDC7C8', '#EECFB2', '#D5D7A8', '#B9DEB3', '#9FE3CA']}
             style={{ marginTop: '10px' }}
             triangle="hide"
             onChange={this.handleColorInput}
@@ -281,20 +282,8 @@ class InterviewEditor extends Component {
     return (
       <div>
         <Row>
-          <Col>
+          <Col ld="8" md="8">
             <strong> Interview Transcript </strong>
-            <div>
-              <Button
-                className="btn btn-wd btn-fill btn-magnify"
-                onMouseDown={this.promptForTag}
-              >
-                <span className="btn-label">
-                  <i className="nc-icon nc-simple-add" />
-                </span>
-                New Tag
-              </Button>
-              {tagInput}
-            </div>
             <Editor
               name="text"
               id="text"
@@ -308,7 +297,18 @@ class InterviewEditor extends Component {
           </Col>
           <Col>
             <strong> Tags </strong>
-            <h2/>
+            <div>
+              <Button
+                className="btn btn-wd btn-fill btn-magnify"
+                onMouseDown={this.promptForTag}
+              >
+                <span className="btn-label">
+                  <i className="nc-icon nc-simple-add" />
+                </span>
+                New Tag
+              </Button>
+              {tagInput}
+            </div>
             <div style={{ paddingTop: '11px' }}>
             {this.state.tags.map((tag, key) => (
               <Badge key={key} style={{ backgroundColor: `${tag.color}` }} pill>
@@ -376,7 +376,7 @@ const TagSpan = (props) => {
     <span
       id={uuid()}
       style={styles.tag}
-      style={{ color: GetColor(JSON.parse(sessionStorage.getItem('tags')), props.decoratedText, JSON.parse(sessionStorage.getItem('snips'))) }}
+      style={{ backgroundColor: GetColor(JSON.parse(sessionStorage.getItem('tags')), props.decoratedText, JSON.parse(sessionStorage.getItem('snips'))) }}
     >
       {props.children}
     </span>
@@ -395,14 +395,7 @@ function GetColor(tags, snip, snips) {
         console.log(tagID)
         var color = tags[tags.findIndex(x => x.sk === "tag-" + tagID)].color
       }
-      else {
-        var color = "green"
-      }
-    } else {
-      var color = "yellow"
     }
-  } else {
-    var color = "red"
   }
 
   return color;
@@ -411,7 +404,7 @@ function GetColor(tags, snip, snips) {
 const styles = {
   editor: {
     cursor: 'text',
-    borderWidth: '1px',
+    borderWidth: '1px'
   },
   tag: {
     direction: 'ltr',
