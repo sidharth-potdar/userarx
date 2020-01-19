@@ -26,7 +26,6 @@ import {
 } from "reactstrap";
 
 import SessionCard from "views/docs/SessionCard.jsx";
-import Editor from "views/docs/Editor.jsx"
 
 class Sessions extends React.Component {
   constructor(props) {

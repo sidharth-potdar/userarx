@@ -25,7 +25,6 @@ import {
   ModalBody,
   ModalFooter
 } from "reactstrap";
-import Editor from "views/docs/Editor.jsx";
 import InterviewEditor from "./editor/InterviewEditor.jsx";
 
 import { API, graphqlOperation } from 'aws-amplify';
