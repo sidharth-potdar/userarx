@@ -1,0 +1,161 @@
+type n {
+  id: ID!
+  title: String!
+  content: String!
+  price: Int
+  rating: Float
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelnConnection {
+  items: [n]
+  nextToken: String
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+input ModelnFilterInput {
+  id: ModelIDInput
+  title: ModelStringInput
+  content: ModelStringInput
+  price: ModelIntInput
+  rating: ModelFloatInput
+  and: [ModelnFilterInput]
+  or: [ModelnFilterInput]
+  not: ModelnFilterInput
+}
+
+type Query {
+  getN(id: ID!): n
+  listNs(filter: ModelnFilterInput, limit: Int, nextToken: String): ModelnConnection
+}
+
+input CreateNInput {
+  id: ID
+  title: String!
+  content: String!
+  price: Int
+  rating: Float
+}
+
+input UpdateNInput {
+  id: ID!
+  title: String
+  content: String
+  price: Int
+  rating: Float
+}
+
+input DeleteNInput {
+  id: ID
+}
+
+type Mutation {
+  createN(input: CreateNInput!, condition: ModelnConditionInput): n
+  updateN(input: UpdateNInput!, condition: ModelnConditionInput): n
+  deleteN(input: DeleteNInput!, condition: ModelnConditionInput): n
+}
+
+input ModelnConditionInput {
+  title: ModelStringInput
+  content: ModelStringInput
+  price: ModelIntInput
+  rating: ModelFloatInput
+  and: [ModelnConditionInput]
+  or: [ModelnConditionInput]
+  not: ModelnConditionInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+type Subscription {
+  onCreateN: n @aws_subscribe(mutations: ["createN"])
+  onUpdateN: n @aws_subscribe(mutations: ["updateN"])
+  onDeleteN: n @aws_subscribe(mutations: ["deleteN"])
+}

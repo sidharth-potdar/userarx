@@ -386,7 +386,6 @@ const TagSpan = (props) => {
 function GetColor(tags, snip, snips) {
   if (snip != undefined && snip != null) {
     console.log("snip", snip)
-    console.log(snip)
     var matchedSnip = snips[snips.findIndex(x => x.text === snip.trim())]
     console.log("matchedSnip", matchedSnip)
     if (matchedSnip != undefined && matchedSnip != null) {

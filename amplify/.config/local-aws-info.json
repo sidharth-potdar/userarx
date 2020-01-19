@@ -1,0 +1,7 @@
+{
+    "userarxenv": {
+        "configLevel": "project",
+        "useProfile": true,
+        "profileName": "userarx"
+    }
+}
