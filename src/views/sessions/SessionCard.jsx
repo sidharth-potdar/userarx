@@ -28,7 +28,7 @@ import InterviewEditor from "./editor/InterviewEditor.jsx";
 import ReactDatetime from "react-datetime";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import './sessionCard.css';
-import mountains from "assets/img/mountain.png";
+import mountains from "assets/img/mountains.png";
 
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../../graphql/queries';
@@ -93,6 +93,36 @@ class SessionCard extends Component {
     }
   }
 
+  LightenDarkenColor(col, amt) {
+
+    var usePound = false;
+
+    if (col[0] == "#") {
+        col = col.slice(1);
+        usePound = true;
+    }
+
+    var num = parseInt(col,16);
+
+    var r = (num >> 16) + amt;
+
+    if (r > 255) r = 255;
+    else if  (r < 0) r = 0;
+
+    var b = ((num >> 8) & 0x00FF) + amt;
+
+    if (b > 255) b = 255;
+    else if  (b < 0) b = 0;
+
+    var g = (num & 0x0000FF) + amt;
+
+    if (g > 255) g = 255;
+    else if (g < 0) g = 0;
+
+    return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
+
+}
+
   componentDidMount() {
     if(sessionStorage.getItem("projectID") != null && sessionStorage.getItem("projectID") != undefined) {
       this.queryForTags();
@@ -119,7 +149,15 @@ class SessionCard extends Component {
           </CardHeader>
           <CardBody>
             {this.state.tags.map((tag, key) => (
-              <Badge key={key} style={{ backgroundColor: `${tag.color}` }} pill>
+              <Badge
+                key={key}
+                style={{
+                  backgroundColor: `${tag.color}`,
+                  color: "#2c2c2c",
+                  border: "none",
+                }}
+                pill
+              >
                 {tag.name}
               </Badge>
             ))}
@@ -127,12 +165,15 @@ class SessionCard extends Component {
         </Card>
         <Modal className="mountain-background" style={{maxWidth: '1600px', width: '70%'}} isOpen={this.state.showModal} toggle={this.toggleModal} size="lg">
           <div className="modal-header justify-content-right">
+
             <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.toggleModal}>
               <span aria-hidden="true">×</span>
             </button>
-            <Button close aria-label="Cancel">
-              <span aria-hidden>&ndash;</span>
-            </Button>
+            <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.toggleModal}>
+              <span aria-hidden="true">
+              </span>
+            </button>
+
           </div>
           <h5>
             <Input
@@ -181,14 +222,6 @@ class SessionCard extends Component {
             <InterviewEditor tags={this.state.tags} />
             <br />
           </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={this.toggleModal}>
-                Close
-            </Button>
-            <Button color="info">
-                Save changes
-            </Button>
-          </ModalFooter>
         </Modal>
       </Col>
     )

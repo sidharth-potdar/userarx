@@ -9,9 +9,12 @@
 .card-title {
   font-size: 1.25em
 }
-.mountain-background {
-   background-image: url("/mountains.png");
-}
+/* .modal-body {
+   background-image: url("../../assets/img/mountains.png");
+   background-repeat: no-repeat;
+   background-size: contain;
+   background-position: bottom;
+} */
 .text-area {
   font-size: 16px !important
 }

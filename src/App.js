@@ -6,7 +6,7 @@ import AuthLayout from "./layouts/Auth/Auth.jsx";
 import AdminLayout from "./layouts/Admin/Admin.jsx";
 import LoginPage from "./views/pages/Login.jsx";
 import { Auth } from 'aws-amplify';
-
+import "./app.css";
 const hist = createBrowserHistory();
 
 class App extends Component {
@@ -18,8 +18,7 @@ class App extends Component {
     if(sessionStorage.getItem("userID") != null && sessionStorage.getItem("userID") != undefined) {
       return (
         <Router history={hist}>
-          <Switch>
-            <Route path="/auth" render={props => <AuthLayout {...props} />} />
+          <Switch className="mountains">
             <Route path="/project" component={props => <AdminLayout {...props} />} />
             <Redirect from="/" to="/project/sessions" />
           </Switch>

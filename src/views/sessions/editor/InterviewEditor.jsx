@@ -8,6 +8,10 @@ import {
   RichUtils,
 } from 'draft-js';
 // import { createEditorStateWithText } from 'draft-js-plugins-editor';
+// import Editor from 'draft-js-plugins-editor';
+import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin';
+
+
 import { Badge, Button, Col, Input, Row, CardTitle } from 'reactstrap';
 import { uuid } from 'uuidv4';
 import { randomColor } from 'randomcolor';
@@ -244,6 +248,36 @@ class InterviewEditor extends Component {
     })
   }
 
+  LightenDarkenColor(col, amt) {
+
+    var usePound = false;
+
+    if (col[0] == "#") {
+        col = col.slice(1);
+        usePound = true;
+    }
+
+    var num = parseInt(col,16);
+
+    var r = (num >> 16) + amt;
+
+    if (r > 255) r = 255;
+    else if  (r < 0) r = 0;
+
+    var b = ((num >> 8) & 0x00FF) + amt;
+
+    if (b > 255) b = 255;
+    else if  (b < 0) b = 0;
+
+    var g = (num & 0x0000FF) + amt;
+
+    if (g > 255) g = 255;
+    else if (g < 0) g = 0;
+
+    return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
+
+}
+
   componentDidMount() {
     this.queryForSnips();
     generateRegexs();
@@ -287,32 +321,42 @@ class InterviewEditor extends Component {
             <Editor
               name="text"
               id="text"
-              style={{ fontSize: '25px'}}
+              style={styles.editor}
               value={this.state.text}
               editorState={this.state.editorState}
               onChange={this.onChange}
               placeholder="Write your notes about the user's feedback here"
-              ref="editor"
-              // ref={(element) => { this.editor = element; }}
+              // ref="editor"
+              ref={(element) => { this.editor = element; }}
             />
+            
           </Col>
           <Col>
-            <strong> Tags </strong>
-            <div>
-              <Button
-                className="btn btn-wd btn-fill btn-magnify"
+          <CardTitle>Date & Time of Interview</CardTitle>
+            <div style={{ marginTop: '22px'}}>
+              <Badge
                 onMouseDown={this.promptForTag}
+                style={{
+                  color: "#2c2c2c",
+                  fontSize: ".9em",
+                }}
+                pill
               >
-                <span className="btn-label">
-                  <i className="nc-icon nc-simple-add" />
-                </span>
-                New Tag
-              </Button>
+                + New Tag
+              </Badge>
               {tagInput}
-            </div>
-            <div style={{ paddingTop: '11px' }}>
+
             {this.state.tags.map((tag, key) => (
-              <Badge key={key} style={{ backgroundColor: `${tag.color}` }} pill>
+              <Badge
+                key={key}
+                style={{
+                  backgroundColor: `${tag.color}`,
+                  color: "#2c2c2c",
+                  border: "none",
+                  fontSize: ".9em",
+                }}
+                pill
+              >
                 {tag.name}
               </Badge>
             ))}
@@ -406,6 +450,7 @@ const styles = {
   editor: {
     cursor: 'text',
     borderWidth: '1px',
+    fontSize: '16px'
   },
   tag: {
     direction: 'ltr',

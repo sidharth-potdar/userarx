@@ -11,8 +11,8 @@ import { Auth } from 'aws-amplify';
 
 import { API, graphqlOperation } from 'aws-amplify'
 import * as queries from '../../graphql/queries'
-
 import routes from "routes.js";
+import './admin.css';
 
 var ps;
 
@@ -51,7 +51,7 @@ class Admin extends React.Component {
       this.refs.mainPanel.scrollTop = 0;
     }
   }
-  
+
   async queryForProjects() {
     try {
       const response = await API.graphql(graphqlOperation(queries.getProjects,
@@ -107,7 +107,7 @@ class Admin extends React.Component {
   };
   render() {
     return (
-      <div className="wrapper">
+      <div className="wrapper mountains">
         <Sidebar
           {...this.props}
           routes={routes}
@@ -120,14 +120,10 @@ class Admin extends React.Component {
             {...this.props}
             handleMiniClick={this.handleMiniClick}
           />
-          <Switch>
+          <Switch style={{ backgroundColor: 'red'}}>
             {this.getRoutes(routes)}
           </Switch>
-          {// we don't want the Footer to be rendered on full screen maps page
-          this.props.location.pathname.indexOf("full-screen-map") !==
-          -1 ? null : (
-            <Footer fluid />
-          )}
+          <Footer fluid />
         </div>
       </div>
     );
