@@ -1,26 +1,10 @@
 {
-	"auth": {
-		"userarxdashboard8adf3790": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": []
-		}
-	},
-	"api": {
-		"userarxapi": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-						"userPoolConfig": {
-							"userPoolId": "authuserarxdashboard8adf3790"
-						}
-					}
-				}
-			}
-		}
-	}
+    "auth": {
+        "userarxdashboard8adf3790": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": []
+        }
+    },
+    "api": {}
 }

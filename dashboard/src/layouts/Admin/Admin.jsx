@@ -7,6 +7,10 @@ import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
+import { Auth } from 'aws-amplify';
+
+import { API, graphqlOperation } from 'aws-amplify'
+import * as queries from '../../graphql/queries'
 
 import routes from "routes.js";
 
@@ -18,16 +22,20 @@ class Admin extends React.Component {
     this.state = {
       backgroundColor: "white",
       activeColor: "info",
-      sidebarMini: false
+      sidebarMini: false,
+      projects: []
     };
   }
+
   componentDidMount() {
     if (navigator.platform.indexOf("Win") > -1) {
       document.documentElement.className += " perfect-scrollbar-on";
       document.documentElement.classList.remove("perfect-scrollbar-off");
       ps = new PerfectScrollbar(this.refs.mainPanel);
     }
+    this.queryForProjects();
   }
+
   componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {
       ps.destroy();
@@ -35,6 +43,7 @@ class Admin extends React.Component {
       document.documentElement.classList.remove("perfect-scrollbar-on");
     }
   }
+
   componentDidUpdate(e) {
     if (e.history.action === "PUSH") {
       document.documentElement.scrollTop = 0;
@@ -42,6 +51,28 @@ class Admin extends React.Component {
       this.refs.mainPanel.scrollTop = 0;
     }
   }
+  
+  async queryForProjects() {
+    try {
+      const response = await API.graphql(graphqlOperation(queries.getProjects,
+        {
+          pk: "521b3bca-aa8f-40c3-a0e1-9fc124b35152",
+          sk: "project",
+          creator: sessionStorage.getItem("userID")
+        }
+      ))
+      console.log(response.data.getProjects)
+      this.setState({
+        projects: response.data.getProjects,
+      })
+      sessionStorage.setItem("projects", JSON.stringify(this.state.projects));
+      console.log("projects", this.state.projects)
+    }
+    catch (error) {
+      console.log('error', error)
+    }
+  }
+
   getRoutes = routes => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
@@ -82,10 +113,16 @@ class Admin extends React.Component {
           routes={routes}
           bgColor={this.state.backgroundColor}
           activeColor={this.state.activeColor}
+          projects={this.state.projects}
         />
         <div className="main-panel" ref="mainPanel">
-          <AdminNavbar {...this.props} handleMiniClick={this.handleMiniClick} />
-          <Switch>{this.getRoutes(routes)}</Switch>
+          <AdminNavbar
+            {...this.props}
+            handleMiniClick={this.handleMiniClick}
+          />
+          <Switch>
+            {this.getRoutes(routes)}
+          </Switch>
           {// we don't want the Footer to be rendered on full screen maps page
           this.props.location.pathname.indexOf("full-screen-map") !==
           -1 ? null : (

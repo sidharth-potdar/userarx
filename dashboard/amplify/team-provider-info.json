@@ -16,5 +16,25 @@
                 "userarxdashboard8adf3790": {}
             }
         }
+    },
+    "appenv": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-userarxdashboard-appenv-150307-authRole",
+            "UnauthRoleArn": "arn:aws:iam::065047602817:role/amplify-userarxdashboard-appenv-150307-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::065047602817:role/amplify-userarxdashboard-appenv-150307-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-userarxdashboard-appenv-150307-deployment",
+            "UnauthRoleName": "amplify-userarxdashboard-appenv-150307-unauthRole",
+            "StackName": "amplify-userarxdashboard-appenv-150307",
+            "StackId": "arn:aws:cloudformation:us-east-1:065047602817:stack/amplify-userarxdashboard-appenv-150307/4661ee50-325a-11ea-8c0c-0e243b4b1cce",
+            "AmplifyAppId": "d23ky35lga6ud7"
+        },
+        "categories": {
+            "auth": {
+                "userarxdashboard8adf3790": {
+                    "hostedUIProviderCreds": "[]"
+                }
+            }
+        }
     }
 }

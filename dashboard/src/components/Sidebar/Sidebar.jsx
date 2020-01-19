@@ -14,22 +14,11 @@ class Sidebar extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.getCollapseStates(props.routes);
-    this.state = {
-      projects: [
-        {
-          id: '1',
-          name: 'Project Squishy',
-        },
-        {
-          id: '2',
-          name: 'Project Squid',
-        },
-        {
-          id: '3',
-          name: 'Project Smash',
-        }
-      ]
-    }
+  }
+
+  updateSessionStorageWithProject = (project) => {
+    sessionStorage.setItem('projectName', project.name)
+    sessionStorage.setItem('projectID', project.sk.replace("project-", ""))
   }
   // this creates the intial state of this component based on the collapse routes
   // that it gets through this.props.routes
@@ -60,6 +49,7 @@ class Sidebar extends React.Component {
     }
     return false;
   }
+
   // this function creates the links and collapses that appear in the sidebar (left menu)
   createLinks = routes => {
     return routes.map((prop, key) => {
@@ -166,7 +156,6 @@ class Sidebar extends React.Component {
             </div>
             <div className="info">
               <a
-                href="#pablo"
                 data-toggle="collapse"
                 aria-expanded={this.state.openAvatar}
                 onClick={() =>
@@ -174,24 +163,20 @@ class Sidebar extends React.Component {
                 }
               >
                 <span>
-                  Project Squish
+                  {sessionStorage.getItem('projectName') ? sessionStorage.getItem('projectName') : "All Projects"}
                   <b className="caret" />
                 </span>
               </a>
               <Collapse isOpen={this.state.openAvatar}>
                 <ul className="nav">
-                  {this.state.projects.map((project, key) => (
+                  {this.props.projects.map((project, key) => (
                     <li
                       id={key}
-                      onClick={() =>
-                        sessionStorage.setItem('projectID', project.id), () =>
-                        sessionStorage.setItem('projectName', project.name)
-                      }>
+                      onClick={this.updateSessionStorageWithProject(project)}
+                    >
                       <NavLink
-
                         to="/project/docs"
                         activeClassName=""
-
                       >
                         <span className="sidebar-mini-icon">{key + 1}</span>
                         <span className="sidebar-normal">

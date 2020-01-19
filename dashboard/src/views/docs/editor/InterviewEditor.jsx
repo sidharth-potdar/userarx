@@ -14,44 +14,9 @@ import { randomColor } from 'randomcolor';
 import './editor.css';
 import TagsInput from "react-tagsinput";
 import { BlockPicker } from 'react-color';
-
-const text = "Book 2 tickets from Seattle to Cairo";
-
-const tags = [
-  {
-    id: '1',
-    name: 'positive',
-    color: '#a1db13',
-  },
-  {
-    id: '2',
-    name: 'pain points',
-    color: '#ff0000',
-  },
-  {
-    id: '3',
-    name: 'login',
-    color: '#d5d5d5',
-  }
-]
-
-const snips = [
-  {
-    id: '1',
-    text: "loved",
-    tag: "1"
-  },
-  {
-    id: '2',
-    text: "hated",
-    tag: "2"
-  },
-  {
-    id: '3',
-    text: "login",
-    tag: "3"
-  }
-]
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../../graphql/queries';
+import * as mutations from '../../../graphql/mutations';
 
 class InterviewEditor extends Component {
   constructor(props) {
@@ -69,10 +34,9 @@ class InterviewEditor extends Component {
     ]);
 
     this.state = {
-      text: text,
       editorState: EditorState.createEmpty(compositeDecorator),
-      tags: [...tags],
-      snips: [...snips],
+      tags: this.props.tags,
+      snips: [""],
       isNewEntityVisible: false,
       newEntityName: '',
       showNewTagInput: false,
@@ -149,24 +113,34 @@ class InterviewEditor extends Component {
       var selectedText = currentContentBlock.getText().slice(start, end);
 
       const newTag = {
-        id: uuid(),
-        name: prevState.tagName,
         color: prevState.tagColor,
-        snip: [selectedText],
+        name: prevState.tagName,
+        pk: sessionStorage.getItem("projectID"),
+        sk: "tag-" + uuid(),
+        isNew: true,
       }
       const tags = [...prevState.tags, newTag];
 
       const newSnip = {
-        id: uuid(),
-        startIndex: start,
-        endIndex: end,
-        text: selectedText,
-        tag: prevState.tagName,
+        pk: sessionStorage.getItem("projectID"),
+        sk: "snip-" + uuid(),
+        color: prevState.tagColor,
+        date:  Date.now(),
+        session_id: "c015a3e6-d869-4b2c-8b8f-de885a88a377",
+        session_name: "Meghna Dash Session 2",
+        tag_id: newTag.sk.replace("tag-", ""),
+        tag_text: newTag.name,
+        text: selectedText.trim(),
+        isNew: true,
       }
+
+      console.log("newTag", newTag);
+      console.log("newSnip", newSnip);
+
       const snips = [...prevState.snips, newSnip];
 
       sessionStorage.setItem("tags", JSON.stringify(tags));
-      sessionStorage.setItem("snips", snips);
+      sessionStorage.setItem("snips", JSON.stringify(snips));
 
       return {
         tags: tags,
@@ -195,22 +169,6 @@ class InterviewEditor extends Component {
     }
   }
 
-  onClickReset = () => {
-    this.setState({
-      tags,
-      snips,
-      readOnly: false
-    })
-  }
-
-  componentDidMount() {
-
-
-    sessionStorage.setItem("tags", this.state.tags);
-    sessionStorage.setItem("snips", this.state.snips);
-    generateRegexs();
-  }
-
   handleColorInput = (color, event) => {
     console.log(color);
     this.setState({
@@ -218,6 +176,83 @@ class InterviewEditor extends Component {
       tagColor: color.hex
     })
   };
+
+  async queryForSnips() {
+    try {
+      const response = await API.graphql(graphqlOperation(queries.getSnips,
+        {
+          pk: sessionStorage.getItem("projectID"),
+          sk: "snip"
+        }
+      ))
+      console.log(response.data.getSnips)
+      this.setState({
+        snips: response.data.getSnips,
+      })
+      sessionStorage.setItem("snips", JSON.stringify(this.state.snips));
+
+    }
+    catch (error) {
+      console.log('error', error)
+    }
+  }
+
+  putTagsInDynamo() {
+    this.state.tags.forEach(async function(tag) {
+      if(tag.isNew) {
+        try {
+          const response = await API.graphql(graphqlOperation(mutations.putTags,
+            {
+              pk: tag.pk,
+              sk: tag.sk,
+              name: tag.name,
+              color: tag.color,
+            }
+          ))
+          console.log(response.data.putTags)
+        }
+        catch (error) {
+          console.log('error', error)
+        }
+      }
+    })
+  }
+
+  putSnipsInDynamo() {
+    this.state.snips.forEach(async function(snip) {
+      if(snip.isNew) {
+        try {
+          const response = await API.graphql(graphqlOperation(mutations.putSnips,
+            {
+              pk: snip.pk,
+              sk: snip.sk,
+              color: snip.color,
+              date: snip.date,
+              session_id: snip.session_id,
+              session_name: snip.session_name,
+              tag_id: snip.tag_id,
+              tag_text: snip.tag_text,
+              text: snip.text,
+            }
+          ))
+          console.log(response.data.putSnips)
+        }
+        catch (error) {
+          console.log('error', error)
+        }
+      }
+    })
+  }
+
+  componentDidMount() {
+    this.queryForSnips();
+    generateRegexs();
+  }
+
+  componentWillUnmount() {
+    this.putTagsInDynamo();
+    this.putSnipsInDynamo();
+  }
 
   render() {
     let tagInput;
@@ -246,8 +281,8 @@ class InterviewEditor extends Component {
     return (
       <div>
         <Row>
-          <Col md="9">
-            <strong>Notes</strong>
+          <Col>
+            <strong> Interview Transcript </strong>
             <div>
               <Button
                 className="btn btn-wd btn-fill btn-magnify"
@@ -266,12 +301,12 @@ class InterviewEditor extends Component {
               value={this.state.text}
               editorState={this.state.editorState}
               onChange={this.onChange}
-              placeholder="Write your notes here"
+              placeholder="Write your notes about the user's feedback here"
               ref="editor"
               // ref={(element) => { this.editor = element; }}
             />
           </Col>
-          <Col md="3">
+          <Col>
             <strong> Tags </strong>
             <h2/>
             <div style={{ paddingTop: '11px' }}>
@@ -290,11 +325,20 @@ class InterviewEditor extends Component {
 
 function generateRegexs() {
   var snipsArray = [];
+  const snips = JSON.parse(sessionStorage.getItem("snips"));
 
-  snips.forEach(snip => {
-    snipsArray.push(snip.text);
-    var snipsTag = snip.tag;
-  });
+  if (snips != null && snips != undefined) {
+    snips.forEach(snip => {
+      snipsArray.push(snip.text);
+      var snipsTag = snip.tag;
+    });
+  }
+
+  // if (snips != null && snips != undefined) {
+  //   Array.from(snips.children).forEach(snip => {
+  //     snipsArray.push(snip.text);
+  //   });
+  // }
 
   return snipsArray
 }
@@ -332,21 +376,24 @@ const TagSpan = (props) => {
     <span
       id={uuid()}
       style={styles.tag}
-      style={{ color: GetColor(props.decoratedText) }}
+      style={{ color: GetColor(JSON.parse(sessionStorage.getItem('tags')), props.decoratedText, JSON.parse(sessionStorage.getItem('snips'))) }}
     >
       {props.children}
     </span>
   );
 };
 
-function GetColor(snip) {
+function GetColor(tags, snip, snips) {
   if (snip != undefined && snip != null) {
+    console.log("snip", snip)
     var matchedSnip = snips[snips.findIndex(x => x.text === snip.trim())]
+    console.log("matchedSnip", matchedSnip)
     if (matchedSnip != undefined && matchedSnip != null) {
-      var tagID = matchedSnip.tag
-
+      var tagID = matchedSnip.tag_id
+      console.log("tagID", tagID)
       if (tagID != undefined && tagID != null) {
-        var color = tags[tags.findIndex(x => x.id === tagID)].color
+        console.log(tagID)
+        var color = tags[tags.findIndex(x => x.sk === "tag-" + tagID)].color
       }
       else {
         var color = "green"

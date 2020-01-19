@@ -28,6 +28,9 @@ import {
 import Editor from "views/docs/Editor.jsx";
 import InterviewEditor from "./editor/InterviewEditor.jsx";
 
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../graphql/queries';
+
 class SessionCard extends React.Component {
   constructor(props) {
     super(props);
@@ -40,7 +43,7 @@ class SessionCard extends React.Component {
       description: this.props.description,
       showModal: false,
       notesValue: "",
-      tags: ["login", "menu", "navigation"]
+      tags: []
     };
     this.toggleModal = this.toggleModal.bind(this);
   }
@@ -75,9 +78,38 @@ class SessionCard extends React.Component {
     })
   }
 
-  componentWillUnmount() {
-    console.log("unmounted")
+  async queryForTags() {
+    try {
+      const response = await API.graphql(graphqlOperation(queries.getTags,
+        {
+          pk: sessionStorage.getItem("projectID"),
+          sk: "tag"
+        }
+      ))
+      console.log(response.data.getTags)
+      this.setState({
+        tags: response.data.getTags,
+      })
+      sessionStorage.setItem("tags", JSON.stringify(this.state.tags));
+
+    }
+    catch (error) {
+      console.log('error', error)
+    }
   }
+
+  componentDidMount() {
+    if(sessionStorage.getItem("projectID") != null && sessionStorage.getItem("projectID") != undefined) {
+      this.queryForTags();
+    }
+    else {
+      setTimeout(() => {
+        this.queryForTags();
+      }, 1000);
+    }
+    console.log(this.state.tags);
+  }
+
 
   render() {
     return (
@@ -89,9 +121,9 @@ class SessionCard extends React.Component {
             <p style={{color: "gray"}}>{this.props.description}</p>
           </CardHeader>
           <CardBody>
-            {this.state.tags.map((tag, idx) => (
-              <Badge color="default" pill>
-                {tag}
+            {this.state.tags.map((tag, key) => (
+              <Badge key={key} style={{ backgroundColor: `${tag.color}` }} pill>
+                {tag.name}
               </Badge>
             ))}
           </CardBody>
@@ -146,7 +178,7 @@ class SessionCard extends React.Component {
               </Row>
             </FormGroup>
             <br />
-            <InterviewEditor />
+            <InterviewEditor tags={this.state.tags} />
             <br />
             <FormGroup>
               <Input

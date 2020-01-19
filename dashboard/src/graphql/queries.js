@@ -6,6 +6,7 @@ export const getTags = `query GetTags($pk: String, $sk: String) {
     pk
     sk
     name
+    color
   }
 }
 `;
@@ -23,23 +24,12 @@ export const getSnips = `query GetSnips($pk: String, $sk: String) {
   }
 }
 `;
-export const getProjects = `query GetProjects($pk: String, $sk: String) {
-  getProjects(pk: $pk, sk: $sk) {
+export const getProjects = `query GetProjects($pk: String, $sk: String, $creator: String) {
+  getProjects(pk: $pk, sk: $sk, creator: $creator) {
     pk
     sk
     name
-    date
-  }
-}
-`;
-export const getUsers = `query GetUsers($pk: String, $sk: String) {
-  getUsers(pk: $pk, sk: $sk) {
-    pk
-    sk
-    email
-    type
-    name
-    projects
+    creator
   }
 }
 `;

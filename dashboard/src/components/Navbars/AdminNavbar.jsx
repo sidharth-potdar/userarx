@@ -19,6 +19,7 @@ import {
   Nav,
   Container
 } from "reactstrap";
+import { Auth } from "aws-amplify";
 
 class AdminNavbar extends React.Component {
   constructor(props) {
@@ -70,6 +71,12 @@ class AdminNavbar extends React.Component {
     }
     this.setState(newState);
   };
+
+  signOut = () => {
+    Auth.signOut();
+    sessionStorage.clear();
+  }
+
   render() {
     return (
       <>
@@ -105,9 +112,9 @@ class AdminNavbar extends React.Component {
                   <span className="navbar-toggler-bar bar3" />
                 </button>
               </div>
-              <NavbarBrand href="#pablo" onClick={e => e.preventDefault()}>
+              <NavbarBrand onClick={e => e.preventDefault()}>
                 <span className="d-none d-md-block">
-                  {sessionStorage.getItem('projectName')}
+                  {sessionStorage.getItem('projectName') ? sessionStorage.getItem('projectName') : "All Projects"}
                 </span>
                 <span className="d-block d-md-none">PD PRO React</span>
               </NavbarBrand>
@@ -131,29 +138,7 @@ class AdminNavbar extends React.Component {
               navbar
               isOpen={this.state.collapseOpen}
             >
-              <Form>
-                <InputGroup className="no-border">
-                  <Input defaultValue="" placeholder="Search..." type="text" />
-                  <InputGroupAddon addonType="append">
-                    <InputGroupText>
-                      <i className="nc-icon nc-zoom-split" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                </InputGroup>
-              </Form>
               <Nav navbar>
-                <NavItem>
-                  <NavLink
-                    className="btn-magnify"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                  >
-                    <i className="nc-icon nc-layout-11" />
-                    <p>
-                      <span className="d-lg-none d-md-block">Stats</span>
-                    </p>
-                  </NavLink>
-                </NavItem>
                 <UncontrolledDropdown className="btn-rotate" nav>
                   <DropdownToggle
                     aria-haspopup={true}
@@ -163,29 +148,17 @@ class AdminNavbar extends React.Component {
                     id="navbarDropdownMenuLink"
                     nav
                   >
-                    <i className="nc-icon nc-bell-55" />
+                    <i className="nc-icon nc-single-02" />
                     <p>
                       <span className="d-lg-none d-md-block">Some Actions</span>
                     </p>
                   </DropdownToggle>
                   <DropdownMenu aria-labelledby="navbarDropdownMenuLink" right>
                     <DropdownItem
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      href="https://userarx.com"
+                      onClick={this.signOut}
                     >
-                      Action
-                    </DropdownItem>
-                    <DropdownItem
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      Another action
-                    </DropdownItem>
-                    <DropdownItem
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      Something else here
+                      Log Out
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
