@@ -3,14 +3,15 @@ import {
   convertToRaw,
   CompositeDecorator,
   ContentState,
-  Editor,
+  // Editor,
   EditorState,
   RichUtils,
 } from 'draft-js';
-// import { createEditorStateWithText } from 'draft-js-plugins-editor';
-// import Editor from 'draft-js-plugins-editor';
+import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
 import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin';
-
+import Select from "react-select";
+// import CreatableSelect from 'react-select/creatable';
+import { Creatable } from 'react-select'
 
 import { Badge, Button, Col, Input, Row, CardTitle } from 'reactstrap';
 import { uuid } from 'uuidv4';
@@ -21,6 +22,13 @@ import { BlockPicker } from 'react-color';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../../../graphql/queries';
 import * as mutations from '../../../graphql/mutations';
+
+const sideToolbarPlugin = createSideToolbarPlugin({
+  position: 'right',
+});
+const { SideToolbar } = sideToolbarPlugin;
+const plugins = [sideToolbarPlugin];
+
 
 class InterviewEditor extends Component {
   constructor(props) {
@@ -38,7 +46,7 @@ class InterviewEditor extends Component {
     ]);
 
     this.state = {
-      editorState: EditorState.createEmpty(compositeDecorator),
+      editorState: createEditorStateWithText("hello"),
       tags: this.props.tags,
       snips: [""],
       isNewEntityVisible: false,
@@ -53,6 +61,7 @@ class InterviewEditor extends Component {
       this.setState({editorState});
       generateRegexs();
     }
+
     this.logEditorState = () => console.log(this.state.editorState.toJS());
 
     this.promptForTag = this.promptForTag.bind(this);
@@ -65,6 +74,9 @@ class InterviewEditor extends Component {
     this.setState({
       editorState,
     });
+
+    generateRegexs();
+
   };
 
   focus = () => {
@@ -116,6 +128,7 @@ class InterviewEditor extends Component {
       var end = selectionState.getEndOffset();
       var selectedText = currentContentBlock.getText().slice(start, end);
 
+      console.log("PREV STATE", prevState)
       const newTag = {
         color: prevState.tagColor,
         name: prevState.tagName,
@@ -247,36 +260,32 @@ class InterviewEditor extends Component {
       }
     })
   }
-
-  LightenDarkenColor(col, amt) {
-
-    var usePound = false;
-
-    if (col[0] == "#") {
-        col = col.slice(1);
-        usePound = true;
-    }
-
-    var num = parseInt(col,16);
-
-    var r = (num >> 16) + amt;
-
-    if (r > 255) r = 255;
-    else if  (r < 0) r = 0;
-
-    var b = ((num >> 8) & 0x00FF) + amt;
-
-    if (b > 255) b = 255;
-    else if  (b < 0) b = 0;
-
-    var g = (num & 0x0000FF) + amt;
-
-    if (g > 255) g = 255;
-    else if (g < 0) g = 0;
-
-    return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
-
-}
+  //
+  // LightenDarkenColor(col, amt) {
+  //   var usePound = false;
+  //   if (col[0] == "#") {
+  //       col = col.slice(1);
+  //       usePound = true;
+  //   }
+  //
+  //   var num = parseInt(col,16);
+  //   var r = (num >> 16) + amt;
+  //
+  //   if (r > 255) r = 255;
+  //   else if  (r < 0) r = 0;
+  //
+  //   var b = ((num >> 8) & 0x00FF) + amt;
+  //
+  //   if (b > 255) b = 255;
+  //   else if  (b < 0) b = 0;
+  //
+  //   var g = (num & 0x0000FF) + amt;
+  //
+  //   if (g > 255) g = 255;
+  //   else if (g < 0) g = 0;
+  //
+  //   return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
+  // }
 
   componentDidMount() {
     this.queryForSnips();
@@ -288,18 +297,36 @@ class InterviewEditor extends Component {
     this.putSnipsInDynamo();
   }
 
+  createPreviousTagsProp = () => {
+    const previousTags = [];
+    this.state.tags.forEach((tag) =>
+      previousTags.push({ value: tag.sk, label: tag.name })
+    )
+    console.log("previousTags", previousTags);
+    return previousTags;
+  }
+
+  handleTagsChange = (value) => {
+    console.log('VALUE', value);
+    this.setState({
+      tagName: value
+    })
+  };
+
   render() {
     let tagInput;
     if (this.state.showNewTagInput) {
       tagInput =
         <div style={styles.tagInputContainer}>
-          <input
-            onChange={this.onTagChange}
-            ref="tag"
-            style={styles.tagInput}
-            type="text"
-            value={this.state.tagName}
-            onKeyDown={this.onTagInputKeyDown}
+          <Creatable
+            isClearable
+            backspaceRemovesValue
+            className="react-select primary"
+            classNamePrefix="react-select"
+            onChange={value => this.handleTagsChange(value)}
+            onCreateOption={value => this.handleTagsChange(value)}
+            options={this.createPreviousTagsProp()}
+            placeholder="Assign a Tag"
           />
           <BlockPicker
             color={ this.state.tagColor }
@@ -308,7 +335,9 @@ class InterviewEditor extends Component {
             triangle="hide"
             onChange={this.handleColorInput}
           />
-          <Button onClick={this.confirmTag}>
+          <Button
+            onClick={this.confirmTag}
+          >
             Add
           </Button>
         </div>;
@@ -318,21 +347,24 @@ class InterviewEditor extends Component {
         <Row>
           <Col ld="8" md="8">
             <CardTitle>Interview Transcript</CardTitle>
-            <Editor
-              name="text"
-              id="text"
-              style={styles.editor}
-              value={this.state.text}
-              editorState={this.state.editorState}
-              onChange={this.onChange}
-              placeholder="Write your notes about the user's feedback here"
-              // ref="editor"
-              ref={(element) => { this.editor = element; }}
-            />
-            
+            <div onClick={this.focus}>
+              <Editor
+                name="text"
+                id="text"
+                style={styles.editor}
+                value={this.state.text}
+                editorState={this.state.editorState}
+                plugins={plugins}
+                onChange={this.onChange}
+                placeholder="Write your notes about the user's feedback here"
+                ref="editor"
+                // ref={(element) => { this.editor = element; }}
+              />
+              <SideToolbar />
+            </div>
           </Col>
           <Col>
-          <CardTitle>Date & Time of Interview</CardTitle>
+            <CardTitle>Date & Time of Interview</CardTitle>
             <div style={{ marginTop: '22px'}}>
               <Badge
                 onMouseDown={this.promptForTag}
@@ -458,12 +490,7 @@ const styles = {
   },
   tagInputContainer: {
     marginBottom: 10,
-  },
-  tagInput: {
-    fontFamily: '\'Georgia\', serif',
-    marginRight: 10,
-    padding: 3,
-  },
+  }
 };
 
 export default InterviewEditor;

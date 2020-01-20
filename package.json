@@ -77,7 +77,7 @@
     "react-notification-alert": "0.0.8",
     "react-router-dom": "4.3.1",
     "react-scripts": "^3.3.0",
-    "react-select": "2.1.1",
+    "react-select": "^2.1.1",
     "react-table": "6.8.6",
     "react-tagsinput": "3.19.0",
     "reactstrap": "8.1.1",
