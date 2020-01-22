@@ -238,7 +238,10 @@ class SessionCard extends Component {
             <br />
             <InterviewEditor
               tags={this.state.tags}
+              allTags={this.state.allTags}
               snips={this.state.snips}
+              sessionID={this.props.sessionID}
+              sessionName={this.state.name}
             />
             <br />
           </ModalBody>

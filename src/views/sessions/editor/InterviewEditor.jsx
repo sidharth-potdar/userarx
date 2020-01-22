@@ -134,8 +134,8 @@ class InterviewEditor extends Component {
         sk: "snip-" + uuid(),
         color: prevState.tagColor,
         date:  Date.now(),
-        session_id: "c015a3e6-d869-4b2c-8b8f-de885a88a377",
-        session_name: "Meghna Dash Session 2",
+        session_id: this.props.sessionID,
+        session_name: this.props.name,
         tag_id: newTag.sk.replace("tag-", ""),
         tag_text: newTag.name,
         text: selectedText.trim(),
@@ -243,7 +243,7 @@ class InterviewEditor extends Component {
 
   createPreviousTagsProp = () => {
     const previousTags = [];
-    this.state.tags.forEach((tag) =>
+    this.props.allTags.forEach((tag) =>
       previousTags.push({ value: tag.sk, label: tag.name })
     )
     console.log("previousTags", previousTags);
