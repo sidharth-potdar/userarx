@@ -119,9 +119,6 @@ class Sessions extends Component {
               sessionID={session.sk.replace("session-", "")}
             />
           ))}
-        </Row>
-
-        <Row>
           <Col md="3">
             <Card className="card-doc">
               <CardHeader>
