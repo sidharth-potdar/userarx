@@ -1,6 +1,28 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const putSessions = `mutation PutSessions(
+  $pk: String
+  $sk: String
+  $name: String
+  $date: String
+  $description: String
+) {
+  putSessions(
+    pk: $pk
+    sk: $sk
+    name: $name
+    date: $date
+    description: $description
+  ) {
+    pk
+    sk
+    name
+    description
+    date
+  }
+}
+`;
 export const putTags = `mutation PutTags($pk: String, $sk: String, $name: String, $color: String) {
   putTags(pk: $pk, sk: $sk, name: $name, color: $color) {
     pk
