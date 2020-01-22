@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "userarxdashboard8adf3790_identitypool_8adf3790",
+    "identityPoolName": "userarx88dd690f_identitypool_88dd690f",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "userar8adf3790",
-    "userPoolName": "userarxdashboard8adf3790_userpool_8adf3790",
+    "resourceNameTruncated": "userar88dd690f",
+    "userPoolName": "userarx88dd690f_userpool_88dd690f",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -21,17 +21,27 @@
         "email"
     ],
     "userpoolClientGenerateSecret": true,
-    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientRefreshTokenValidity": "90",
     "userpoolClientWriteAttributes": [
         "email"
     ],
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "userar8adf3790_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "userar88dd690f_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "resourceName": "userarxdashboard8adf3790",
+    "useDefault": "manual",
     "authSelections": "identityPoolAndUserPool",
+    "resourceName": "userarx88dd690f88dd690f",
+    "thirdPartyAuth": false,
+    "usernameAttributes": [
+        "email, phone_number"
+    ],
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "triggers": "{}",
+    "hostedUI": false,
+    "userPoolGroupList": [],
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",
@@ -44,12 +54,6 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
-    "usernameAttributes": [
-        "email"
-    ],
-    "triggers": "{}",
-    "userPoolGroupList": [],
     "parentStack": {
         "Ref": "AWS::StackId"
     },

@@ -1,7 +1,7 @@
 {
-    "userarxenv": {
+    "userarx": {
         "configLevel": "project",
         "useProfile": true,
-        "profileName": "userarx"
+        "profileName": "md"
     }
 }
