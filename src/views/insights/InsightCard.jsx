@@ -1,6 +1,4 @@
-import React from "react";
-
-// reactstrap components
+import React, { Component } from 'react';
 import {
   Badge,
   Button,
@@ -39,26 +37,8 @@ export default class InsightCard extends React.Component {
       description: this.props.description,
       showModal: this.props.showModal,
       isOpen: false,
-      selectedSnips: [
-        {
-          text: "Yeah, aight, bust down, Thotiana",
-          tag: "bust",
-          session: "Billy Bob Session 1",
-          date: "12/34/69"
-        },
-        {
-          text: "Bust down, Thotiana (bust down, Thotiana)",
-          tag: "down",
-          session: "Meghna Dash Session 2",
-          date: "1/1/13"
-        },
-        {
-          text: "Speed it up, then slow that shit down, on the gang (slow it down)",
-          tag: "thotiana",
-          session: "Squishy Circle Session 3",
-          date: "2/15/98"
-        },
-      ],
+      selectedSnips: this.props.snips,
+      matchedSnips: [],
     };
 
     this.toggleModal = this.toggleModal.bind(this);
@@ -88,10 +68,31 @@ export default class InsightCard extends React.Component {
     });
   }
 
+  getMatchedSnips = () => {
+    const matchedSnipsArray = [];
+    var snips = JSON.parse(sessionStorage.getItem('snips'));
+
+    this.props.selectedSnips.forEach((selectedSnip, i) => {
+      console.log("selectedSnip", selectedSnip);
+
+      if(snips[snips.findIndex(x => x.sk.replace("snip-", "") === selectedSnip)] != null && snips[snips.findIndex(x => x.sk.replace("snip-", "") === selectedSnip)] != undefined) {
+        matchedSnipsArray.push(snips[snips.findIndex(x => x.sk.replace("snip-", "") === selectedSnip)]);
+      }
+    });
+    this.setState({
+      matchedSnips: matchedSnipsArray
+    })
+    console.log("matchedSnipsArray", matchedSnipsArray)
+  }
+
   toggleTable = () => {
     this.setState({
       isOpen: !this.state.isOpen
     });
+  }
+
+  componentDidMount() {
+    this.getMatchedSnips();
   }
 
   render() {
@@ -150,10 +151,10 @@ export default class InsightCard extends React.Component {
                 </Col>
               </Row>
             </FormGroup>
-            {this.state.selectedSnips.map((snip) => (
+            {this.state.matchedSnips.map((snip) => (
               <Row>
                 <Card className="card-doc" style={{ width: "55em", borderColor: "#8a8988", borderWidth: "20px", padding: "15px" }}>
-                  <strong>{snip.session}</strong>
+                  <strong>{snip.session_name}</strong>
                   <CardText>{snip.text}</CardText>
                 </Card>
               </Row>

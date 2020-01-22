@@ -1,6 +1,4 @@
-import React from "react";
-
-// reactstrap components
+import React, { Component } from 'react';
 import {
   Badge,
   Button,
@@ -25,28 +23,16 @@ import {
 
 import InsightCard from "./InsightCard.jsx";
 
-export default class Insights extends React.Component {
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../graphql/queries';
+import * as mutations from '../../graphql/mutations';
+
+export default class Insights extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      insights: [
-        {
-          title: "Users don't know how to login.",
-          date: "12/34/69",
-          description: "They're dumb as hell.",
-        },
-        {
-          title: "We need better menu navigation to help users find our features.",
-          date: "03/25/19",
-          description: "Our users are having trouble finding features in our app. We need to improve navigation.",
-        },
-        {
-          title: "Users don't want to create an account to try the app.",
-          date: "01/13/20",
-          description: "We would have more users try the app if they didn't need to create an account first.",
-        },
-      ],
+      insights: [],
       showNewInsightModal: false,
     }
   }
@@ -63,12 +49,41 @@ export default class Insights extends React.Component {
     }));
   }
 
+  async queryForInsights() {
+    try {
+      const response = await API.graphql(graphqlOperation(queries.getInsights,
+        {
+          pk: sessionStorage.getItem("projectID"),
+          sk: "insight-"
+        }
+      ))
+      this.setState({
+        insights: response.data.getInsights,
+      })
+      sessionStorage.setItem("insights", JSON.stringify(this.state.insights));
+      console.log("queryForInsights", response);
+    }
+    catch (error) {
+      console.log('error', error)
+    }
+  }
+
+  componentDidMount() {
+    this.queryForInsights();
+  }
+
   render() {
     return (
       <div className="content">
         <Row>
           {this.state.insights.map((insight) => (
-            <InsightCard title={insight.title} date={insight.date} description={insight.description} showModal={insight.showModal ? true : false} />
+            <InsightCard
+              title={insight.text}
+              date={insight.date}
+              description={insight.description}
+              selectedSnips={insight.snips}
+              showModal={insight.showModal ? true : false}
+            />
           ))}
         </Row>
         <Row>
