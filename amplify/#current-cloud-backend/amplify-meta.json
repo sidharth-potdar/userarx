@@ -1,62 +1,79 @@
 {
-	"providers": {
-		"awscloudformation": {
-			"AuthRoleName": "amplify-userarxdashboard-userarxenv-181248-authRole",
-			"UnauthRoleArn": "arn:aws:iam::065047602817:role/amplify-userarxdashboard-userarxenv-181248-unauthRole",
-			"AuthRoleArn": "arn:aws:iam::065047602817:role/amplify-userarxdashboard-userarxenv-181248-authRole",
-			"Region": "us-east-1",
-			"DeploymentBucketName": "amplify-userarxdashboard-userarxenv-181248-deployment",
-			"UnauthRoleName": "amplify-userarxdashboard-userarxenv-181248-unauthRole",
-			"StackName": "amplify-userarxdashboard-userarxenv-181248",
-			"StackId": "arn:aws:cloudformation:us-east-1:065047602817:stack/amplify-userarxdashboard-userarxenv-181248/9aed9580-2e7e-11ea-9a10-0e3b177c99d5",
-			"AmplifyAppId": "d23ky35lga6ud7"
-		}
-	},
-	"auth": {
-		"userarxdashboard8adf3790": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [],
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-userarxdashboard-userarxenv-181248-deployment/amplify-cfn-templates/auth/userarxdashboard8adf3790-cloudformation-template.yml",
-				"logicalId": "authuserarxdashboard8adf3790"
-			},
-			"lastPushTimeStamp": "2020-01-03T23:21:51.095Z",
-			"output": {
-				"AppClientSecret": "1t216vlfqgh1008c5cfpru4kpjh9he4mfna7o2059g489tdpn7dr",
-				"UserPoolId": "us-east-1_PgB8yV5aa",
-				"AppClientIDWeb": "72k99fbb6v23r78rj8t6lgtqgk",
-				"AppClientID": "trui1n86ur6h5labr8h9hm8fd",
-				"IdentityPoolId": "us-east-1:0d4f046f-9494-4566-a14e-78fbbd857f06",
-				"IdentityPoolName": "userarxdashboard8adf3790_identitypool_8adf3790__userarxenv",
-				"UserPoolName": "userarxdashboard8adf3790_userpool_8adf3790"
-			},
-			"lastPushDirHash": "zESLWgSseoqTpvp/Gd9DjsLQj5k="
-		}
-	},
-	"api": {
-		"userarxapi": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-						"userPoolConfig": {
-							"userPoolId": "authuserarxdashboard8adf3790"
-						}
-					}
-				},
-				"GraphQLAPIIdOutput": "ckhp3dpntngmbigkxwdwlwweom",
-				"GraphQLAPIEndpointOutput": "https://ccqgqrlvb5ddzjvehg3lc7kz3y.appsync-api.us-east-1.amazonaws.com/graphql"
-			},
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-userarxdashboard-userarxenv-181248-deployment/amplify-cfn-templates/api/cloudformation-template.json",
-				"logicalId": "apiuserarxapi"
-			},
-			"lastPushTimeStamp": "2020-01-03T23:21:51.095Z",
-			"lastPushDirHash": "aRVylT8+AbBW41Bf2EdO8aXyuws="
-		}
-	}
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-userarxdashboard-userarxenv-181248-authRole",
+            "UnauthRoleArn": "arn:aws:iam::065047602817:role/amplify-userarxdashboard-userarxenv-181248-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::065047602817:role/amplify-userarxdashboard-userarxenv-181248-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-userarxdashboard-userarxenv-181248-deployment",
+            "UnauthRoleName": "amplify-userarxdashboard-userarxenv-181248-unauthRole",
+            "StackName": "amplify-userarxdashboard-userarxenv-181248",
+            "StackId": "arn:aws:cloudformation:us-east-1:065047602817:stack/amplify-userarxdashboard-userarxenv-181248/9aed9580-2e7e-11ea-9a10-0e3b177c99d5",
+            "AmplifyAppId": "d23ky35lga6ud7"
+        }
+    },
+    "auth": {
+        "userarxdashboard8adf3790": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [],
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-userarxdashboard-userarxenv-181248-deployment/amplify-cfn-templates/auth/userarxdashboard8adf3790-cloudformation-template.yml",
+                "logicalId": "authuserarxdashboard8adf3790"
+            },
+            "lastPushTimeStamp": "2020-01-03T23:21:51.095Z",
+            "output": {
+                "AppClientSecret": "1t216vlfqgh1008c5cfpru4kpjh9he4mfna7o2059g489tdpn7dr",
+                "UserPoolId": "us-east-1_PgB8yV5aa",
+                "AppClientIDWeb": "72k99fbb6v23r78rj8t6lgtqgk",
+                "AppClientID": "trui1n86ur6h5labr8h9hm8fd",
+                "IdentityPoolId": "us-east-1:0d4f046f-9494-4566-a14e-78fbbd857f06",
+                "IdentityPoolName": "userarxdashboard8adf3790_identitypool_8adf3790__userarxenv",
+                "UserPoolName": "userarxdashboard8adf3790_userpool_8adf3790"
+            },
+            "lastPushDirHash": "zESLWgSseoqTpvp/Gd9DjsLQj5k="
+        }
+    },
+    "api": {
+        "userarxapi": {
+            "service": "AppSync",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "authConfig": {
+                    "additionalAuthenticationProviders": [],
+                    "defaultAuthentication": {
+                        "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+                        "userPoolConfig": {
+                            "userPoolId": "authuserarxdashboard8adf3790"
+                        }
+                    }
+                },
+                "GraphQLAPIIdOutput": "ckhp3dpntngmbigkxwdwlwweom",
+                "GraphQLAPIEndpointOutput": "https://ccqgqrlvb5ddzjvehg3lc7kz3y.appsync-api.us-east-1.amazonaws.com/graphql"
+            },
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-userarxdashboard-userarxenv-181248-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+                "logicalId": "apiuserarxapi"
+            },
+            "lastPushTimeStamp": "2020-01-03T23:21:51.095Z",
+            "lastPushDirHash": "aRVylT8+AbBW41Bf2EdO8aXyuws="
+        },
+        "userarx-dashboard-api": {
+            "service": "AppSync",
+            "output": {
+                "authConfig": {
+                    "defaultAuthentication": {
+                        "authenticationType": "API_KEY"
+                    },
+                    "additionalAuthenticationProviders": null
+                },
+                "GraphQLAPIIdOutput": "d22gd2hla5dghm4caddmrvoxdu",
+                "GraphQLAPIEndpointOutput": "https://cqz6akzsyfcwtdnnwhnkad3zoi.appsync-api.us-east-1.amazonaws.com/graphql",
+                "name": "userarx-dashboard-api",
+                "region": "us-east-1",
+                "GraphQLAPIKeyOutput": "da2-jwmjhjtjpfhglgy7fw33c4ux6y"
+            },
+            "lastPushTimeStamp": "2020-01-22T03:27:56.395Z"
+        }
+    }
 }
