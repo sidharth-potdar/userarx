@@ -1,6 +1,25 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getProjects = `query GetProjects($pk: String, $sk: String, $creator: String) {
+  getProjects(pk: $pk, sk: $sk, creator: $creator) {
+    pk
+    sk
+    name
+    creator
+  }
+}
+`;
+export const getSessions = `query GetSessions($pk: String, $sk: String) {
+  getSessions(pk: $pk, sk: $sk) {
+    pk
+    sk
+    name
+    description
+    date
+  }
+}
+`;
 export const getTags = `query GetTags($pk: String, $sk: String) {
   getTags(pk: $pk, sk: $sk) {
     pk
@@ -21,15 +40,6 @@ export const getSnips = `query GetSnips($pk: String, $sk: String) {
     tag_id
     tag_text
     text
-  }
-}
-`;
-export const getProjects = `query GetProjects($pk: String, $sk: String, $creator: String) {
-  getProjects(pk: $pk, sk: $sk, creator: $creator) {
-    pk
-    sk
-    name
-    creator
   }
 }
 `;
