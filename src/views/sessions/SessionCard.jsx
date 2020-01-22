@@ -42,8 +42,10 @@ class SessionCard extends Component {
       date: this.props.date,
       description: this.props.description,
       showModal: false,
+      allTags: [],
+      allSnips: [],
       tags: [],
-      snips: []
+      snips: [],
     };
     this.toggleModal = this.toggleModal.bind(this);
   }
@@ -81,9 +83,9 @@ class SessionCard extends Component {
         }
       ))
       this.setState({
-        tags: response.data.getTags,
+        allTags: response.data.getTags,
       })
-      sessionStorage.setItem("tags", JSON.stringify(this.state.tags));
+      sessionStorage.setItem("tags", JSON.stringify(this.state.allTags));
 
     }
     catch (error) {
@@ -100,11 +102,11 @@ class SessionCard extends Component {
         }
       ))
       this.setState({
-        snips: response.data.getSnips,
+        allSnips: response.data.getSnips,
       }, () => {
         this.figureOutWhichTagsBelongToSession();
       })
-      sessionStorage.setItem("snips", JSON.stringify(this.state.snips));
+      sessionStorage.setItem("snips", JSON.stringify(this.state.allSnips));
 
     }
     catch (error) {
@@ -116,14 +118,14 @@ class SessionCard extends Component {
     const thisSessionsSnips = [];
     const thisSessionsTags = [];
 
-    this.state.snips.forEach((snip) => {
+    this.state.allSnips.forEach((snip) => {
       if(snip.session_id === this.props.sessionID) {
         thisSessionsSnips.push(snip);
       }
     });
 
     thisSessionsSnips.forEach((snipInSession) => {
-      this.state.tags.forEach((tag) => {
+      this.state.allTags.forEach((tag) => {
         if(snipInSession.tag_id === tag.sk.replace("tag-", "")) {
           thisSessionsTags.push(tag);
         }
