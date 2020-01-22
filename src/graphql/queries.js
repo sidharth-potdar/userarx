@@ -20,6 +20,15 @@ export const getSessions = `query GetSessions($pk: String, $sk: String) {
   }
 }
 `;
+export const getCategories = `query GetCategories($pk: String, $sk: String) {
+  getCategories(pk: $pk, sk: $sk) {
+    pk
+    sk
+    title
+    snips
+  }
+}
+`;
 export const getTags = `query GetTags($pk: String, $sk: String) {
   getTags(pk: $pk, sk: $sk) {
     pk
