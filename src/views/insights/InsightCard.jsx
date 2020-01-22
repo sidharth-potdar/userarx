@@ -37,7 +37,6 @@ export default class InsightCard extends React.Component {
       description: this.props.description,
       showModal: this.props.showModal,
       isOpen: false,
-      selectedSnips: this.props.snips,
       matchedSnips: [],
     };
 

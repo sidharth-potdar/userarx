@@ -18,71 +18,6 @@ import {
 export default class InsightSelectTable extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      snips: [
-        {
-          text: "Yeah, aight, bust down, Thotiana",
-          tag: "bust",
-          session: "Billy Bob Session 1",
-          date: "12/34/69"
-        },
-        {
-          text: "Bust down, Thotiana (bust down, Thotiana)",
-          tag: "down",
-          session: "Meghna Dash Session 2",
-          date: "1/1/13"
-        },
-        {
-          text: "Speed it up, then slow that shit down, on the gang (slow it down)",
-          tag: "thotiana",
-          session: "Squishy Circle Session 3",
-          date: "2/15/98"
-        },
-        {
-          text: "Speed it up, then slow that shit down, on the gang (slow it down)",
-          tag: "thotiana",
-          session: "Squishy Circle Session 3",
-          date: "2/15/98"
-        },
-        {
-          text: "Speed it up, then slow that shit down, on the gang (slow it down)",
-          tag: "thotiana",
-          session: "Squishy Circle Session 3",
-          date: "2/15/98"
-        },
-        {
-          text: "Speed it up, then slow that shit down, on the gang (slow it down)",
-          tag: "thotiana",
-          session: "Squishy Circle Session 3",
-          date: "2/15/98"
-        },
-        {
-          text: "Speed it up, then slow that shit down, on the gang (slow it down)",
-          tag: "thotiana",
-          session: "Squishy Circle Session 3",
-          date: "2/15/98"
-        },
-        {
-          text: "Speed it up, then slow that shit down, on the gang (slow it down)",
-          tag: "thotiana",
-          session: "Squishy Circle Session 3",
-          date: "2/15/98"
-        },
-        {
-          text: "Speed it up, then slow that shit down, on the gang (slow it down)",
-          tag: "thotiana",
-          session: "Squishy Circle Session 3",
-          date: "2/15/98"
-        },
-        {
-          text: "Speed it up, then slow that shit down, on the gang (slow it down)",
-          tag: "thotiana",
-          session: "Squishy Circle Session 3",
-          date: "2/15/98"
-        },
-      ]
-    };
   }
 
   handleSelect = (e, snip) => {
@@ -105,7 +40,7 @@ export default class InsightSelectTable extends React.Component {
                 </tr>
               </thead>
               <tbody style={{'max-height': 'calc(100vh - 210px)', 'overflow-y': 'auto'}}>
-                {this.state.snips.map((snip, idx) => (
+                {JSON.parse(sessionStorage.getItem("snips")).map((snip, key) => (
                   <tr>
                     <td className="text-center">
                       <FormGroup check>
@@ -116,8 +51,8 @@ export default class InsightSelectTable extends React.Component {
                       </FormGroup>
                     </td>
                     <td>{snip.text}</td>
-                    <td>{snip.tag}</td>
-                    <td>{snip.session}</td>
+                    <td>{snip.tag_text}</td>
+                    <td>{snip.session_name}</td>
                     <td>{snip.date}</td>
                   </tr>
                 ))}
