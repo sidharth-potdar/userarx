@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import * as d3 from "d3";
 import { Delaunay } from "d3-delaunay";
 import {
@@ -10,9 +10,14 @@ import {
   Col,
   Row
 } from "reactstrap";
-var uuid4 = require('uuid/v4');
 
-export default class Prioritization extends React.Component {
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../graphql/queries';
+import * as mutations from '../../graphql/mutations';
+
+var uuid4 = require('uuid/v4');
+var randomColor = require('randomcolor');
+export default class Prioritization extends Component {
   constructor(props) {
     super(props);
 
@@ -24,61 +29,31 @@ export default class Prioritization extends React.Component {
       maxX: 1000,
       minY: 25,
       maxY: 700,
-      insights: [
+      insights: []
+    }
+  }
+
+  async queryForInsights() {
+    try {
+      const response = await API.graphql(graphqlOperation(queries.getInsights,
         {
-          id: uuid4(),
-          x: 200,
-          y: 200,
-          title: "Users don't know how to login.",
-          color: "#9de1e2",
-        },
-        {
-          id: uuid4(),
-          x: 300,
-          y: 300,
-          title: "We need better menu navigation to help users find our features.",
-          color: "#eecfb2",
-        },
-        {
-          id: uuid4(),
-          x: 400,
-          y: 400,
-          title: "Users don't want to create an account to try the app.",
-          color: "#d2d1fb",
-        },
-        {
-          id: uuid4(),
-          x: 600,
-          y: 600,
-          title: "It is unclear to users how many pages to the form there is.",
-          color: "#b3dbf5",
-        },
-        {
-          id: uuid4(),
-          x: 700,
-          y: 600,
-          title: "Explanatory text below sections is difficult to read.",
-          color: "#fdc7c8",
-        },
-        {
-          id: uuid4(),
-          x: 750,
-          y: 600,
-          title: "The landing page more clearly needs to convey what our product does.",
-          color: "#eecaf0",
-        },
-        {
-          id: uuid4(),
-          x: 750,
-          y: 650,
-          title: "Call-to-action buttons are not very obvious to users right now.",
-          color: "#d5d7a8",
-        },
-      ]
+          pk: sessionStorage.getItem("projectID"),
+          sk: "insight-"
+        }
+      ))
+      this.setState({
+        insights: response.data.getInsights,
+      })
+      sessionStorage.setItem("insights", JSON.stringify(this.state.insights));
+      console.log("queryForInsights", response);
+    }
+    catch (error) {
+      console.log('error', error)
     }
   }
 
   componentDidMount() {
+    this.queryForInsights();
     this.draw();
   }
 
@@ -196,7 +171,6 @@ export default class Prioritization extends React.Component {
     }
   }
 
-
   render() {
     return (
       <Row>
@@ -207,22 +181,22 @@ export default class Prioritization extends React.Component {
             </CardTitle>
           </CardHeader>
           <CardBody>
-            {this.state.insights.map((insight, idx) => (
+            {this.state.insights.map((insight, key) => (
               <Card
                 className="card-doc"
                 style={{
                   color: insight.selected ? "black" : "gray",
                   padding: "10px",
                   border: insight.selected ? "1px solid lightgrey" : "none",
-                  backgroundColor: insight.color
+                  backgroundColor: randomColor({ luminosity: 'dark', format: 'rgba', alpha: 0.1 }),
                 }}
               >
                 {insight.selected ?
                   <CardText>
-                    {insight.title}
+                    {insight.text}
                   </CardText> :
                   <CardText>
-                    {insight.title}
+                    {insight.text}
                   </CardText>
                 }
               </Card>
