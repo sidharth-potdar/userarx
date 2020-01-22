@@ -3,13 +3,11 @@ import {
   convertToRaw,
   CompositeDecorator,
   ContentState,
-  // Editor,
+  Editor,
   EditorState,
   RichUtils,
 } from 'draft-js';
-import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
-import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin';
-import Select from "react-select";
+// import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
 // import CreatableSelect from 'react-select/creatable';
 import { Creatable } from 'react-select'
 
@@ -22,13 +20,6 @@ import { BlockPicker } from 'react-color';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../../../graphql/queries';
 import * as mutations from '../../../graphql/mutations';
-
-const sideToolbarPlugin = createSideToolbarPlugin({
-  position: 'right',
-});
-const { SideToolbar } = sideToolbarPlugin;
-const plugins = [sideToolbarPlugin];
-
 
 class InterviewEditor extends Component {
   constructor(props) {
@@ -46,7 +37,7 @@ class InterviewEditor extends Component {
     ]);
 
     this.state = {
-      editorState: createEditorStateWithText("hello"),
+      editorState: EditorState.createEmpty(compositeDecorator),
       tags: this.props.tags,
       snips: [""],
       isNewEntityVisible: false,
@@ -354,17 +345,15 @@ class InterviewEditor extends Component {
                 style={styles.editor}
                 value={this.state.text}
                 editorState={this.state.editorState}
-                plugins={plugins}
                 onChange={this.onChange}
                 placeholder="Write your notes about the user's feedback here"
                 ref="editor"
                 // ref={(element) => { this.editor = element; }}
               />
-              <SideToolbar />
             </div>
           </Col>
           <Col>
-            <CardTitle>Date & Time of Interview</CardTitle>
+            <CardTitle>Tags</CardTitle>
             <div style={{ marginTop: '22px'}}>
               <Badge
                 onMouseDown={this.promptForTag}

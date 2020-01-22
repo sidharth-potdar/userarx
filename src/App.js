@@ -15,27 +15,39 @@ class App extends Component {
   }
 
   render() {
-    if(sessionStorage.getItem("userID") != null && sessionStorage.getItem("userID") != undefined) {
-      return (
-        <Router history={hist}>
-          <Switch className="mountains">
-            <Route path="/project" component={props => <AdminLayout {...props} />} />
-            <Redirect from="/" to="/project/sessions" />
-          </Switch>
-        </Router>
-      )
-    }
-    else {
-      return (
-        <Router history={hist}>
-          <Switch>
-            <Route path="/auth" render={props => <AuthLayout {...props} />} />
-            <Redirect from="/" to="/auth/login" />
-          </Switch>
-        </Router>
-      )
-    }
+    return (
+      <Router history={hist}>
+        <Switch className="mountains">
+          <Route path="/project" component={props => <AdminLayout {...props} />} />
+          <Route path="/auth" render={props => <AuthLayout {...props} />} />
+          <Redirect from="/" to="/auth/login" />
+        </Switch>
+      </Router>
+    )
   }
+
+  // render() {
+  //   if(sessionStorage.getItem("userID") != null && sessionStorage.getItem("userID") != undefined) {
+  //     return (
+  //       <Router history={hist}>
+  //         <Switch className="mountains">
+  //           <Route path="/project" component={props => <AdminLayout {...props} />} />
+  //           <Redirect from="/" to="/project/sessions" />
+  //         </Switch>
+  //       </Router>
+  //     )
+  //   }
+  //   else {
+  //     return (
+  //       <Router history={hist}>
+  //         <Switch>
+  //           <Route path="/auth" render={props => <AuthLayout {...props} />} />
+  //           <Redirect from="/" to="/auth/login" />
+  //         </Switch>
+  //       </Router>
+  //     )
+  //   }
+  // }
 }
 
 export default App;

@@ -28,12 +28,13 @@ export default class Snip extends React.Component {
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
             index={this.props.index}
+            style={{ backgroundColor: this.props.snip.backgroundColor} }
             // style={{ backgroundColor: `${snipColors[this.props.index % snipColors.length]}` }}
           >
             <small>{this.props.snip.text}</small>
             <br />
-            <Badge color="primary" pill>
-              login
+            <Badge style={{ backgroundColor: this.props.snip.color, color: '#2c2c2c', border: 'none'}} pill>
+              {this.props.snip.tag}
             </Badge>
           </Container>
         )}

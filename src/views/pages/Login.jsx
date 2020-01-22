@@ -47,7 +47,7 @@ class Login extends Component {
     try {
       await Auth.signIn(this.state.email, this.state.password)
       .then(user => sessionStorage.setItem("userID", user.username))
-      .then(user => console.log("signed in"))
+      // .then(user => this.props.updateAuthenticationState(true))
       .then(user => this.props.history.push("/project/sessions"))
     } catch (error) {
       this.setState({
@@ -60,6 +60,7 @@ class Login extends Component {
   componentDidMount() {
     document.body.classList.toggle("login-page");
   }
+
   componentWillUnmount() {
     document.body.classList.toggle("login-page");
   }
@@ -113,7 +114,6 @@ class Login extends Component {
                       block
                       className="btn-round mb-3"
                       color="warning"
-                      href="/project/sessions"
                       onClick={e => {this.handleSignIn(e)}}
                     >
                       Log In

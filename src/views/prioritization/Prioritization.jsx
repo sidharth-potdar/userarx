@@ -29,25 +29,50 @@ export default class Prioritization extends React.Component {
           id: uuid4(),
           x: 200,
           y: 200,
-          title: "Users don't know how to login."
+          title: "Users don't know how to login.",
+          color: "#9de1e2",
         },
         {
           id: uuid4(),
           x: 300,
           y: 300,
-          title: "We need better menu navigation to help users find our features."
+          title: "We need better menu navigation to help users find our features.",
+          color: "#eecfb2",
         },
         {
           id: uuid4(),
           x: 400,
           y: 400,
-          title: "Users don't want to create an account to try the app."
+          title: "Users don't want to create an account to try the app.",
+          color: "#d2d1fb",
         },
         {
           id: uuid4(),
-          x: 500,
-          y: 500,
-          title: "The board needs better color coding."
+          x: 600,
+          y: 600,
+          title: "It is unclear to users how many pages to the form there is.",
+          color: "#b3dbf5",
+        },
+        {
+          id: uuid4(),
+          x: 700,
+          y: 600,
+          title: "Explanatory text below sections is difficult to read.",
+          color: "#fdc7c8",
+        },
+        {
+          id: uuid4(),
+          x: 750,
+          y: 600,
+          title: "The landing page more clearly needs to convey what our product does.",
+          color: "#eecaf0",
+        },
+        {
+          id: uuid4(),
+          x: 750,
+          y: 650,
+          title: "Call-to-action buttons are not very obvious to users right now.",
+          color: "#d5d7a8",
         },
       ]
     }
@@ -183,7 +208,15 @@ export default class Prioritization extends React.Component {
           </CardHeader>
           <CardBody>
             {this.state.insights.map((insight, idx) => (
-              <Card className="card-doc" style={{ color: insight.selected ? "#252422" : "#aaaaaa", padding: "10px", border: insight.selected ? "1px solid lightgrey" : "none" }}>
+              <Card
+                className="card-doc"
+                style={{
+                  color: insight.selected ? "black" : "gray",
+                  padding: "10px",
+                  border: insight.selected ? "1px solid lightgrey" : "none",
+                  backgroundColor: insight.color
+                }}
+              >
                 {insight.selected ?
                   <CardText>
                     {insight.title}
