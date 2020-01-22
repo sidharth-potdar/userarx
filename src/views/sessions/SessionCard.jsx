@@ -36,15 +36,14 @@ import * as queries from '../../graphql/queries';
 class SessionCard extends Component {
   constructor(props) {
     super(props);
-    // this.name = this.props.name;
-    // this.description = this.props.description;
 
     this.state = {
       name: this.props.name,
       date: this.props.date,
       description: this.props.description,
       showModal: false,
-      tags: []
+      tags: [],
+      snips: []
     };
     this.toggleModal = this.toggleModal.bind(this);
   }
@@ -81,7 +80,6 @@ class SessionCard extends Component {
           sk: "tag"
         }
       ))
-      console.log(response.data.getTags)
       this.setState({
         tags: response.data.getTags,
       })
@@ -93,48 +91,65 @@ class SessionCard extends Component {
     }
   }
 
-  LightenDarkenColor(col, amt) {
+  async queryForSnips() {
+    try {
+      const response = await API.graphql(graphqlOperation(queries.getSnips,
+        {
+          pk: sessionStorage.getItem("projectID"),
+          sk: "snip"
+        }
+      ))
+      this.setState({
+        snips: response.data.getSnips,
+      }, () => {
+        this.figureOutWhichTagsBelongToSession();
+      })
+      sessionStorage.setItem("snips", JSON.stringify(this.state.snips));
 
-    var usePound = false;
-
-    if (col[0] == "#") {
-        col = col.slice(1);
-        usePound = true;
     }
+    catch (error) {
+      console.log('error', error)
+    }
+  }
 
-    var num = parseInt(col,16);
+  figureOutWhichTagsBelongToSession = () => {
+    const thisSessionsSnips = [];
+    const thisSessionsTags = [];
 
-    var r = (num >> 16) + amt;
+    this.state.snips.forEach((snip) => {
+      if(snip.session_id === this.props.sessionID) {
+        thisSessionsSnips.push(snip);
+      }
+    });
 
-    if (r > 255) r = 255;
-    else if  (r < 0) r = 0;
+    thisSessionsSnips.forEach((snipInSession) => {
+      this.state.tags.forEach((tag) => {
+        if(snipInSession.tag_id === tag.sk.replace("tag-", "")) {
+          thisSessionsTags.push(tag);
+        }
+      });
+    });
 
-    var b = ((num >> 8) & 0x00FF) + amt;
-
-    if (b > 255) b = 255;
-    else if  (b < 0) b = 0;
-
-    var g = (num & 0x0000FF) + amt;
-
-    if (g > 255) g = 255;
-    else if (g < 0) g = 0;
-
-    return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
-
-}
+    this.setState({
+      snips: thisSessionsSnips,
+      tags: thisSessionsTags,
+    })
+  }
 
   componentDidMount() {
     if(sessionStorage.getItem("projectID") != null && sessionStorage.getItem("projectID") != undefined) {
-      this.queryForTags();
+      this.queryForTags().then(()=>{
+        this.queryForSnips();
+      })
     }
     else {
       setTimeout(() => {
-        this.queryForTags();
+        this.queryForTags().then(()=>{
+          this.queryForSnips();
+        })
       }, 1000);
     }
-    console.log(this.state.tags);
   }
-
 
   render() {
     return (
@@ -219,7 +234,10 @@ class SessionCard extends Component {
               </Row>
             </FormGroup>
             <br />
-            <InterviewEditor tags={this.state.tags} />
+            <InterviewEditor
+              tags={this.state.tags}
+              snips={this.state.snips}
+            />
             <br />
           </ModalBody>
         </Modal>

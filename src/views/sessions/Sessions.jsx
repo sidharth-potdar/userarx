@@ -1,6 +1,4 @@
-import React from "react";
-
-// reactstrap components
+import React, { Component } from 'react';
 import {
   Badge,
   Button,
@@ -24,10 +22,12 @@ import {
   Col,
   UncontrolledTooltip
 } from "reactstrap";
-
 import SessionCard from "views/sessions/SessionCard.jsx";
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../graphql/queries';
+import * as mutations from '../../graphql/mutations';
 
-class Sessions extends React.Component {
+class Sessions extends Component {
   constructor(props) {
     super(props);
 
@@ -36,23 +36,7 @@ class Sessions extends React.Component {
       newSessionName: "",
       newSessionDate: "",
       newSessionDescription: "",
-      sessions: [
-        {
-          name: "Billy Bob - Session 1",
-          date: "10/11/12",
-          description: "Testing the onboarding process with a developer",
-        },
-        {
-          name: "Meghna Dash - Session 2",
-          date: "11/12/19",
-          description: "Exploring the UI with a not developer",
-        },
-        {
-          name: "Test User - Session 1",
-          date: "3/23/2019",
-          description: "Testing out user card",
-        },
-      ],
+      sessions: [],
     }
   }
 
@@ -93,6 +77,36 @@ class Sessions extends React.Component {
     });
   }
 
+  async queryForSessions() {
+    try {
+      const response = await API.graphql(graphqlOperation(queries.getSessions,
+        {
+          pk: sessionStorage.getItem("projectID"),
+          sk: "session"
+        }
+      ))
+      this.setState({
+        sessions: response.data.getSessions,
+      })
+      sessionStorage.setItem("sessions", JSON.stringify(this.state.sessions));
+
+    }
+    catch (error) {
+      console.log('error', error)
+    }
+  }
+
+  componentDidMount() {
+    if(sessionStorage.getItem("projectID") != null && sessionStorage.getItem("projectID") != undefined) {
+      this.queryForSessions();
+    }
+    else {
+      setTimeout(() => {
+        this.queryForSessions();
+      }, 1000);
+    }
+  }
+
   render() {
     return (
       <div className="content">
@@ -102,6 +116,7 @@ class Sessions extends React.Component {
               name={session.name}
               date={session.date}
               description={session.description}
+              sessionID={session.sk.replace("session-", "")}
             />
           ))}
         </Row>

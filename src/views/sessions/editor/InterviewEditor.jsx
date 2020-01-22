@@ -39,7 +39,7 @@ class InterviewEditor extends Component {
     this.state = {
       editorState: EditorState.createEmpty(compositeDecorator),
       tags: this.props.tags,
-      snips: [""],
+      snips: this.props.snips,
       isNewEntityVisible: false,
       newEntityName: '',
       showNewTagInput: false,
@@ -185,26 +185,6 @@ class InterviewEditor extends Component {
     })
   };
 
-  async queryForSnips() {
-    try {
-      const response = await API.graphql(graphqlOperation(queries.getSnips,
-        {
-          pk: sessionStorage.getItem("projectID"),
-          sk: "snip"
-        }
-      ))
-      console.log(response.data.getSnips)
-      this.setState({
-        snips: response.data.getSnips,
-      })
-      sessionStorage.setItem("snips", JSON.stringify(this.state.snips));
-
-    }
-    catch (error) {
-      console.log('error', error)
-    }
-  }
-
   putTagsInDynamo() {
     this.state.tags.forEach(async function(tag) {
       if(tag.isNew) {
@@ -251,35 +231,8 @@ class InterviewEditor extends Component {
       }
     })
   }
-  //
-  // LightenDarkenColor(col, amt) {
-  //   var usePound = false;
-  //   if (col[0] == "#") {
-  //       col = col.slice(1);
-  //       usePound = true;
-  //   }
-  //
-  //   var num = parseInt(col,16);
-  //   var r = (num >> 16) + amt;
-  //
-  //   if (r > 255) r = 255;
-  //   else if  (r < 0) r = 0;
-  //
-  //   var b = ((num >> 8) & 0x00FF) + amt;
-  //
-  //   if (b > 255) b = 255;
-  //   else if  (b < 0) b = 0;
-  //
-  //   var g = (num & 0x0000FF) + amt;
-  //
-  //   if (g > 255) g = 255;
-  //   else if (g < 0) g = 0;
-  //
-  //   return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
-  // }
 
   componentDidMount() {
-    this.queryForSnips();
     generateRegexs();
   }
 
