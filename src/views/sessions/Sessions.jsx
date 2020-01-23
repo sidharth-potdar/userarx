@@ -26,6 +26,7 @@ import SessionCard from "views/sessions/SessionCard.jsx";
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../../graphql/queries';
 import * as mutations from '../../graphql/mutations';
+import { uuid } from 'uuidv4';
 
 class Sessions extends Component {
   constructor(props) {
@@ -46,6 +47,24 @@ class Sessions extends Component {
     });
   }
 
+  async putNewSessionInDynamo() {
+    try {
+      const response = await API.graphql(graphqlOperation(mutations.putSessions,
+        {
+          pk: sessionStorage.getItem("projectID"),
+          sk: "session-" + uuid(),
+          name: this.state.newSessionName,
+          date: this.state.newSessionDate,
+          description: this.state.newSessionDescription,
+        }
+      ))
+      console.log(response.data.putSessions)
+    }
+    catch (error) {
+      console.log('error', error)
+    }
+  }
+
   submitNewSession(e) {
     e.preventDefault();
     console.log(this.state.newSessionName);
@@ -57,6 +76,8 @@ class Sessions extends Component {
       date: this.state.newSessionDate,
       description: this.state.newSessionDescription,
     }
+
+    this.putNewSessionInDynamo();
 
     this.setState(prevState => ({
       newSessionName: "",
@@ -122,7 +143,7 @@ class Sessions extends Component {
           <Col md="3">
             <Card className="card-doc">
               <CardHeader>
-                <CardTitle tag="h4" style={{color: "gray"}}>New User Document</CardTitle>
+                <CardTitle tag="h4" style={{color: "gray"}}>New User Session</CardTitle>
               </CardHeader>
               <CardBody>
                 <div align="center">
@@ -147,7 +168,7 @@ class Sessions extends Component {
             <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.toggleNewSessionModal}>
               <span aria-hidden="true">×</span>
             </button>
-            <h5 className="modal-title">Create new session</h5>
+            <h5 className="modal-title">Create New Session</h5>
           </div>
           <ModalBody>
             <Form onSubmit={(e) => this.submitNewSession(e)}>
