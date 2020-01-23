@@ -60,6 +60,8 @@ export const getInsights = `query GetInsights($pk: String, $sk: String) {
     description
     date
     snips
+    x
+    y
   }
 }
 `;

@@ -54,7 +54,7 @@ export default class Insights extends Component {
       const response = await API.graphql(graphqlOperation(queries.getInsights,
         {
           pk: sessionStorage.getItem("projectID"),
-          sk: "insight-"
+          sk: "insight"
         }
       ))
       this.setState({

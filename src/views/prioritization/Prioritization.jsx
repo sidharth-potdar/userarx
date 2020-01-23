@@ -38,7 +38,7 @@ export default class Prioritization extends Component {
       const response = await API.graphql(graphqlOperation(queries.getInsights,
         {
           pk: sessionStorage.getItem("projectID"),
-          sk: "insight-"
+          sk: "insight"
         }
       ))
       this.setState({
@@ -102,14 +102,14 @@ export default class Prioritization extends Component {
     // }));
 
     let voronoi = Delaunay
-      .from(this.state.insights, d => d.x, d => d.y, d => d.id)
+      .from(this.state.insights, d => d.x, d => d.y, d => d.sk)
       .voronoi([0, 0, this.state.width, this.state.height]);
 
     const cell = svg.append("defs")
       .selectAll("clipPath")
       .data(this.state.insights)
       .join("clipPath")
-        .attr("id", d => d.id)
+        .attr("id", d => d.sk)
       .append("path")
         .attr("d", (d, i) => voronoi.renderCell(i));
 
@@ -117,7 +117,7 @@ export default class Prioritization extends Component {
       .selectAll("g")
       .data(this.state.insights)
       .join("g")
-        .attr("clip-path", d => d.id)
+        .attr("clip-path", d => d.sk)
       .append("g")
         .attr("transform", d => `translate(${d.x},${d.y})`)
         .call(g => g.append("circle")
