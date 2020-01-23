@@ -27,6 +27,9 @@ import {
 import InterviewEditor from "./editor/InterviewEditor.jsx";
 import ReactDatetime from "react-datetime";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Moment from 'react-moment';
+import 'moment-timezone';
+
 import './sessionCard.css';
 import mountains from "assets/img/mountains.png";
 
@@ -161,7 +164,11 @@ class SessionCard extends Component {
             <CardTitle tag="h4">
               {this.props.name}
             </CardTitle>
-            <h5 className="card-category">{this.props.date}</h5>
+            <h5 className="card-category">
+              <Moment unix>
+                {this.props.date}
+              </Moment>
+            </h5>
             <p style={{color: "gray"}}>{this.props.description}</p>
           </CardHeader>
           <CardBody>

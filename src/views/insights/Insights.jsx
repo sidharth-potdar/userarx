@@ -85,8 +85,6 @@ export default class Insights extends Component {
               showModal={insight.showModal ? true : false}
             />
           ))}
-        </Row>
-        <Row>
           <Col md="3">
             <Card className="card-doc">
               <CardHeader>

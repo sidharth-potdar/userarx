@@ -22,7 +22,7 @@ export default class Prioritization extends Component {
     super(props);
 
     this.state = {
-      width: 1100,
+      width: 1000,
       height: 800,
       radius: 24,
       minX: 100,
@@ -174,38 +174,42 @@ export default class Prioritization extends Component {
   render() {
     return (
       <Row>
-        <Card className="card-doc" style={{ marginTop: "75px", marginLeft: "40px", width: "200px" }}>
-          <CardHeader>
-            <CardTitle tag="h4">
-              Insights
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
-            {this.state.insights.map((insight, key) => (
-              <Card
-                className="card-doc"
-                style={{
-                  color: insight.selected ? "black" : "gray",
-                  padding: "10px",
-                  border: insight.selected ? "1px solid lightgrey" : "none",
-                  backgroundColor: randomColor({ luminosity: 'dark', format: 'rgba', alpha: 0.1 }),
-                }}
-              >
-                {insight.selected ?
-                  <CardText>
-                    {insight.text}
-                  </CardText> :
-                  <CardText>
-                    {insight.text}
-                  </CardText>
-                }
-              </Card>
-            ))}
-          </CardBody>
-        </Card>
-        <Card style={{ marginTop: "75px", marginLeft: "40px", height: this.state.height+"px", width: this.state.width+"px"}}>
-          <div align="center" ref="canvas"></div>
-        </Card>
+        <Col lg="2" md="2">
+          <Card className="card-doc" style={{ marginTop: "75px", marginLeft: "40px", width: "200px" }}>
+            <CardHeader>
+              <CardTitle tag="h4">
+                Insights
+              </CardTitle>
+            </CardHeader>
+            <CardBody>
+              {this.state.insights.map((insight, key) => (
+                <Card
+                  className="card-doc"
+                  style={{
+                    color: insight.selected ? "black" : "gray",
+                    padding: "10px",
+                    border: insight.selected ? "1px solid lightgrey" : "none",
+                    backgroundColor: randomColor({ luminosity: 'dark', format: 'rgba', alpha: 0.1 }),
+                  }}
+                >
+                  {insight.selected ?
+                    <CardText>
+                      {insight.text}
+                    </CardText> :
+                    <CardText>
+                      {insight.text}
+                    </CardText>
+                  }
+                </Card>
+              ))}
+            </CardBody>
+          </Card>
+        </Col>
+        <Col>
+          <Card style={{ marginTop: "75px", marginLeft: "40px", height: this.state.height+"px", width: this.state.width+"px"}}>
+            <div align="center" ref="canvas"></div>
+          </Card>
+        </Col>
       </Row>
     )
   }

@@ -27,6 +27,9 @@ import {
 
 import InsightSelectTable from "./InsightSelectTable.jsx";
 
+import Moment from 'react-moment';
+import 'moment-timezone';
+
 export default class InsightCard extends React.Component {
   constructor(props) {
     super(props);
@@ -71,17 +74,19 @@ export default class InsightCard extends React.Component {
     const matchedSnipsArray = [];
     var snips = JSON.parse(sessionStorage.getItem('snips'));
 
-    this.props.selectedSnips.forEach((selectedSnip, i) => {
-      console.log("selectedSnip", selectedSnip);
+    if(this.props.selectedSnips != null && this.props.selectedSnips != undefined) {
+      this.props.selectedSnips.forEach((selectedSnip, i) => {
+        console.log("selectedSnip", selectedSnip);
 
-      if(snips[snips.findIndex(x => x.sk.replace("snip-", "") === selectedSnip)] != null && snips[snips.findIndex(x => x.sk.replace("snip-", "") === selectedSnip)] != undefined) {
-        matchedSnipsArray.push(snips[snips.findIndex(x => x.sk.replace("snip-", "") === selectedSnip)]);
-      }
-    });
-    this.setState({
-      matchedSnips: matchedSnipsArray
-    })
-    console.log("matchedSnipsArray", matchedSnipsArray)
+        if(snips[snips.findIndex(x => x.sk.replace("snip-", "") === selectedSnip)] != null && snips[snips.findIndex(x => x.sk.replace("snip-", "") === selectedSnip)] != undefined) {
+          matchedSnipsArray.push(snips[snips.findIndex(x => x.sk.replace("snip-", "") === selectedSnip)]);
+        }
+      });
+      this.setState({
+        matchedSnips: matchedSnipsArray
+      })
+      console.log("matchedSnipsArray", matchedSnipsArray)
+    }
   }
 
   toggleTable = () => {
@@ -99,8 +104,14 @@ export default class InsightCard extends React.Component {
       <Col md="3">
         <Card className="card-doc" tag="a" onClick={this.toggleModal} style={{ cursor: "pointer" }}>
           <CardHeader>
-            <CardTitle tag="h4">{this.state.title}</CardTitle>
-            <h5 className="card-category">{this.state.date}</h5>
+            <CardTitle tag="h4">
+              {this.state.title}
+            </CardTitle>
+            <h5 className="card-category">
+              <Moment unix>
+                {this.state.date}
+              </Moment>
+            </h5>
           </CardHeader>
         </Card>
 
@@ -109,7 +120,9 @@ export default class InsightCard extends React.Component {
             <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.toggleModal}>
               <span aria-hidden="true">×</span>
             </button>
-            <h5 className="modal-title">{this.state.title}</h5>
+            <h5 className="modal-title">
+              {this.state.title}
+            </h5>
           </div>
           <ModalBody>
             <FormGroup>
